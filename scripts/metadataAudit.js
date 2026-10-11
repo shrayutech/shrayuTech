@@ -8,7 +8,7 @@
  * 3. Dynamic pSEO route generation across products, services, locations, comparisons, and research
  * 4. Robots.txt configuration (app/robots.js) & sitemap integration
  * 5. Canonical URL formatting, no localhost, no trailing slashes, clean protocols
- * 6. Multilingual hreflang alternates (en, hi, mr, x-default)
+ * 6. hreflang alternates (en, x-default)
  * 7. OpenGraph and Twitter card fidelity
  * 8. Strict title and description deduplication across disparate entities
  * 9. Codebase architectural integrity (no client-side <Head> mutations)
@@ -94,8 +94,7 @@ assert(buildCanonicalUrl('/') === 'https://shrayutech.vercel.app', 'Root canonic
 const alternates = buildLanguageAlternates('/portfolio');
 assert(alternates.canonical === 'https://shrayutech.vercel.app/portfolio', 'Alternates includes canonical URL');
 assert(alternates.languages['en'] === 'https://shrayutech.vercel.app/portfolio', 'English language alternate present');
-assert(alternates.languages['hi'] === 'https://shrayutech.vercel.app/portfolio', 'Hindi language alternate present');
-assert(alternates.languages['mr'] === 'https://shrayutech.vercel.app/portfolio', 'Marathi language alternate present');
+assert(!alternates.languages['hi'] && !alternates.languages['mr'], 'No hreflang alternates for untranslated languages');
 assert(alternates.languages['x-default'] === 'https://shrayutech.vercel.app/portfolio', 'x-default fallback alternate present');
 
 // -----------------------------------------------------------------------------

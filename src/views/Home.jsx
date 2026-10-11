@@ -1,5 +1,6 @@
 "use client";
 import { motion } from 'framer-motion';
+import { revealOnScroll } from '../utils/motionPresets';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -28,15 +29,20 @@ import {
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import RelatedCategories from '../components/RelatedCategories';
-import ContentFreshnessBadge from '../components/ContentFreshnessBadge';
-import { useTheme } from '../context/ThemeContext';
 import { useSkeleton } from '../context/SkeletonContext';
 import SkeletonWrapper from '../components/skeleton/SkeletonWrapper';
 import HomeSkeleton from '../components/skeleton/HomeSkeleton';
 import SpotlightCard from '../components/SpotlightCard';
+import HeroRotatingText from '../components/HeroRotatingText';
+
+const heroStatements = [
+  'AI-powered applications designed to automate growth.',
+  'Custom business software built around your workflow.',
+  'Modern LMS platforms designed for smarter learning.',
+  'Scalable digital solutions engineered for the future.'
+];
 
 const Home = () => {
-  const { isDark } = useTheme();
   const { isLoading } = useSkeleton();
 
   const fadeInUp = {
@@ -216,30 +222,30 @@ const Home = () => {
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>World-Class Software Engineering</span>
               </div>
-              <ContentFreshnessBadge pageKey="home" />
             </motion.div>
 
             <motion.h1
               variants={fadeInUp}
               className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08] max-w-4xl ${
-                isDark ? 'text-white' : 'text-slate-900'
+                'light:text-slate-900 dark:text-white'
               }`}
             >
-              Building Software <br />
-              That Powers{' '}
+              We Build Technology <br className="hidden sm:block" />
+              That Moves{' '}
+              <br className="hidden sm:block" />
               <span className="gradient-text-animated">
-                Modern Businesses
+                Businesses Forward
               </span>
             </motion.h1>
 
-            <motion.p
-              variants={fadeInUp}
-              className={`text-base sm:text-lg md:text-xl font-medium leading-relaxed max-w-2xl ${
-                isDark ? 'text-slate-300' : 'text-slate-600'
-              }`}
-            >
-              We help startups, small businesses, and enterprises transform ideas into scalable digital products through modern software engineering, AI, cloud technologies, and exceptional user experiences.
-            </motion.p>
+            <motion.div variants={fadeInUp} className="w-full max-w-2xl">
+              <HeroRotatingText
+                statements={heroStatements}
+                className={`text-lg sm:text-xl md:text-2xl font-medium leading-snug ${
+                  'light:text-slate-600 dark:text-slate-300'
+                }`}
+              />
+            </motion.div>
 
             <motion.div
               variants={fadeInUp}
@@ -261,7 +267,7 @@ const Home = () => {
             <motion.div
               variants={fadeInUp}
               className={`pt-8 border-t flex flex-wrap justify-center gap-8 text-xs font-semibold w-full max-w-xl ${
-                isDark ? 'border-white/10 text-slate-300' : 'border-slate-200 text-slate-600'
+                'light:border-slate-200 light:text-slate-600 dark:border-white/10 dark:text-slate-300'
               }`}
             >
               <div className="flex items-center space-x-2">
@@ -282,21 +288,18 @@ const Home = () => {
 
         {/* TECH STACK ENVIRONMENT */}
         <motion.section
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          {...revealOnScroll}
           className={`py-24 border-t bg-services-atmosphere relative z-10 px-6 sm:px-8 ${
-            isDark ? 'border-white/10' : 'border-slate-200'
+            'light:border-slate-200 dark:border-white/10'
           }`}
         >
           <div className="max-w-7xl mx-auto text-center space-y-12">
             <div className="space-y-3">
               <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">Technology Stack</span>
-              <h2 className={`text-2xl sm:text-3xl font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <h2 className={`text-2xl sm:text-3xl font-extrabold ${'light:text-slate-900 dark:text-white'}`}>
                 Trusted Technologies We Build With
               </h2>
-              <p className={`text-xs sm:text-sm font-medium max-w-2xl mx-auto ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+              <p className={`text-xs sm:text-sm font-medium max-w-2xl mx-auto ${'light:text-slate-600 dark:text-slate-400'}`}>
                 Our architectures conform to modern specifications published by the{' '}
                 <a
                   href="https://www.w3.org"
@@ -333,12 +336,12 @@ const Home = () => {
                   >
                     <div className="flex flex-col items-center justify-center text-center space-y-3 w-full h-full">
                       <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${
-                        isDark ? 'bg-white/5 border border-white/10' : 'bg-slate-100 border border-slate-200'
+                        'light:bg-slate-100 light:border light:border-slate-200 dark:bg-white/5 dark:border dark:border-white/10'
                       }`}>
                         {tech.icon}
                       </div>
                       <span className={`text-xs font-bold transition-colors ${
-                        isDark ? 'text-slate-300 group-hover:text-white' : 'text-slate-700 group-hover:text-slate-900'
+                        'light:text-slate-700 light:group-hover:text-slate-900 dark:text-slate-300 dark:group-hover:text-white'
                       }`}>
                         {tech.name}
                       </span>
@@ -352,21 +355,18 @@ const Home = () => {
 
         {/* SERVICES OVERVIEW */}
         <motion.section
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          {...revealOnScroll}
           className={`py-32 relative z-10 border-t bg-services-atmosphere px-6 sm:px-8 ${
-            isDark ? 'border-white/10' : 'border-slate-200'
+            'light:border-slate-200 dark:border-white/10'
           }`}
         >
           <div className="max-w-7xl mx-auto space-y-20">
             <div className="text-center max-w-3xl mx-auto space-y-4">
               <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">What We Build</span>
-              <h2 className={`text-3xl sm:text-4xl md:text-5xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <h2 className={`text-3xl sm:text-4xl md:text-5xl font-black tracking-tight ${'light:text-slate-900 dark:text-white'}`}>
                 Tailored Digital Solutions
               </h2>
-              <p className={`text-base sm:text-lg font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              <p className={`text-base sm:text-lg font-medium ${'light:text-slate-600 dark:text-slate-300'}`}>
                 We construct high-performance software applications optimized for velocity, visual excellence, and elastic scaling.
               </p>
             </div>
@@ -379,29 +379,27 @@ const Home = () => {
                 >
                   <div className="space-y-6">
                     <div className={`p-4 rounded-2xl w-max transition-transform duration-300 group-hover:scale-105 ${
-                      isDark ? 'bg-white/5 border border-white/10' : 'bg-slate-100 border border-slate-200'
+                      'light:bg-slate-100 light:border light:border-slate-200 dark:bg-white/5 dark:border dark:border-white/10'
                     }`}>
                       {service.icon}
                     </div>
                     <div className="space-y-2">
-                      <h3 className={`text-2xl font-bold transition-colors ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                      <h3 className={`text-2xl font-bold transition-colors ${'light:text-slate-900 dark:text-white'}`}>
                         {service.title}
                       </h3>
-                      <p className={`text-sm leading-relaxed font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                      <p className={`text-sm leading-relaxed font-medium ${'light:text-slate-600 dark:text-slate-300'}`}>
                         {service.desc}
                       </p>
                     </div>
                   </div>
 
-                  <div className={`space-y-6 pt-4 border-t ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+                  <div className={`space-y-6 pt-4 border-t ${'light:border-slate-200 dark:border-white/10'}`}>
                     <div className="flex flex-wrap gap-2">
                       {service.techs.map((t, tIdx) => (
                         <span
                           key={tIdx}
                           className={`px-3 py-1 rounded-md font-bold text-[10px] uppercase border transition-colors ${
-                            isDark
-                              ? 'bg-white/5 text-slate-300 border-white/10 group-hover:border-blue-500/30'
-                              : 'bg-slate-100 text-slate-700 border-slate-200 group-hover:border-blue-300'
+                            'light:bg-slate-100 light:text-slate-700 light:border-slate-200 light:group-hover:border-blue-300 dark:bg-white/5 dark:text-slate-300 dark:border-white/10 dark:group-hover:border-blue-500/30'
                           }`}
                         >
                           {t}
@@ -420,7 +418,7 @@ const Home = () => {
                       <Link
                         href="/contact"
                         className={`text-[11px] font-semibold transition-colors hover:underline ${
-                          isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'
+                          'light:text-slate-500 light:hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
                         }`}
                       >
                         Consult Lead
@@ -461,21 +459,18 @@ const Home = () => {
 
         {/* WHY CHOOSE US */}
         <motion.section
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          {...revealOnScroll}
           className={`py-32 relative z-10 border-t bg-about-atmosphere px-6 sm:px-8 ${
-            isDark ? 'border-white/10' : 'border-slate-200'
+            'light:border-slate-200 dark:border-white/10'
           }`}
         >
           <div className="max-w-7xl mx-auto space-y-20">
             <div className="text-center max-w-3xl mx-auto space-y-4">
               <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">Why Trust Us</span>
-              <h2 className={`text-3xl sm:text-4xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <h2 className={`text-3xl sm:text-4xl font-black tracking-tight ${'light:text-slate-900 dark:text-white'}`}>
                 Why Choose Shrayu Technologies
               </h2>
-              <p className={`text-base font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              <p className={`text-base font-medium ${'light:text-slate-600 dark:text-slate-300'}`}>
                 We focus on robust software architecture, clear communication, and high-performance execution.
               </p>
             </div>
@@ -487,45 +482,32 @@ const Home = () => {
                   className="glass-card-3d rounded-3xl p-8 space-y-5"
                 >
                   <div className={`p-3.5 rounded-2xl w-max transition-transform duration-300 group-hover:scale-105 ${
-                    isDark ? 'bg-blue-500/10 border border-blue-500/20' : 'bg-blue-50 border border-blue-200'
+                    'light:bg-blue-50 light:border light:border-blue-200 dark:bg-blue-500/10 dark:border dark:border-blue-500/20'
                   }`}>
                     {feature.icon}
                   </div>
-                  <h3 className={`font-bold text-xl ${isDark ? 'text-white' : 'text-slate-900'}`}>{feature.title}</h3>
-                  <p className={`text-sm font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{feature.desc}</p>
+                  <h3 className={`font-bold text-xl ${'light:text-slate-900 dark:text-white'}`}>{feature.title}</h3>
+                  <p className={`text-sm font-medium leading-relaxed ${'light:text-slate-600 dark:text-slate-300'}`}>{feature.desc}</p>
                 </SpotlightCard>
               ))}
-            </div>
-
-            <div className="pt-2 text-center">
-              <p className={`text-xs sm:text-sm font-semibold max-w-xl mx-auto ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                Passionate about clean code, distributed systems, and machine learning?{' '}
-                <Link href="/careers" className="text-blue-500 hover:underline font-bold inline-flex items-center space-x-1">
-                  <span>Explore open positions on our Careers page</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </p>
             </div>
           </div>
         </motion.section>
 
         {/* DEVELOPMENT PROCESS TIMELINE */}
         <motion.section
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          {...revealOnScroll}
           className={`py-32 relative z-10 border-t bg-hero-atmosphere px-6 sm:px-8 ${
-            isDark ? 'border-white/10' : 'border-slate-200'
+            'light:border-slate-200 dark:border-white/10'
           }`}
         >
           <div className="max-w-7xl mx-auto space-y-20">
             <div className="text-center max-w-3xl mx-auto space-y-4">
               <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">Development Process</span>
-              <h2 className={`text-3xl sm:text-4xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <h2 className={`text-3xl sm:text-4xl font-black tracking-tight ${'light:text-slate-900 dark:text-white'}`}>
                 How We Build Products
               </h2>
-              <p className={`text-base font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              <p className={`text-base font-medium ${'light:text-slate-600 dark:text-slate-300'}`}>
                 A transparent, end-to-end software development methodology engineered for quality.
               </p>
             </div>
@@ -534,9 +516,7 @@ const Home = () => {
               {processSteps.map((step, idx) => (
                 <div key={idx} className="flex flex-col items-center text-center space-y-4 group">
                   <div className={`w-14 h-14 rounded-2xl border flex items-center justify-center relative shadow-xl group-hover:scale-110 transition-all duration-300 ${
-                    isDark
-                      ? 'bg-[#111827] border-white/15 group-hover:border-blue-500/50 group-hover:shadow-blue-500/20'
-                      : 'bg-white border-slate-200 group-hover:border-blue-500/50 group-hover:shadow-blue-500/10'
+                    'light:bg-white light:border-slate-200 light:group-hover:border-blue-500/50 light:group-hover:shadow-blue-500/10 dark:bg-[#111827] dark:border-white/15 dark:group-hover:border-blue-500/50 dark:group-hover:shadow-blue-500/20'
                   }`}>
                     {step.icon}
                     <div className="absolute -top-3 -right-2 text-[10px] bg-blue-600 text-white font-bold px-1.5 py-0.5 rounded-full shadow">
@@ -544,17 +524,17 @@ const Home = () => {
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <h3 className={`font-bold text-sm sm:text-base transition-colors ${isDark ? 'text-white group-hover:text-blue-400' : 'text-slate-900 group-hover:text-blue-600'}`}>
+                    <h3 className={`font-bold text-sm sm:text-base transition-colors ${'light:text-slate-900 light:group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400'}`}>
                       {step.name}
                     </h3>
-                    <p className={`text-xs font-medium leading-relaxed px-1 sm:px-2 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{step.desc}</p>
+                    <p className={`text-xs font-medium leading-relaxed px-1 sm:px-2 ${'light:text-slate-600 dark:text-slate-400'}`}>{step.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             <div className="pt-2 text-center">
-              <p className={`text-xs sm:text-sm font-medium max-w-xl mx-auto ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+              <p className={`text-xs sm:text-sm font-medium max-w-xl mx-auto ${'light:text-slate-600 dark:text-slate-400'}`}>
                 Every sprint is executed with high visibility and test coverage.{' '}
                 <Link href="/about" className="text-blue-500 hover:underline font-bold inline-flex items-center space-x-1">
                   <span>Learn more about our core values on the About page</span>
@@ -567,20 +547,17 @@ const Home = () => {
 
         {/* FEATURED CASE STUDIES PREVIEW */}
         <motion.section
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          {...revealOnScroll}
           className={`py-32 relative z-10 border-t bg-portfolio-atmosphere px-6 sm:px-8 ${
-            isDark ? 'border-white/10' : 'border-slate-200'
+            'light:border-slate-200 dark:border-white/10'
           }`}
         >
           <div className="max-w-7xl mx-auto space-y-20">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
               <div className="space-y-4 max-w-2xl">
                 <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">Featured Case Studies</span>
-                <h2 className={`text-3xl sm:text-4xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>Engineering Case Studies</h2>
-                <p className={`text-base font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Real-world technical solutions solved using clean backend architectures and modern web engines.</p>
+                <h2 className={`text-3xl sm:text-4xl font-black tracking-tight ${'light:text-slate-900 dark:text-white'}`}>Engineering Case Studies</h2>
+                <p className={`text-base font-medium ${'light:text-slate-600 dark:text-slate-300'}`}>Real-world technical solutions solved using clean backend architectures and modern web engines.</p>
               </div>
               <Link href="/portfolio"
                 className="btn-secondary group text-xs font-bold px-6 py-3 rounded-full flex items-center space-x-2 active:scale-95 transition-all"
@@ -598,32 +575,28 @@ const Home = () => {
                 >
                   <div className="space-y-4">
                     <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border ${
-                      isDark ? 'text-blue-400 bg-blue-500/10 border-blue-500/20' : 'text-blue-700 bg-blue-50 border-blue-200'
+                      'light:text-blue-700 light:bg-blue-50 light:border-blue-200 dark:text-blue-400 dark:bg-blue-500/10 dark:border-blue-500/20'
                     }`}>
                       {study.category}
                     </span>
-                    <h3 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{study.title}</h3>
+                    <h3 className={`text-2xl font-bold ${'light:text-slate-900 dark:text-white'}`}>{study.title}</h3>
                     <div className={`p-4 rounded-2xl font-bold text-xs flex items-center space-x-2 border ${
-                      isDark
-                        ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
-                        : 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                      'light:bg-emerald-50 light:border-emerald-200 light:text-emerald-700 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400'
                     }`}>
                       <BarChart3 className="w-4 h-4 shrink-0" />
                       <span>Impact: {study.impact}</span>
                     </div>
                     <div className="space-y-2 pt-2 text-xs font-medium">
-                      <p className={isDark ? 'text-slate-300' : 'text-slate-600'}><strong className={isDark ? 'text-slate-200' : 'text-slate-800'}>Challenge:</strong> {study.challenge}</p>
-                      <p className={isDark ? 'text-slate-300' : 'text-slate-600'}><strong className={isDark ? 'text-slate-200' : 'text-slate-800'}>Solution:</strong> {study.solution}</p>
+                      <p className={'light:text-slate-600 dark:text-slate-300'}><strong className={'light:text-slate-800 dark:text-slate-200'}>Challenge:</strong> {study.challenge}</p>
+                      <p className={'light:text-slate-600 dark:text-slate-300'}><strong className={'light:text-slate-800 dark:text-slate-200'}>Solution:</strong> {study.solution}</p>
                     </div>
                   </div>
 
-                  <div className={`space-y-4 pt-6 border-t ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+                  <div className={`space-y-4 pt-6 border-t ${'light:border-slate-200 dark:border-white/10'}`}>
                     <div className="flex flex-wrap gap-2">
                       {study.techs.map((t, tIdx) => (
                         <span key={tIdx} className={`px-3 py-1 rounded-md font-bold text-[10px] uppercase border ${
-                          isDark
-                            ? 'bg-white/5 text-slate-300 border-white/10'
-                            : 'bg-slate-100 text-slate-700 border-slate-200'
+                          'light:bg-slate-100 light:text-slate-700 light:border-slate-200 dark:bg-white/5 dark:text-slate-300 dark:border-white/10'
                         }`}>
                           {t}
                         </span>
@@ -644,10 +617,7 @@ const Home = () => {
         <section className="py-20 sm:py-28 md:py-32 relative z-10 px-4 sm:px-6 lg:px-8 bg-contact-atmosphere">
           <div className="max-w-5xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              {...revealOnScroll}
               className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-gradient-to-tr from-blue-950 via-[#0B1021] to-indigo-950 border border-white/15 p-8 sm:p-12 md:p-16 text-center shadow-2xl space-y-6 sm:space-y-8"
             >
               {/* Subtle background glow */}

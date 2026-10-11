@@ -159,7 +159,6 @@ export function isCanonicalInternalRoute(urlPath) {
     '/research',
     '/about',
     '/contact',
-    '/careers',
     '/privacy',
     '/terms'
   ];

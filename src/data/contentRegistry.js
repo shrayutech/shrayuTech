@@ -139,7 +139,7 @@ export const contentRegistry = {
     cadenceDays: 90,
     status: 'Fresh',
     reviewer: 'DevOps & Regional Delivery Leads',
-    summary: 'Audited and verified all 6 engineering delivery hubs across Maharashtra and Karnataka, ensuring accurate geo-coordinates, postal codes, and service deliverables.'
+    summary: 'Audited and verified the Chhatrapati Sambhajinagar headquarters hub, ensuring accurate geo-coordinates, postal codes, and service deliverables.'
   },
   compare: {
     id: 'page_compare',
@@ -195,3 +195,12 @@ export function getContentFreshness(pageKey) {
   return contentRegistry[pageKey] || null;
 }
 
+
+/**
+ * Returns schema.org datePublished / dateModified for a page key (empty object if unknown)
+ */
+export function getPageDates(pageKey) {
+  const info = contentRegistry[pageKey];
+  if (!info) return {};
+  return { datePublished: info.createdAt, dateModified: info.lastUpdated };
+}

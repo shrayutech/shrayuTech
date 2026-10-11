@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { Brain, Database, Cpu, Terminal, Layers, ArrowRight } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 import { portfolioProjects } from '../data/portfolioProjects';
 
 const categoryMeta = {
@@ -46,19 +45,18 @@ const categories = ['AI', 'Data Science', 'Machine Learning', 'Python', 'Full-St
  * - Displays project counts and visual icons
  */
 export default function RelatedCategories({ title = 'Browse Engineering by Category', subtitle = 'Explore 25 verified systems organized by technical domain' }) {
-  const { isDark } = useTheme();
 
   return (
     <div className="space-y-6">
       {(title || subtitle) && (
         <div className="text-center max-w-2xl mx-auto space-y-2">
           {title && (
-            <h3 className={`text-xl sm:text-2xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h3 className={`text-xl sm:text-2xl font-black tracking-tight ${'light:text-slate-900 dark:text-white'}`}>
               {title}
             </h3>
           )}
           {subtitle && (
-            <p className={`text-xs sm:text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            <p className={`text-xs sm:text-sm font-medium ${'light:text-slate-600 dark:text-slate-300'}`}>
               {subtitle}
             </p>
           )}
@@ -76,24 +74,20 @@ export default function RelatedCategories({ title = 'Browse Engineering by Categ
               key={cat}
               href={`/portfolio?category=${encodeURIComponent(cat)}`}
               className={`group p-4 rounded-2xl border transition-all duration-200 flex flex-col justify-between space-y-3 ${
-                isDark
-                  ? 'bg-white/[0.03] border-white/10 hover:bg-white/[0.07] hover:border-blue-500/40 shadow-lg shadow-black/20'
-                  : 'bg-white border-slate-200 hover:border-blue-400 hover:bg-blue-50/40 shadow-sm hover:shadow-md'
+                'light:bg-white light:border-slate-200 light:hover:border-blue-400 light:hover:bg-blue-50/40 light:shadow-sm light:hover:shadow-md dark:bg-white/[0.03] dark:border-white/10 dark:hover:bg-white/[0.07] dark:hover:border-blue-500/40 dark:shadow-lg dark:shadow-black/20'
               }`}
             >
               <div className="flex items-center justify-between">
                 <div
                   className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${
-                    isDark ? 'bg-white/5 text-blue-400' : 'bg-slate-100 text-blue-600'
+                    'light:bg-slate-100 light:text-blue-600 dark:bg-white/5 dark:text-blue-400'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
                 </div>
                 <span
                   className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
-                    isDark
-                      ? 'bg-blue-500/10 border-blue-500/20 text-blue-400'
-                      : 'bg-blue-50 border-blue-200 text-blue-700'
+                    'light:bg-blue-50 light:border-blue-200 light:text-blue-700 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400'
                   }`}
                 >
                   {count} Systems
@@ -103,12 +97,12 @@ export default function RelatedCategories({ title = 'Browse Engineering by Categ
               <div>
                 <h4
                   className={`text-sm font-bold transition-colors group-hover:text-blue-500 ${
-                    isDark ? 'text-white' : 'text-slate-900'
+                    'light:text-slate-900 dark:text-white'
                   }`}
                 >
                   {cat}
                 </h4>
-                <p className={`text-[11px] font-medium line-clamp-2 mt-1 leading-snug ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                <p className={`text-[11px] font-medium line-clamp-2 mt-1 leading-snug ${'light:text-slate-500 dark:text-slate-400'}`}>
                   {meta.desc}
                 </p>
               </div>

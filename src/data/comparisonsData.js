@@ -87,25 +87,7 @@ export const curatedComparisons = [
   // ============================================================
   // DELIVERY HUBS / LOCATIONS COMPARISONS
   // ============================================================
-  {
-    type: 'locations',
-    slug: 'bengaluru-vs-pune',
-    itemIds: ['bengaluru', 'pune'],
-    title: 'Pune Engineering Corridor vs Bengaluru Innovation Hub',
-    metaTitle: 'Pune vs Bengaluru Delivery Hubs | Software Engineering Comparison',
-    metaDescription: 'Compare Shrayu Technologies delivery capabilities across Hinjawadi/Kharadi in Pune and Electronic City/Whitefield in Bengaluru.',
-    categoryContext: 'Metropolitan Tech Corridors',
-    overview: 'Compare the specialized software delivery capabilities, tech park ecosystems, and service focus of our Pune and Bengaluru hubs.'
-  },
-  {
-    type: 'locations',
-    slug: 'chhatrapati-sambhajinagar-vs-mumbai',
-    itemIds: ['chhatrapati-sambhajinagar', 'mumbai'],
-    title: 'Chhatrapati Sambhajinagar HQ vs Mumbai Enterprise Hub',
-    metaTitle: 'Chhatrapati Sambhajinagar HQ vs Mumbai Hub | Operations Comparison',
-    metaDescription: 'Compare our Global Headquarters and Core R&D Lab in Chhatrapati Sambhajinagar with our Financial Technology Delivery Corridor in Mumbai.',
-    categoryContext: 'Maharashtra Delivery Network',
-    overview: 'Compare our central engineering laboratory and founding leadership center with our high-volume FinTech delivery corridor in Mumbai.'
-  }
+
+
 ];
 

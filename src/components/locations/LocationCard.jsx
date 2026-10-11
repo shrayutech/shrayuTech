@@ -3,12 +3,9 @@
 import Link from 'next/link';
 import { MapPin, Phone, Building2, ArrowRight, ExternalLink } from 'lucide-react';
 import SpotlightCard from '../SpotlightCard';
-import { useTheme } from '../../context/ThemeContext';
 import { locationCategories } from '../../data/locationsData';
-import CompareButton from '../comparison/CompareButton';
 
 export default function LocationCard({ city }) {
-  const { isDark } = useTheme();
 
   return (
     <SpotlightCard className="glass-card-3d rounded-3xl p-6 sm:p-8 space-y-6 flex flex-col justify-between h-full">
@@ -18,22 +15,20 @@ export default function LocationCard({ city }) {
             <div className="flex items-center gap-2">
               <span
                 className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border ${
-                  isDark
-                    ? 'text-blue-400 bg-blue-500/10 border-blue-500/20'
-                    : 'text-blue-700 bg-blue-50 border-blue-200'
+                  'light:text-blue-700 light:bg-blue-50 light:border-blue-200 dark:text-blue-400 dark:bg-blue-500/10 dark:border-blue-500/20'
                 }`}
               >
                 {city.stateName}
               </span>
               {city.isHeadquarters && (
-                <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
                   Global HQ
                 </span>
               )}
             </div>
             <h3
               className={`text-2xl font-black tracking-tight mt-2 ${
-                isDark ? 'text-white' : 'text-slate-900'
+                'light:text-slate-900 dark:text-white'
               }`}
             >
               {city.name}
@@ -41,9 +36,7 @@ export default function LocationCard({ city }) {
           </div>
           <div
             className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border ${
-              isDark
-                ? 'bg-white/5 border-white/10 text-blue-400'
-                : 'bg-slate-50 border-slate-200 text-blue-600'
+              'light:bg-slate-50 light:border-slate-200 light:text-blue-600 dark:bg-white/5 dark:border-white/10 dark:text-blue-400'
             }`}
           >
             <Building2 className="w-6 h-6" />
@@ -52,7 +45,7 @@ export default function LocationCard({ city }) {
 
         <p
           className={`text-xs font-semibold leading-relaxed ${
-            isDark ? 'text-blue-400' : 'text-blue-600'
+            'light:text-blue-600 dark:text-blue-400'
           }`}
         >
           {city.hubRole}
@@ -60,7 +53,7 @@ export default function LocationCard({ city }) {
 
         <p
           className={`text-xs font-medium leading-relaxed line-clamp-3 ${
-            isDark ? 'text-slate-300' : 'text-slate-600'
+            'light:text-slate-600 dark:text-slate-300'
           }`}
         >
           {city.overview}
@@ -70,7 +63,7 @@ export default function LocationCard({ city }) {
         <div className="space-y-2 pt-2 text-xs">
           <div className="flex items-start gap-2.5">
             <MapPin className="w-4 h-4 shrink-0 text-slate-400 mt-0.5" />
-            <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>
+            <span className={'light:text-slate-700 dark:text-slate-300'}>
               {city.address} (PIN: {city.postalCode})
             </span>
           </div>
@@ -79,42 +72,19 @@ export default function LocationCard({ city }) {
             <a
               href={`tel:${city.phone}`}
               className={`font-semibold hover:underline ${
-                isDark ? 'text-slate-200 hover:text-blue-400' : 'text-slate-800 hover:text-blue-600'
+                'light:text-slate-800 light:hover:text-blue-600 dark:text-slate-200 dark:hover:text-blue-400'
               }`}
             >
               {city.phone}
             </a>
           </div>
         </div>
-
-        {/* Key Localities */}
-        {city.keyLocalities && city.keyLocalities.length > 0 && (
-          <div className="pt-2 space-y-1.5">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-              Key Tech Corridors:
-            </span>
-            <div className="flex flex-wrap gap-1.5">
-              {city.keyLocalities.slice(0, 3).map((loc, idx) => (
-                <span
-                  key={idx}
-                  className={`text-[10px] font-medium px-2 py-0.5 rounded-md border ${
-                    isDark
-                      ? 'bg-white/5 border-white/10 text-slate-300'
-                      : 'bg-slate-100 border-slate-200 text-slate-700'
-                  }`}
-                >
-                  {loc}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
       {/* CTAs */}
       <div
         className={`pt-5 border-t space-y-3 ${
-          isDark ? 'border-white/10' : 'border-slate-200'
+          'light:border-slate-200 dark:border-white/10'
         }`}
       >
         <div className="flex items-center justify-between gap-2">
@@ -127,7 +97,6 @@ export default function LocationCard({ city }) {
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
-          <CompareButton type="locations" item={city} variant="compact" />
         </div>
 
         {/* Quick category chips */}
@@ -140,9 +109,7 @@ export default function LocationCard({ city }) {
                 key={catSlug}
                 href={`/locations/${city.stateSlug}/${city.slug}/${catSlug}`}
                 className={`text-[10px] font-semibold px-2 py-1 rounded transition-colors ${
-                  isDark
-                    ? 'bg-blue-500/10 text-blue-300 hover:bg-blue-500/20'
-                    : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+                  'light:bg-blue-50 light:text-blue-700 light:hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-300 dark:hover:bg-blue-500/20'
                 }`}
               >
                 {catObj.shortName}

@@ -1,6 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react';
+
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 const ThemeContext = createContext({
   theme: 'dark',
@@ -10,23 +12,33 @@ const ThemeContext = createContext({
 });
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setThemeState] = useState(() => {
-    // Check localStorage first
-    if (typeof window !== 'undefined') {
+  // Always start as 'dark' so the first client render matches the server HTML (avoids a
+  // hydration mismatch), then switch to the real theme before the browser paints.
+  const [theme, setThemeState] = useState('dark');
+  const [resolved, setResolved] = useState(false);
+
+  useIsomorphicLayoutEffect(() => {
+    // The inline script in app/layout.jsx has already applied the saved/system theme to <html>
+    const root = document.documentElement;
+    let initial = root.classList.contains('light') ? 'light' : root.classList.contains('dark') ? 'dark' : null;
+    if (!initial) {
       const savedTheme = localStorage.getItem('shrayu_theme');
       if (savedTheme === 'light' || savedTheme === 'dark') {
-        return savedTheme;
-      }
-      // Respect system preference on first visit
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        return 'light';
+        initial = savedTheme;
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        // Respect system preference on first visit
+        initial = 'light';
+      } else {
+        // Default fallback is dark
+        initial = 'dark';
       }
     }
-    // Default fallback is dark
-    return 'dark';
-  });
+    setThemeState(initial);
+    setResolved(true);
+  }, []);
 
   useEffect(() => {
+    if (!resolved) return;
     const root = document.documentElement;
     const body = document.body;
 
@@ -45,7 +57,7 @@ export const ThemeProvider = ({ children }) => {
     }
 
     localStorage.setItem('shrayu_theme', theme);
-  }, [theme]);
+  }, [theme, resolved]);
 
   // Listen for system theme changes if user hasn't explicitly set preference
   useEffect(() => {

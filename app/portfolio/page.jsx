@@ -1,3 +1,4 @@
+import { getPageDates } from '../../src/data/contentRegistry';
 import { Suspense } from 'react';
 import Products from '../../src/views/Products';
 import PortfolioSkeleton from '../../src/components/skeleton/PortfolioSkeleton';
@@ -25,6 +26,7 @@ export default function PortfolioPage() {
   const url = `${SCHEMA_BASE_URL}/portfolio`;
 
   const webPage = buildWebPageSchema({
+    ...getPageDates('portfolio'),
     title: 'Products & Engineering Showcase | Shrayu Technologies',
     description: 'Explore enterprise products, open-source repositories, and software engineering case studies created by Shrayu Technologies.',
     url

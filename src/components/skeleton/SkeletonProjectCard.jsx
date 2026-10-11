@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
 import SkeletonBase from './SkeletonBase';
-import { useTheme } from '../../context/ThemeContext';
 
 /**
  * SkeletonProjectCard — Matches the real Portfolio case study card layout.
@@ -13,14 +12,11 @@ import { useTheme } from '../../context/ThemeContext';
  * NO fake charts. NO analytics panels. Just clean structural skeleton.
  */
 const SkeletonProjectCard = ({ className = '' }) => {
-  const { isDark } = useTheme();
 
   return (
     <div
       className={`rounded-3xl overflow-hidden border ${
-        isDark
-          ? 'bg-[#0F1728]/70 border-white/[0.07]'
-          : 'bg-white border-slate-200'
+        'light:bg-white light:border-slate-200 dark:bg-[#0F1728]/70 dark:border-white/[0.07]'
       } ${className}`}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-8 sm:p-10 items-center">
@@ -29,14 +25,12 @@ const SkeletonProjectCard = ({ className = '' }) => {
         <div className="lg:col-span-5 w-full">
           <div
             className={`w-full rounded-2xl border p-5 space-y-4 ${
-              isDark
-                ? 'bg-[#090d16] border-white/10'
-                : 'bg-slate-100 border-slate-200'
+              'light:bg-slate-100 light:border-slate-200 dark:bg-[#090d16] dark:border-white/10'
             }`}
             style={{ minHeight: '200px' }}
           >
             {/* Top bar: window dots + label */}
-            <div className={`flex items-center justify-between pb-3 border-b ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+            <div className={`flex items-center justify-between pb-3 border-b ${'light:border-slate-200 dark:border-white/10'}`}>
               <div className="flex space-x-1.5">
                 <SkeletonBase variant="circle" width="10px" height="10px" />
                 <SkeletonBase variant="circle" width="10px" height="10px" />
@@ -47,11 +41,11 @@ const SkeletonProjectCard = ({ className = '' }) => {
 
             {/* Content blocks: 2 stat-like boxes */}
             <div className="grid grid-cols-2 gap-3 pt-1">
-              <div className={`p-3 rounded-xl space-y-2 ${isDark ? 'bg-white/5' : 'bg-white'}`}>
+              <div className={`p-3 rounded-xl space-y-2 ${'light:bg-white dark:bg-white/5'}`}>
                 <SkeletonBase variant="text" width="60%" height="8px" radius="3px" />
                 <SkeletonBase variant="heading" width="80%" height="1.25rem" radius="4px" />
               </div>
-              <div className={`p-3 rounded-xl space-y-2 ${isDark ? 'bg-white/5' : 'bg-white'}`}>
+              <div className={`p-3 rounded-xl space-y-2 ${'light:bg-white dark:bg-white/5'}`}>
                 <SkeletonBase variant="text" width="65%" height="8px" radius="3px" />
                 <SkeletonBase variant="heading" width="75%" height="1.25rem" radius="4px" />
               </div>
@@ -81,7 +75,7 @@ const SkeletonProjectCard = ({ className = '' }) => {
           {/* Business impact banner */}
           <div
             className={`p-4 rounded-2xl flex items-center space-x-3 border ${
-              isDark ? 'bg-white/[0.04] border-white/[0.07]' : 'bg-slate-50 border-slate-200'
+              'light:bg-slate-50 light:border-slate-200 dark:bg-white/[0.04] dark:border-white/[0.07]'
             }`}
           >
             <SkeletonBase variant="icon" width="20px" height="20px" radius="6px" />

@@ -105,21 +105,21 @@ export default async function CuratedComparisonPage({ params }) {
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-white">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-slate-900 dark:text-white">
             {title}
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed text-slate-300">
+          <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed text-slate-600 dark:text-slate-300">
             {overview}
           </p>
         </div>
 
         {/* SIMILARITIES / WHAT THEY HAVE IN COMMON */}
         {similarities.length > 0 && (
-          <div className="p-6 sm:p-8 rounded-3xl glass-card-3d border border-white/10 space-y-4">
-            <div className="flex items-center gap-2 text-emerald-400">
+          <div className="p-6 sm:p-8 rounded-3xl glass-card-3d border border-slate-200 dark:border-white/10 space-y-4">
+            <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
               <ShieldCheck className="w-5 h-5 shrink-0" />
-              <h2 className="text-lg font-bold text-white">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
                 What These {typeConfig.label} Have in Common
               </h2>
             </div>
@@ -127,10 +127,10 @@ export default async function CuratedComparisonPage({ params }) {
               {similarities.map((sim, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3"
+                  className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-start gap-3"
                 >
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <p className="text-xs font-semibold text-slate-300 leading-relaxed">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
+                  <p className="text-xs font-semibold text-slate-600 dark:text-slate-300 leading-relaxed">
                     {sim}
                   </p>
                 </div>
@@ -142,10 +142,10 @@ export default async function CuratedComparisonPage({ params }) {
         {/* COMPARISON TABLE */}
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <h2 className="text-2xl font-black text-white">
+            <h2 className="text-2xl font-black text-slate-900 dark:text-white">
               Attribute &amp; Feature Comparison
             </h2>
-            <span className="text-xs text-slate-400 font-medium">
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
               Factual technical assessment — no artificial scoring or fake ratings
             </span>
           </div>
@@ -158,12 +158,12 @@ export default async function CuratedComparisonPage({ params }) {
         </div>
 
         {/* NEUTRAL TECHNICAL SUMMARY */}
-        <div className="p-8 rounded-3xl glass-card-3d border border-white/10 space-y-4 max-w-4xl">
-          <h3 className="text-xl font-bold text-white flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-blue-400" />
+        <div className="p-8 rounded-3xl glass-card-3d border border-slate-200 dark:border-white/10 space-y-4 max-w-4xl">
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             <span>Architecture Guidance &amp; Selection Criteria</span>
           </h3>
-          <p className="text-xs text-slate-300 leading-relaxed font-medium">
+          <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
             Choosing between these {typeConfig.singularLabel.toLowerCase()} options depends directly on your organizational latency constraints, infrastructure scale, and algorithmic objectives. For tailored architectural review and codebase audits, connect with our principal engineering team.
           </p>
           <div className="pt-2 flex flex-wrap gap-4">
@@ -185,12 +185,12 @@ export default async function CuratedComparisonPage({ params }) {
 
         {/* RELATED CURATED COMPARISONS */}
         {relatedComparisons.length > 0 && (
-          <div className="pt-8 border-t border-white/10 space-y-6">
+          <div className="pt-8 border-t border-slate-200 dark:border-white/10 space-y-6">
             <div className="space-y-1">
               <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">
                 Related Comparisons
               </span>
-              <h3 className="text-2xl font-black text-white">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white">
                 Other {typeConfig.label} Comparisons
               </h3>
             </div>
@@ -202,20 +202,20 @@ export default async function CuratedComparisonPage({ params }) {
                   className="glass-card-3d rounded-3xl p-6 space-y-4 flex flex-col justify-between"
                 >
                   <div className="space-y-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
                       {rc.categoryContext}
                     </span>
-                    <h4 className="text-base font-bold text-white leading-snug">
+                    <h4 className="text-base font-bold text-slate-900 dark:text-white leading-snug">
                       {rc.title}
                     </h4>
-                    <p className="text-xs text-slate-300 leading-relaxed line-clamp-2">
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2">
                       {rc.overview}
                     </p>
                   </div>
-                  <div className="pt-3 border-t border-white/10">
+                  <div className="pt-3 border-t border-slate-200 dark:border-white/10">
                     <Link
                       href={`/compare/${rc.type}/${rc.slug}`}
-                      className="inline-flex items-center space-x-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors uppercase tracking-wider group"
+                      className="inline-flex items-center space-x-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors uppercase tracking-wider group"
                     >
                       <span>Compare</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />

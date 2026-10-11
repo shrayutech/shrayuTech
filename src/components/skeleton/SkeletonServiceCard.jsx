@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
 import SkeletonBase from './SkeletonBase';
-import { useTheme } from '../../context/ThemeContext';
 
 /**
  * SkeletonServiceCard — Matches the real Services page card:
@@ -11,14 +10,11 @@ import { useTheme } from '../../context/ThemeContext';
  * Used on both HomeSkeleton (3 cards) and ServicesSkeleton (9 cards).
  */
 const SkeletonServiceCard = ({ className = '' }) => {
-  const { isDark } = useTheme();
 
   return (
     <div
       className={`rounded-3xl p-8 space-y-6 border ${
-        isDark
-          ? 'bg-[#0F1728]/70 border-white/[0.07]'
-          : 'bg-white border-slate-200'
+        'light:bg-white light:border-slate-200 dark:bg-[#0F1728]/70 dark:border-white/[0.07]'
       } ${className}`}
     >
       {/* Tagline badge: "Enterprise Core Logic" */}

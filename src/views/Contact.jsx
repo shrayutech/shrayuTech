@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import { revealOnScroll } from '../utils/motionPresets';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { motion } from 'framer-motion';
@@ -18,46 +19,122 @@ import {
   Sparkles,
   AlertCircle,
   Github,
-  Linkedin,
-
-  ArrowRight
+  Linkedin
 } from 'lucide-react';
-import Link from 'next/link';
 import SEO from '../components/SEO';
 import Breadcrumbs from '../components/Breadcrumbs';
-import ContentFreshnessBadge from '../components/ContentFreshnessBadge';
 import { API_BASE_URL } from '../config/api.config';
-import { useTheme } from '../context/ThemeContext';
 import { useSkeleton } from '../context/SkeletonContext';
 import SkeletonWrapper from '../components/skeleton/SkeletonWrapper';
 import ContactSkeleton from '../components/skeleton/ContactSkeleton';
 import SpotlightCard from '../components/SpotlightCard';
 
+// Field limits — keep in sync with backend/src/middleware/validator.js
+const LIMITS = {
+  name: { min: 2, max: 100 },
+  email: { max: 254 },
+  mobile: { max: 20, minDigits: 10, maxDigits: 15 },
+  company: { max: 100 },
+  message: { min: 10, max: 2000 },
+};
+
+const NAME_PATTERN = /^[\p{L}\p{M} .'-]+$/u;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const MOBILE_PATTERN = /^\+?[0-9\s\-()]+$/;
+const NO_CONTROL_CHARS = /^[^\x00-\x1F\x7F]*$/;
+
+const contactValidationSchema = Yup.object({
+  name: Yup.string()
+    .trim()
+    .required('Full name is required')
+    .min(LIMITS.name.min, `Name must be at least ${LIMITS.name.min} characters`)
+    .max(LIMITS.name.max, `Name must be ${LIMITS.name.max} characters or less`)
+    .matches(NAME_PATTERN, { message: 'Use letters, spaces, apostrophes, dots or hyphens only', excludeEmptyString: true }),
+  email: Yup.string()
+    .trim()
+    .required('Email address is required')
+    .max(LIMITS.email.max, `Email must be ${LIMITS.email.max} characters or less`)
+    .email('Enter a valid email address')
+    .matches(EMAIL_PATTERN, { message: 'Enter a valid email address (e.g. name@company.com)', excludeEmptyString: true }),
+  mobile: Yup.string()
+    .trim()
+    .required('Mobile number is required')
+    .matches(MOBILE_PATTERN, { message: 'Only digits, spaces, +, - and () allowed', excludeEmptyString: true })
+    .test('digit-count', `Enter a valid mobile number (${LIMITS.mobile.minDigits}-${LIMITS.mobile.maxDigits} digits)`, (value) => {
+      if (!value) return true; // handled by required()
+      const digits = value.replace(/\D/g, '').length;
+      return digits >= LIMITS.mobile.minDigits && digits <= LIMITS.mobile.maxDigits;
+    }),
+  company: Yup.string()
+    .trim()
+    .max(LIMITS.company.max, `Company must be ${LIMITS.company.max} characters or less`)
+    .matches(NO_CONTROL_CHARS, { message: 'Company contains invalid characters', excludeEmptyString: true }),
+  message: Yup.string()
+    .trim()
+    .required('Project brief is required')
+    .min(LIMITS.message.min, `Please write at least ${LIMITS.message.min} characters`)
+    .max(LIMITS.message.max, `Message must be ${LIMITS.message.max} characters or less`),
+});
+
+const FormField = ({ formik, name, label, required = false, as = 'input', hint, ...inputProps }) => {
+  const hasError = formik.touched[name] && formik.errors[name];
+  const errorId = `${name}-error`;
+  const hintId = `${name}-hint`;
+  const Control = as;
+
+  return (
+    <div>
+      <label htmlFor={name} className={`block text-xs font-bold uppercase tracking-wider mb-2 ${'light:text-slate-700 dark:text-slate-300'}`}>
+        {label}
+        {required ? (
+          <>
+            <span className="text-rose-500 ml-0.5" aria-hidden="true">*</span>
+            <span className="sr-only"> (required)</span>
+          </>
+        ) : (
+          <span className="normal-case font-semibold tracking-normal light:text-slate-400 dark:text-slate-500"> (Optional)</span>
+        )}
+      </label>
+      <Control
+        id={name}
+        name={name}
+        aria-required={required || undefined}
+        aria-invalid={hasError ? true : undefined}
+        aria-describedby={[hasError ? errorId : null, hint ? hintId : null].filter(Boolean).join(' ') || undefined}
+        {...formik.getFieldProps(name)}
+        {...inputProps}
+        className={`w-full px-4 py-3.5 input-field rounded-2xl text-sm ${as === 'textarea' ? 'resize-none' : ''} ${hasError ? 'border-rose-500' : ''}`}
+      />
+      <div className="flex items-start justify-between gap-3">
+        {hasError ? (
+          <div id={errorId} role="alert" className="text-rose-500 text-[10px] mt-1.5 flex items-center font-bold uppercase">
+            <AlertCircle className="h-3.5 w-3.5 mr-1 shrink-0" />
+            {formik.errors[name]}
+          </div>
+        ) : <span />}
+        {hint ? (
+          <span id={hintId} className={`text-[10px] mt-1.5 shrink-0 tabular-nums ${'light:text-slate-500 dark:text-slate-400'}`}>
+            {hint}
+          </span>
+        ) : null}
+      </div>
+    </div>
+  );
+};
+
 const ContactForm = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { isDark } = useTheme();
 
   const formik = useFormik({
     initialValues: {
       name: '',
       email: '',
+      mobile: '',
       company: '',
       message: ''
     },
-    validationSchema: Yup.object({
-      name: Yup.string()
-        .max(50, 'Must be 50 characters or less')
-        .required('Name is required'),
-      email: Yup.string()
-        .email('Invalid email address')
-        .required('Email is required'),
-      company: Yup.string()
-        .max(50, 'Must be 50 characters or less'),
-      message: Yup.string()
-        .min(10, 'Message must be at least 10 characters')
-        .required('Project brief is required')
-    }),
+    validationSchema: contactValidationSchema,
     onSubmit: async (values, { resetForm }) => {
       setIsSubmitting(true);
       try {
@@ -72,7 +149,8 @@ const ContactForm = () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ ...values, recaptchaToken: token })
+          // Send the trimmed values the schema validated
+          body: JSON.stringify({ ...contactValidationSchema.cast(values), captchaToken: token })
         });
 
         const data = await response.json();
@@ -81,7 +159,8 @@ const ContactForm = () => {
           toast.success('Your project brief has been sent successfully!');
           resetForm();
         } else {
-          toast.error(data.message || 'Failed to send message. Please try again.');
+          // Validation failures carry field-level messages in `details`
+          toast.error(data.details?.[0] || data.error || data.message || 'Failed to send message. Please try again.');
         }
       } catch (err) {
         console.error('Contact Form Error:', err);
@@ -96,88 +175,72 @@ const ContactForm = () => {
     },
   });
 
+  const messageLength = formik.values.message.trim().length;
+
   return (
-    <form onSubmit={formik.handleSubmit} className="space-y-6">
+    <form onSubmit={formik.handleSubmit} noValidate className="space-y-6">
+      <p className={`text-[10px] font-semibold ${'light:text-slate-500 dark:text-slate-400'}`}>
+        Fields marked <span className="text-rose-500" aria-hidden="true">*</span><span className="sr-only">with an asterisk</span> are required.
+      </p>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label htmlFor="name" className={`block text-xs font-bold uppercase tracking-wider mb-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-            Full Name
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            {...formik.getFieldProps('name')}
-            className={`w-full px-4 py-3.5 input-field rounded-2xl text-sm ${formik.touched.name && formik.errors.name ? 'border-rose-500' : ''}`}
-            placeholder="John Doe"
-          />
-          {formik.touched.name && formik.errors.name ? (
-            <div className="text-rose-500 text-[10px] mt-1.5 flex items-center font-bold uppercase">
-              <AlertCircle className="h-3.5 w-3.5 mr-1 shrink-0" />
-              {formik.errors.name}
-            </div>
-          ) : null}
-        </div>
-        <div>
-          <label htmlFor="email" className={`block text-xs font-bold uppercase tracking-wider mb-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-            Email Address
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            {...formik.getFieldProps('email')}
-            className={`w-full px-4 py-3.5 input-field rounded-2xl text-sm ${formik.touched.email && formik.errors.email ? 'border-rose-500' : ''}`}
-            placeholder="john@example.com"
-          />
-          {formik.touched.email && formik.errors.email ? (
-            <div className="text-rose-500 text-[10px] mt-1.5 flex items-center font-bold uppercase">
-              <AlertCircle className="h-3.5 w-3.5 mr-1 shrink-0" />
-              {formik.errors.email}
-            </div>
-          ) : null}
-        </div>
+        <FormField
+          formik={formik}
+          name="name"
+          label="Full Name"
+          required
+          type="text"
+          autoComplete="name"
+          maxLength={LIMITS.name.max}
+          placeholder="John Doe"
+        />
+        <FormField
+          formik={formik}
+          name="email"
+          label="Email Address"
+          required
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          maxLength={LIMITS.email.max}
+          placeholder="john@example.com"
+        />
       </div>
 
-      <div>
-        <label htmlFor="company" className={`block text-xs font-bold uppercase tracking-wider mb-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-          Company (Optional)
-        </label>
-        <input
-          id="company"
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <FormField
+          formik={formik}
+          name="mobile"
+          label="Mobile Number"
+          required
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
+          maxLength={LIMITS.mobile.max}
+          placeholder="+91 98765 43210"
+        />
+        <FormField
+          formik={formik}
           name="company"
+          label="Company"
           type="text"
-          {...formik.getFieldProps('company')}
-          className={`w-full px-4 py-3.5 input-field rounded-2xl text-sm ${formik.touched.company && formik.errors.company ? 'border-rose-500' : ''}`}
+          autoComplete="organization"
+          maxLength={LIMITS.company.max}
           placeholder="Your Company LLC"
         />
-        {formik.touched.company && formik.errors.company ? (
-          <div className="text-rose-500 text-[10px] mt-1.5 flex items-center font-bold uppercase">
-            <AlertCircle className="h-3.5 w-3.5 mr-1 shrink-0" />
-            {formik.errors.company}
-          </div>
-        ) : null}
       </div>
 
-      <div>
-        <label htmlFor="message" className={`block text-xs font-bold uppercase tracking-wider mb-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-          Project Brief / Scope
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          rows={5}
-          {...formik.getFieldProps('message')}
-          className={`w-full px-4 py-3.5 input-field rounded-2xl text-sm resize-none ${formik.touched.message && formik.errors.message ? 'border-rose-500' : ''}`}
-          placeholder="Tell us about your project requirements, target timeline, and technical goals..."
-        ></textarea>
-        {formik.touched.message && formik.errors.message ? (
-          <div className="text-rose-500 text-[10px] mt-1.5 flex items-center font-bold uppercase">
-            <AlertCircle className="h-3.5 w-3.5 mr-1 shrink-0" />
-            {formik.errors.message}
-          </div>
-        ) : null}
-      </div>
+      <FormField
+        formik={formik}
+        name="message"
+        label="Project Brief / Scope"
+        required
+        as="textarea"
+        rows={5}
+        maxLength={LIMITS.message.max}
+        placeholder="Tell us about your project requirements, target timeline, and technical goals..."
+        hint={`${messageLength}/${LIMITS.message.max}`}
+      />
 
       <button
         type="submit"
@@ -194,7 +257,7 @@ const ContactForm = () => {
         )}
       </button>
 
-      <p className={`text-[10px] text-center leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+      <p className={`text-[10px] text-center leading-relaxed ${'light:text-slate-500 dark:text-slate-400'}`}>
         Protected by Google reCAPTCHA and edge security layer.
       </p>
     </form>
@@ -202,7 +265,6 @@ const ContactForm = () => {
 };
 
 const Contact = () => {
-  const { isDark } = useTheme();
   const { isLoading } = useSkeleton();
 
   return (
@@ -221,7 +283,6 @@ const Contact = () => {
         <div className="max-w-6xl mx-auto relative z-10 space-y-20">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <Breadcrumbs items={[{ label: 'Contact Us' }]} />
-            <ContentFreshnessBadge pageKey="contact" />
           </div>
 
           {/* Header section */}
@@ -235,41 +296,38 @@ const Contact = () => {
               <Sparkles className="w-3.5 h-3.5" />
               <span>Start Your Project</span>
             </div>
-            <h1 className={`text-4xl sm:text-5xl md:text-6xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Let's Build Something{' '}
+            <h1 className={`text-4xl sm:text-5xl md:text-6xl font-black tracking-tight ${'light:text-slate-900 dark:text-white'}`}>
+              Get in Touch{' '}
               <span className="gradient-text-animated">
-                Great Together
+                With Us
               </span>
             </h1>
-            <p className={`text-base sm:text-lg font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            <p className={`text-base sm:text-lg font-medium leading-relaxed ${'light:text-slate-600 dark:text-slate-300'}`}>
               Have an application or product in mind? Send us your brief or reach out directly to schedule a project discovery session.
             </p>
           </motion.div>
 
           {/* Contact Layout */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            {...revealOnScroll}
             className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start"
           >
             {/* Contact Information (Left 5 Cols) */}
             <div className="lg:col-span-5 space-y-8">
               <SpotlightCard className="glass-card-3d rounded-3xl p-8 space-y-6 shadow-2xl">
-                <h2 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Direct Communication</h2>
+                <h2 className={`text-xl font-bold ${'light:text-slate-900 dark:text-white'}`}>Direct Communication</h2>
                 <div className="space-y-5 text-xs font-semibold">
                   <div className="flex items-start space-x-4">
-                    <div className={`w-12 h-12 rounded-2xl shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105 ${isDark ? 'bg-white/5 border border-white/10' : 'bg-slate-100 border border-slate-200'}`}>
+                    <div className={`w-12 h-12 rounded-2xl shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105 ${'light:bg-slate-100 light:border light:border-slate-200 dark:bg-white/5 dark:border dark:border-white/10'}`}>
                       <Mail className="w-5 h-5 text-blue-500" />
                     </div>
                     <div>
-                      <span className={`uppercase tracking-wider text-[9px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Business Email</span>
+                      <span className={`uppercase tracking-wider text-[9px] block ${'light:text-slate-500 dark:text-slate-400'}`}>Business Email</span>
                       <a
                         href="https://mail.google.com/mail/?view=cm&fs=1&to=shrayutech@gmail.com"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`text-sm font-bold cursor-pointer hover:underline transition-colors ${isDark ? 'text-white hover:text-blue-400' : 'text-slate-900 hover:text-blue-600'}`}
+                        className={`text-sm font-bold cursor-pointer hover:underline transition-colors ${'light:text-slate-900 light:hover:text-blue-600 dark:text-white dark:hover:text-blue-400'}`}
                       >
                         shrayutech@gmail.com
                       </a>
@@ -277,21 +335,21 @@ const Contact = () => {
                   </div>
 
                   <div className="flex items-start space-x-4">
-                    <div className={`w-12 h-12 rounded-2xl shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105 ${isDark ? 'bg-white/5 border border-white/10' : 'bg-slate-100 border border-slate-200'}`}>
+                    <div className={`w-12 h-12 rounded-2xl shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105 ${'light:bg-slate-100 light:border light:border-slate-200 dark:bg-white/5 dark:border dark:border-white/10'}`}>
                       <Phone className="w-5 h-5 text-indigo-500" />
                     </div>
                     <div>
-                      <span className={`uppercase tracking-wider text-[9px] block mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Phone / Support</span>
+                      <span className={`uppercase tracking-wider text-[9px] block mb-1 ${'light:text-slate-500 dark:text-slate-400'}`}>Phone / Support</span>
                       <div className="flex flex-col gap-1 text-sm font-bold min-w-0">
                         <a
                           href="tel:+917020041614"
-                          className={`cursor-pointer hover:underline transition-colors ${isDark ? 'text-white hover:text-indigo-400' : 'text-slate-900 hover:text-indigo-600'}`}
+                          className={`cursor-pointer hover:underline transition-colors ${'light:text-slate-900 light:hover:text-indigo-600 dark:text-white dark:hover:text-indigo-400'}`}
                         >
                           +91 70200 41614
                         </a>
                         <a
                           href="tel:+919359514760"
-                          className={`cursor-pointer hover:underline transition-colors ${isDark ? 'text-white hover:text-indigo-400' : 'text-slate-900 hover:text-indigo-600'}`}
+                          className={`cursor-pointer hover:underline transition-colors ${'light:text-slate-900 light:hover:text-indigo-600 dark:text-white dark:hover:text-indigo-400'}`}
                         >
                           +91 93595 14760
                         </a>
@@ -300,16 +358,16 @@ const Contact = () => {
                   </div>
 
                   <div className="flex items-start space-x-4">
-                    <div className={`w-12 h-12 rounded-2xl shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105 ${isDark ? 'bg-white/5 border border-white/10' : 'bg-slate-100 border border-slate-200'}`}>
+                    <div className={`w-12 h-12 rounded-2xl shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105 ${'light:bg-slate-100 light:border light:border-slate-200 dark:bg-white/5 dark:border dark:border-white/10'}`}>
                       <MessageSquare className="w-5 h-5 text-emerald-500" />
                     </div>
                     <div>
-                      <span className={`uppercase tracking-wider text-[9px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>WhatsApp Chat</span>
+                      <span className={`uppercase tracking-wider text-[9px] block ${'light:text-slate-500 dark:text-slate-400'}`}>WhatsApp Chat</span>
                       <a
                         href="https://wa.me/917020041614"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`text-sm font-bold transition-colors ${isDark ? 'text-white hover:text-emerald-400' : 'text-slate-900 hover:text-emerald-600'}`}
+                        className={`text-sm font-bold transition-colors ${'light:text-slate-900 light:hover:text-emerald-600 dark:text-white dark:hover:text-emerald-400'}`}
                       >
                         Connect on WhatsApp
                       </a>
@@ -317,27 +375,25 @@ const Contact = () => {
                   </div>
 
                   <div className="flex items-start space-x-4">
-                    <div className={`w-12 h-12 rounded-2xl shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105 ${isDark ? 'bg-white/5 border border-white/10' : 'bg-slate-100 border border-slate-200'}`}>
+                    <div className={`w-12 h-12 rounded-2xl shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105 ${'light:bg-slate-100 light:border light:border-slate-200 dark:bg-white/5 dark:border dark:border-white/10'}`}>
                       <Clock className="w-5 h-5 text-purple-500" />
                     </div>
                     <div>
-                      <span className={`uppercase tracking-wider text-[9px] block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Business Hours</span>
-                      <span className={`block font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Monday - Friday: 09:00 - 18:00 (IST)</span>
-                      <span className={`block text-[10px] pt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Emergency infrastructure support: 24/7</span>
+                      <span className={`uppercase tracking-wider text-[9px] block ${'light:text-slate-500 dark:text-slate-400'}`}>Business Hours</span>
+                      <span className={`block font-bold ${'light:text-slate-900 dark:text-white'}`}>Monday - Friday: 09:00 - 18:00 (IST)</span>
+                      <span className={`block text-[10px] pt-0.5 ${'light:text-slate-500 dark:text-slate-400'}`}>Emergency infrastructure support: 24/7</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Social Media Row */}
-                <div className={`pt-6 border-t flex space-x-3 ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+                <div className={`pt-6 border-t flex space-x-3 ${'light:border-slate-200 dark:border-white/10'}`}>
                   <a
                     href="https://github.com/shrayutech"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 active:scale-95 ${
-                      isDark
-                        ? 'bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-blue-600/20 hover:border-blue-500/40 hover:shadow-md hover:shadow-blue-500/20'
-                        : 'bg-slate-100 border border-slate-200 text-slate-700 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-300 hover:shadow-md hover:shadow-blue-500/10'
+                      'light:bg-slate-100 light:border light:border-slate-200 light:text-slate-700 light:hover:text-blue-600 light:hover:bg-blue-50 light:hover:border-blue-300 light:hover:shadow-md light:hover:shadow-blue-500/10 dark:bg-white/5 dark:border dark:border-white/10 dark:text-slate-300 dark:hover:text-white dark:hover:bg-blue-600/20 dark:hover:border-blue-500/40 dark:hover:shadow-md dark:hover:shadow-blue-500/20'
                     }`}
                     aria-label="GitHub"
                   >
@@ -348,9 +404,7 @@ const Contact = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 active:scale-95 ${
-                      isDark
-                        ? 'bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-blue-600/20 hover:border-blue-500/40 hover:shadow-md hover:shadow-blue-500/20'
-                        : 'bg-slate-100 border border-slate-200 text-slate-700 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-300 hover:shadow-md hover:shadow-blue-500/10'
+                      'light:bg-slate-100 light:border light:border-slate-200 light:text-slate-700 light:hover:text-blue-600 light:hover:bg-blue-50 light:hover:border-blue-300 light:hover:shadow-md light:hover:shadow-blue-500/10 dark:bg-white/5 dark:border dark:border-white/10 dark:text-slate-300 dark:hover:text-white dark:hover:bg-blue-600/20 dark:hover:border-blue-500/40 dark:hover:shadow-md dark:hover:shadow-blue-500/20'
                     }`}
                     aria-label="LinkedIn"
                   >
@@ -362,21 +416,22 @@ const Contact = () => {
               {/* Office Location Map */}
               <div className="space-y-4 pt-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                  <h3 className={`text-xs font-bold uppercase tracking-widest flex items-center space-x-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  <h3 className={`text-xs font-bold uppercase tracking-widest flex items-center space-x-2 ${'light:text-slate-700 dark:text-slate-300'}`}>
                     <MapPin className="w-4 h-4 text-blue-500" />
                     <span>Headquarters Location</span>
                   </h3>
-                  <span className={`text-xs font-semibold ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  <span className={`text-xs font-semibold ${'light:text-slate-600 dark:text-slate-400'}`}>
                     Chhatrapati Sambhajinagar, Maharashtra
                   </span>
                 </div>
-                <div className={`h-48 rounded-2xl overflow-hidden border shadow-inner ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+                <div className={`h-48 rounded-2xl overflow-hidden border shadow-inner ${'light:border-slate-200 dark:border-white/10'}`}>
                   <iframe
+                    className="dark:invert-[90%] dark:hue-rotate-180"
                     title="Shrayu Headquarters Map - Chhatrapati Sambhajinagar"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120074.65487779774!2d75.24430485908954!3d19.865964893706013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdb9815a369bc7f%3A0x7104e3f63300445d!2sChhatrapati%20Sambhajinagar%20(Aurangabad)%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
                     width="100%"
                     height="100%"
-                    style={{ border: 0, filter: isDark ? 'invert(90%) hue-rotate(180deg)' : 'none' }}
+                    style={{ border: 0 }}
                     allowFullScreen=""
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
@@ -389,8 +444,8 @@ const Contact = () => {
             <div className="lg:col-span-7">
               <SpotlightCard className="glass-card-3d rounded-3xl p-8 sm:p-10 shadow-2xl space-y-6">
                 <div>
-                  <h2 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Project Inquiry Form</h2>
-                  <p className={`text-xs font-medium pt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Fill out the details below to receive a technical scoping response.</p>
+                  <h2 className={`text-2xl font-bold ${'light:text-slate-900 dark:text-white'}`}>Project Inquiry Form</h2>
+                  <p className={`text-xs font-medium pt-1 ${'light:text-slate-600 dark:text-slate-400'}`}>Fill out the details below to receive a technical scoping response.</p>
                 </div>
 
                 <GoogleReCaptchaProvider
@@ -408,79 +463,6 @@ const Contact = () => {
             </div>
           </motion.div>
 
-          {/* ========================================================= */}
-          {/* EXPLORATION & RESOURCE HUB SECTION */}
-          {/* ========================================================= */}
-          <div className="pt-12 border-t border-white/10 space-y-8">
-            <div className="text-center max-w-2xl mx-auto space-y-2">
-              <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">Helpful Resources</span>
-              <h2 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Explore Before You Reach Out
-              </h2>
-              <p className={`text-xs sm:text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Discover our full capabilities, verified technical deliverables, and career pathways.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <SpotlightCard className="glass-card-3d rounded-2xl p-6 space-y-3 flex flex-col justify-between">
-                <div className="space-y-2">
-                  <span className="text-blue-500 text-xs font-bold uppercase tracking-wider block">Service Catalog</span>
-                  <h3 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Technical Services</h3>
-                  <p className={`text-xs font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    Discover our end-to-end full stack, machine learning, cloud architecture, and DevOps consulting solutions.
-                  </p>
-                </div>
-                <div className="pt-2">
-                  <Link
-                    href="/services"
-                    className="inline-flex items-center text-xs font-bold text-blue-500 hover:text-blue-400 group"
-                  >
-                    <span>Browse Service Offerings</span>
-                    <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </SpotlightCard>
-
-              <SpotlightCard className="glass-card-3d rounded-2xl p-6 space-y-3 flex flex-col justify-between">
-                <div className="space-y-2">
-                  <span className="text-emerald-500 text-xs font-bold uppercase tracking-wider block">Case Studies</span>
-                  <h3 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Engineering Showcase</h3>
-                  <p className={`text-xs font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    Explore 25 verified production systems and public repositories built to enterprise scalability benchmarks.
-                  </p>
-                </div>
-                <div className="pt-2">
-                  <Link
-                    href="/portfolio"
-                    className="inline-flex items-center text-xs font-bold text-emerald-500 hover:text-emerald-400 group"
-                  >
-                    <span>View Engineering Portfolio</span>
-                    <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </SpotlightCard>
-
-              <SpotlightCard className="glass-card-3d rounded-2xl p-6 space-y-3 flex flex-col justify-between">
-                <div className="space-y-2">
-                  <span className="text-indigo-500 text-xs font-bold uppercase tracking-wider block">Talent & Culture</span>
-                  <h3 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Careers & Opportunities</h3>
-                  <p className={`text-xs font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    Looking to engineer high-impact software alongside senior practitioners? Review our open roles and culture.
-                  </p>
-                </div>
-                <div className="pt-2">
-                  <Link
-                    href="/careers"
-                    className="inline-flex items-center text-xs font-bold text-indigo-500 hover:text-indigo-400 group"
-                  >
-                    <span>View Open Positions</span>
-                    <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </SpotlightCard>
-            </div>
-          </div>
         </div>
       </div>
     </SkeletonWrapper>

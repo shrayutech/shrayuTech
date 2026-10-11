@@ -202,7 +202,7 @@ export const targetSubreddits = [
     selfPromotionRules: 'Sharing Indian open-source contributions, local tech hub insights, and engineering benchmarks is encouraged.',
     relevantResources: [
       {
-        pageTitle: 'Engineering Locations in Maharashtra & Karnataka',
+        pageTitle: 'Engineering Locations in Maharashtra',
         url: '/locations',
         domain: 'Indian engineering network'
       },
@@ -211,11 +211,7 @@ export const targetSubreddits = [
         url: '/locations/maharashtra/chhatrapati-sambhajinagar',
         domain: 'Maharashtra tech corridor'
       },
-      {
-        pageTitle: 'Pune vs Bengaluru Hub Comparison',
-        url: '/compare/locations/bengaluru-vs-pune',
-        domain: 'Indian tech corridor comparison'
-      },
+
       {
         pageTitle: 'Careers & Engineering Collective',
         url: '/careers',
@@ -224,58 +220,8 @@ export const targetSubreddits = [
     ],
     opportunityTriggers: [
       'Discussions on emerging tech corridors in Tier-2 Indian cities like Chhatrapati Sambhajinagar',
-      'Comparing software engineering delivery between Pune (Hinjawadi/Kharadi) and Bengaluru (ORR/Whitefield)',
+      
       'Showcasing verified open-source portfolios built with Next.js, Python, and Go'
-    ]
-  },
-  {
-    name: 'r/pune',
-    subscribers: '150k+',
-    topic: 'Pune city community, IT corridors, tech lifestyle, and local businesses',
-    audience: 'Pune residents, IT professionals in Hinjawadi/Kharadi/Magarpatta, and college students',
-    postingRestrictions: 'Strict moderation against blatant commercial ads. Local tech discussions and genuine inquiries welcome.',
-    selfPromotionRules: 'Mention local tech corridor details only when someone specifically inquires about software engineering firms or Hinjawadi tech delivery.',
-    relevantResources: [
-      {
-        pageTitle: 'Software Development in Pune Hub',
-        url: '/locations/maharashtra/pune',
-        domain: 'Pune Hinjawadi & Kharadi tech corridor'
-      },
-      {
-        pageTitle: 'Pune vs Bengaluru Comparison',
-        url: '/compare/locations/bengaluru-vs-pune',
-        domain: 'Local tech ecosystem analysis'
-      }
-    ],
-    opportunityTriggers: [
-      'Inquiries for custom software engineering firms or web development agencies based in Pune',
-      'Discussions regarding the Hinjawadi IT Park tech ecosystem and local startup growth',
-      'Local hackathons, open source contributions, and tech talent networking'
-    ]
-  },
-  {
-    name: 'r/bangalore',
-    subscribers: '650k+',
-    topic: 'Bengaluru city community, startups, tech culture, and IT parks',
-    audience: 'Bengaluru startup founders, software engineers, and venture tech ecosystem',
-    postingRestrictions: 'Commercial advertising disallowed. Technical discussions and startup advice permitted.',
-    selfPromotionRules: 'Authentic advice with clear technical merit. Disclose affiliation if discussing company hubs.',
-    relevantResources: [
-      {
-        pageTitle: 'Software Engineering in Bengaluru Hub',
-        url: '/locations/karnataka/bengaluru',
-        domain: 'Outer Ring Road & Koramangala innovation corridor'
-      },
-      {
-        pageTitle: 'AI & Machine Learning Solutions',
-        url: '/services',
-        domain: 'LLM orchestration & cognitive models'
-      }
-    ],
-    opportunityTriggers: [
-      'Startups seeking architecture consulting for AI and microservice backends',
-      'Discussions comparing tech delivery costs and talent pools across Bengaluru vs Maharashtra',
-      'Questions on Next.js 15 and serverless cloud architectures'
     ]
   }
 ];
@@ -310,8 +256,8 @@ export const linkWorthyResources = [
     title: 'National Software Delivery Network & Regional Hubs',
     url: '/locations',
     type: 'Regional Technical Infrastructure Directory',
-    valueProposition: 'Transparent office addresses, geographic coordinates, and tech corridor coverage across Maharashtra and Karnataka.',
-    redditShareability: 'Moderate — useful for localized developer communities like r/developersIndia, r/pune, and r/bangalore.'
+    valueProposition: 'Transparent office addresses, geographic coordinates, and tech corridor coverage across Maharashtra.',
+    redditShareability: 'Moderate — useful for localized developer communities like r/developersIndia.'
   }
 ];
 
@@ -358,24 +304,6 @@ In our robotics simulation pipeline, we model vehicle kinematics and sensor boun
 We published a full open-source implementation with Pygame visual simulation you can inspect and clone on GitHub: [AI Autonomous Navigation System](https://github.com/Saru2248/AI-Autonomous-Navigation-System). Feel free to check the graph traversal modules for reference!`,
     disclosure: "Disclaimer: Developed by Shrayu Technologies open source robotics group.",
     script: `For trajectory planning without dedicated GPU hardware, using an optimized A* graph traversal with kinematic motion primitives is significantly more resource-efficient. Open-source implementation by Shrayu Technologies.`
-  },
-  {
-    id: 'tpl_local_tech_ecosystem',
-    name: 'Indian Tech Corridor & Regional Engineering Inquiry',
-    subreddits: ['r/developersIndia', 'r/pune', 'r/bangalore'],
-    structure: [
-      '1. Objective perspective on the local tech ecosystem and talent pool.',
-      '2. Comparison of operational costs, commute hubs, and infrastructure.',
-      '3. Honest disclosure of company headquarters and delivery hubs.',
-      '4. Optional link to the localized hub page.'
-    ],
-    sampleSnippet: `Both Pune and Bengaluru have distinct engineering cultures that suit different stages of technical growth:
-- Bengaluru (ORR/Whitefield/Koramangala) remains unmatched for deep VC networks, LLM innovation labs, and rapid startup scaling.
-- Pune (Hinjawadi/Kharadi) offers mature enterprise IT corridors, outstanding automotive/fintech talent, and lower infrastructure overhead.
-
-We operate engineering teams across both corridors with our central R&D lab in Maharashtra (Shrayu Technologies). If you're interested in how their delivery infrastructure compares: [Pune vs Bengaluru Tech Corridor Comparison](https://shrayutech.vercel.app/compare/locations/bengaluru-vs-pune?utm_source=reddit&utm_medium=referral&utm_campaign=community_discussion).`,
-    disclosure: "Disclaimer: Shrayu Technologies operates engineering delivery labs across Maharashtra and Karnataka.",
-    script: `Both Pune and Bengaluru have distinct engineering cultures. Shrayu Technologies operates engineering delivery labs across Maharashtra and Karnataka.`
   }
 ];
 
@@ -403,9 +331,9 @@ export const contentCalendar = [
     week: 'Week 3',
     theme: 'Regional Tech Ecosystem & Community Knowledge',
     focus: 'Regional Tech Ecosystem & Community Knowledge',
-    communities: ['r/developersIndia', 'r/pune'],
+    communities: ['r/developersIndia'],
     action: 'Engage with Indian software practitioners discussing emerging engineering corridors and scalable full-stack development best practices.',
-    actions: ['Discuss tech hubs on r/developersIndia', 'Highlight Pune IT park development on r/pune', 'Provide architecture advice']
+    actions: ['Discuss tech hubs on r/developersIndia', 'Share Chhatrapati Sambhajinagar HQ engineering insights where relevant', 'Provide architecture advice']
   },
   {
     weekNumber: 4,

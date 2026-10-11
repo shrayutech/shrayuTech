@@ -39,7 +39,7 @@ export const servicesData = [
     ],
     portfolioCategory: 'Python',
     relatedComparisonSlug: 'custom-software-vs-saas-development',
-    supportedHubCities: ['chhatrapati-sambhajinagar', 'pune', 'mumbai', 'nagpur', 'nashik', 'bengaluru']
+    supportedHubCities: ['chhatrapati-sambhajinagar']
   },
   {
     slug: 'web-development',
@@ -74,7 +74,7 @@ export const servicesData = [
     ],
     portfolioCategory: 'Full-Stack Development',
     relatedComparisonSlug: 'web-development-vs-mobile-apps',
-    supportedHubCities: ['chhatrapati-sambhajinagar', 'pune', 'mumbai', 'nagpur', 'nashik', 'bengaluru']
+    supportedHubCities: ['chhatrapati-sambhajinagar']
   },
   {
     slug: 'mobile-apps',
@@ -109,7 +109,7 @@ export const servicesData = [
     ],
     portfolioCategory: 'Full-Stack Development',
     relatedComparisonSlug: 'web-development-vs-mobile-apps',
-    supportedHubCities: ['chhatrapati-sambhajinagar', 'pune', 'nashik']
+    supportedHubCities: ['chhatrapati-sambhajinagar']
   },
   {
     slug: 'ai-solutions',
@@ -144,7 +144,7 @@ export const servicesData = [
     ],
     portfolioCategory: 'AI',
     relatedComparisonSlug: 'ai-solutions-vs-traditional-automation',
-    supportedHubCities: ['chhatrapati-sambhajinagar', 'pune', 'mumbai', 'nagpur', 'bengaluru']
+    supportedHubCities: ['chhatrapati-sambhajinagar']
   },
   {
     slug: 'cloud-infrastructure',
@@ -179,7 +179,7 @@ export const servicesData = [
     ],
     portfolioCategory: 'Python',
     relatedComparisonSlug: 'custom-software-vs-saas-development',
-    supportedHubCities: ['chhatrapati-sambhajinagar', 'pune', 'mumbai', 'nagpur', 'bengaluru']
+    supportedHubCities: ['chhatrapati-sambhajinagar']
   },
   {
     slug: 'ui-ux-design',
@@ -214,7 +214,7 @@ export const servicesData = [
     ],
     portfolioCategory: 'Full-Stack Development',
     relatedComparisonSlug: 'web-development-vs-mobile-apps',
-    supportedHubCities: ['chhatrapati-sambhajinagar', 'pune', 'mumbai', 'bengaluru']
+    supportedHubCities: ['chhatrapati-sambhajinagar']
   },
   {
     slug: 'api-development',
@@ -249,7 +249,7 @@ export const servicesData = [
     ],
     portfolioCategory: 'Python',
     relatedComparisonSlug: 'custom-software-vs-saas-development',
-    supportedHubCities: ['chhatrapati-sambhajinagar', 'pune', 'mumbai', 'nagpur', 'bengaluru']
+    supportedHubCities: ['chhatrapati-sambhajinagar']
   },
   {
     slug: 'saas-development',
@@ -284,7 +284,7 @@ export const servicesData = [
     ],
     portfolioCategory: 'Full-Stack Development',
     relatedComparisonSlug: 'custom-software-vs-saas-development',
-    supportedHubCities: ['chhatrapati-sambhajinagar', 'pune', 'mumbai', 'bengaluru']
+    supportedHubCities: ['chhatrapati-sambhajinagar']
   },
   {
     slug: 'devops-ci-cd',
@@ -319,7 +319,7 @@ export const servicesData = [
     ],
     portfolioCategory: 'Python',
     relatedComparisonSlug: 'custom-software-vs-saas-development',
-    supportedHubCities: ['chhatrapati-sambhajinagar', 'pune', 'mumbai', 'nagpur', 'bengaluru']
+    supportedHubCities: ['chhatrapati-sambhajinagar']
   }
 ];
 

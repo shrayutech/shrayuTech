@@ -2,63 +2,142 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ArrowRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import {
+  Menu,
+  X,
+  ArrowRight,
+  ChevronDown,
+  GitCompare,
+  FlaskConical,
+  MapPin
+} from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
-import { useTheme } from '../context/ThemeContext';
+
+const primaryLinks = [
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about' },
+  { name: 'Services', path: '/services' },
+  { name: 'Portfolio', path: '/portfolio' },
+  { name: 'Contact', path: '/contact' },
+];
+
+const resourceLinks = [
+  { name: 'Compare', path: '/compare', description: 'Side-by-side tech & service comparisons', icon: GitCompare },
+  { name: 'Research', path: '/research', description: 'Data-backed engineering insights', icon: FlaskConical },
+  { name: 'Locations', path: '/locations', description: 'Cities and regions we serve', icon: MapPin },
+];
+
+const isPathActive = (pathname, path) => {
+  if (!pathname) return false;
+  if (path === '/') return pathname === '/';
+  return pathname === path || pathname.startsWith(`${path}/`);
+};
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const { isDark } = useTheme();
+  const resourcesRef = useRef(null);
+  const closeTimer = useRef(null);
+
+  const resourcesActive = resourceLinks.some((link) => isPathActive(pathname, link.path));
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Services', path: '/services' },
-    { name: 'Portfolio', path: '/portfolio' },
-    { name: 'Compare', path: '/compare' },
-    { name: 'Research', path: '/research' },
-    { name: 'Locations', path: '/locations' },
-    { name: 'Careers', path: '/careers' },
-    { name: 'Contact', path: '/contact' },
-  ];
+  // Close any open menu after navigating
+  useEffect(() => {
+    setIsOpen(false);
+    setResourcesOpen(false);
+  }, [pathname]);
+
+  // Escape closes menus; clicking outside closes the Resources dropdown
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+        setResourcesOpen(false);
+      }
+    };
+    const handleClick = (e) => {
+      if (resourcesRef.current && !resourcesRef.current.contains(e.target)) {
+        setResourcesOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleKey);
+    document.addEventListener('mousedown', handleClick);
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+      document.removeEventListener('mousedown', handleClick);
+    };
+  }, []);
+
+  // Collapse the mobile menu if the viewport grows into desktop layout
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const handleChange = (e) => e.matches && setIsOpen(false);
+    mq.addEventListener('change', handleChange);
+    return () => mq.removeEventListener('change', handleChange);
+  }, []);
+
+  const openResources = () => {
+    clearTimeout(closeTimer.current);
+    setResourcesOpen(true);
+  };
+
+  const scheduleCloseResources = () => {
+    clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setResourcesOpen(false), 120);
+  };
+
+  const linkClass = (active) =>
+    `relative inline-flex items-center h-9 px-3 xl:px-4 rounded-full text-sm font-semibold leading-none whitespace-nowrap transition-colors duration-200 ${
+      active
+        ? 'light:text-blue-600 dark:text-white'
+        : 'light:text-slate-600 light:hover:text-slate-900 light:hover:bg-slate-200/70 dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/10'
+    }`;
+
+  const activePill = (
+    <motion.span
+      layoutId="nav-active-pill"
+      className={`absolute inset-0 rounded-full border ${
+        'light:bg-white light:border-slate-200 light:shadow-sm dark:bg-blue-600/30 dark:border-blue-500/50 dark:shadow-inner dark:shadow-blue-500/20'
+      }`}
+      transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+    />
+  );
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isDark
-          ? scrolled
-            ? 'bg-[#030712]/85 backdrop-blur-xl border-b border-white/10 shadow-2xl py-3.5'
-            : 'bg-[#030712]/60 backdrop-blur-lg border-b border-white/5 py-5'
-          : scrolled
-            ? 'bg-white/85 backdrop-blur-xl border-b border-slate-200/80 shadow-md py-3.5'
-            : 'bg-white/70 backdrop-blur-lg border-b border-slate-200/50 py-5'
+      aria-label="Main navigation"
+      className={`fixed top-0 left-0 right-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ${
+        scrolled
+          ? 'backdrop-blur-xl light:bg-white/85 light:border-slate-200/80 light:shadow-md dark:bg-[#030712]/85 dark:border-white/10 dark:shadow-2xl'
+          : 'backdrop-blur-lg light:bg-white/70 light:border-slate-200/50 dark:bg-[#030712]/60 dark:border-white/5'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
-        <div className="flex justify-between items-center">
-          {/* Logo Branding */}
-          <Link href="/" className="flex items-center space-x-3 group focus:outline-none">
-            <div
-              className={`relative w-10 h-10 flex items-center justify-center rounded-xl p-1 group-hover:scale-105 transition-all duration-300 shadow-md ${
-                isDark
-                  ? 'bg-white/5 border border-white/10 group-hover:border-blue-500/40 shadow-blue-500/10'
-                  : 'bg-slate-100 border border-slate-200 group-hover:border-blue-500/40 shadow-slate-200/50'
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className={`flex items-center justify-between gap-4 transition-[height] duration-300 ${
+            scrolled ? 'h-16' : 'h-[72px]'
+          }`}
+        >
+          {/* Logo */}
+          <Link
+            href="/"
+            className="flex items-center gap-3 shrink-0 group rounded-xl focus-visible:outline-2 focus-visible:outline-blue-500"
+            aria-label="Shrayu Technologies home"
+          >
+            <span
+              className={`w-10 h-10 flex items-center justify-center rounded-xl p-1 transition-all duration-300 shadow-md group-hover:scale-105 ${
+                'light:bg-slate-100 light:border light:border-slate-200 light:group-hover:border-blue-500/40 light:shadow-slate-200/50 dark:bg-white/5 dark:border dark:border-white/10 dark:group-hover:border-blue-500/40 dark:shadow-blue-500/10'
               }`}
             >
               <img
@@ -66,157 +145,243 @@ const Navbar = () => {
                 alt="Shrayu Technologies Logo"
                 width="40"
                 height="40"
-                className="w-full h-full object-contain filter drop-shadow-md"
+                className="w-full h-full object-contain drop-shadow-md"
               />
-            </div>
-            <div className="flex flex-col">
+            </span>
+            <span className="flex flex-col justify-center">
               <span
-                className={`font-extrabold text-xl tracking-tight leading-none group-hover:text-blue-500 transition-colors ${
-                  isDark ? 'text-white' : 'text-slate-900'
+                className={`font-extrabold text-xl tracking-tight leading-none transition-colors group-hover:text-blue-500 ${
+                  'light:text-slate-900 dark:text-white'
                 }`}
               >
                 Shrayu
               </span>
-              <span className="text-[10px] text-blue-500 font-bold tracking-[0.2em] uppercase mt-1">
+              <span className="text-[10px] leading-none text-blue-600 dark:text-blue-500 font-bold tracking-[0.2em] uppercase mt-1.5">
                 Technologies
               </span>
-            </div>
+            </span>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center space-x-3">
-            <div
-              className={`flex space-x-1 p-1.5 rounded-full border backdrop-blur-md ${
-                isDark
-                  ? 'bg-white/[0.04] border-white/10 shadow-inner'
-                  : 'bg-slate-100/80 border-slate-200 shadow-inner'
+          {/* Desktop links (centered) */}
+          <div className="hidden lg:flex flex-1 justify-center min-w-0">
+            <ul
+              className={`flex items-center gap-0.5 p-1 rounded-full border backdrop-blur-md ${
+                'light:bg-slate-100/80 light:border-slate-200 dark:bg-white/[0.04] dark:border-white/10'
               }`}
             >
-              {navLinks.map((link) => {
-                const isActive =
-                  link.path === '/'
-                    ? pathname === '/'
-                    : pathname ? pathname.startsWith(link.path) : false;
-
+              {primaryLinks.map((link) => {
+                const active = isPathActive(pathname, link.path);
                 return (
-                  <Link
-                    key={link.name}
-                    href={link.path}
-                    className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
-                      isActive
-                        ? isDark
-                          ? 'text-white font-bold'
-                          : 'text-blue-600 font-bold'
-                        : isDark
-                          ? 'text-slate-300 hover:text-white hover:bg-white/10 hover:-translate-y-[1px]'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/80 hover:-translate-y-[1px]'
-                    }`}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="nav-active-pill"
-                        className={`absolute inset-0 rounded-full border shadow-sm ${
-                          isDark
-                            ? 'bg-blue-600/30 border-blue-500/50 shadow-inner shadow-blue-500/20'
-                            : 'bg-white border-slate-200 shadow-sm'
-                        }`}
-                        transition={{ type: 'spring', stiffness: 450, damping: 35 }}
-                      />
-                    )}
-                    <span className="relative z-10">{link.name}</span>
-                  </Link>
+                  <li key={link.path}>
+                    <Link
+                      href={link.path}
+                      className={linkClass(active)}
+                      aria-current={active ? 'page' : undefined}
+                    >
+                      {active && activePill}
+                      <span className="relative z-10">{link.name}</span>
+                    </Link>
+                  </li>
                 );
               })}
-            </div>
 
-            {/* Theme Toggle Control */}
-            <div className="ml-1">
-              <ThemeToggle />
-            </div>
+              {/* Resources dropdown */}
+              <li
+                ref={resourcesRef}
+                className="relative"
+                onMouseEnter={openResources}
+                onMouseLeave={scheduleCloseResources}
+              >
+                <button
+                  type="button"
+                  className={`${linkClass(resourcesActive)} gap-1`}
+                  aria-haspopup="true"
+                  aria-expanded={resourcesOpen}
+                  onClick={() => setResourcesOpen((v) => !v)}
+                >
+                  {resourcesActive && activePill}
+                  <span className="relative z-10">Resources</span>
+                  <ChevronDown
+                    className={`relative z-10 h-4 w-4 transition-transform duration-200 ${
+                      resourcesOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
 
-            {/* Desktop CTA Button */}
+                {/* Positioning lives on a static wrapper so framer's transform can't override the centering */}
+                <div className="absolute left-1/2 -translate-x-1/2 top-full w-80">
+                  <AnimatePresence>
+                    {resourcesOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 6 }}
+                        transition={{ duration: 0.18, ease: 'easeOut' }}
+                        className="pt-3"
+                      >
+                        <ul
+                          className={`p-2 rounded-2xl border shadow-2xl backdrop-blur-xl ${
+                            'light:bg-white/95 light:border-slate-200 light:shadow-slate-300/40 dark:bg-[#0B1021]/95 dark:border-white/10 dark:shadow-black/40'
+                          }`}
+                        >
+                          {resourceLinks.map(({ name, path, description, icon: Icon }) => {
+                            const active = isPathActive(pathname, path);
+                            return (
+                              <li key={path}>
+                                <Link
+                                  href={path}
+                                  aria-current={active ? 'page' : undefined}
+                                  className={`flex items-start gap-3 p-3 rounded-xl transition-colors ${
+                                    active
+                                      ? 'light:bg-blue-50 dark:bg-blue-600/20'
+                                      : 'light:hover:bg-slate-100 dark:hover:bg-white/5'
+                                  }`}
+                                >
+                                  <span
+                                    className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
+                                      'light:bg-blue-50 light:border-blue-100 light:text-blue-600 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400'
+                                    }`}
+                                  >
+                                    <Icon className="h-4 w-4" />
+                                  </span>
+                                  <span className="flex flex-col gap-1">
+                                    <span
+                                      className={`text-sm font-bold leading-none ${
+                                        'light:text-slate-900 dark:text-white'
+                                      }`}
+                                    >
+                                      {name}
+                                    </span>
+                                    <span
+                                      className={`text-xs leading-snug ${
+                                        'light:text-slate-500 dark:text-slate-400'
+                                      }`}
+                                    >
+                                      {description}
+                                    </span>
+                                  </span>
+                                </Link>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          {/* Desktop actions */}
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
+            <ThemeToggle compact />
             <Link
               href="/contact"
-              className="ml-2 btn-primary group text-white font-bold text-sm px-6 py-2.5 rounded-full flex items-center space-x-2 shadow-md shadow-blue-500/20 border border-blue-400/30 active:scale-95 transition-all"
+              className="btn-primary group inline-flex items-center gap-2 h-10 px-5 rounded-full text-white font-bold text-sm leading-none whitespace-nowrap shadow-md shadow-blue-500/20 border border-blue-400/30 active:scale-95"
             >
-              <span>Start Project</span>
-              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
+              <span>Get In Touch</span>
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
             </Link>
           </div>
 
-          {/* Mobile Actions (Compact Theme Toggle + Hamburger) */}
-          <div className="md:hidden flex items-center space-x-3">
+          {/* Mobile / tablet actions */}
+          <div className="lg:hidden flex items-center gap-2">
             <ThemeToggle compact />
             <button
-              onClick={() => setIsOpen(!isOpen)}
-              className={`p-2.5 rounded-xl border transition-colors focus:outline-none ${
-                isDark
-                  ? 'text-slate-300 hover:text-white bg-white/5 border-white/10'
-                  : 'text-slate-700 hover:text-slate-900 bg-slate-100 border-slate-200'
+              type="button"
+              onClick={() => setIsOpen((v) => !v)}
+              className={`p-2.5 rounded-xl border transition-colors ${
+                'light:text-slate-700 light:hover:text-slate-900 light:bg-slate-100 light:border-slate-200 dark:text-slate-300 dark:hover:text-white dark:bg-white/5 dark:border-white/10'
               }`}
-              aria-label="Toggle Navigation Menu"
+              aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={isOpen}
+              aria-controls="mobile-menu"
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Slide-down Dropdown Menu */}
+      {/* Mobile / tablet menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            id="mobile-menu"
+            data-lenis-prevent
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className={`md:hidden border-b backdrop-blur-2xl shadow-2xl overflow-hidden ${
-              isDark
-                ? 'bg-[#030712]/95 border-white/10'
-                : 'bg-white/95 border-slate-200'
+            className={`lg:hidden border-t overflow-hidden ${
+              'light:bg-white/95 light:border-slate-200 dark:bg-[#030712]/95 dark:border-white/10'
             }`}
           >
-            <div className="px-6 py-6 space-y-3">
-              {navLinks.map((link) => {
-                const isActive =
-                  link.path === '/'
-                    ? pathname === '/'
-                    : pathname ? pathname.startsWith(link.path) : false;
+            <div className="max-h-[calc(100dvh-72px)] overflow-y-auto px-4 sm:px-6 py-5">
+              <p
+                className={`px-3 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] ${
+                  'light:text-slate-400 dark:text-slate-500'
+                }`}
+              >
+                Company
+              </p>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+                {primaryLinks.map((link) => {
+                  const active = isPathActive(pathname, link.path);
+                  return (
+                    <li key={link.path}>
+                      <Link
+                        href={link.path}
+                        aria-current={active ? 'page' : undefined}
+                        className={`flex items-center h-12 px-3 rounded-xl text-base font-semibold border transition-colors ${
+                          active
+                            ? 'light:text-blue-600 light:bg-blue-50 light:border-blue-200 dark:text-white dark:bg-blue-600/20 dark:border-blue-500/40'
+                            : 'light:text-slate-700 light:border-transparent light:hover:text-slate-900 light:hover:bg-slate-100 dark:text-slate-300 dark:border-transparent dark:hover:text-white dark:hover:bg-white/5'
+                        }`}
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
 
-                return (
-                  <Link
-                    key={link.name}
-                    href={link.path}
-                    onClick={() => setIsOpen(false)}
-                    className={`block px-4 py-3 rounded-xl text-base font-bold transition-all ${
-                      isActive
-                        ? isDark
-                          ? 'text-white bg-blue-600/20 border border-blue-500/40'
-                          : 'text-blue-600 bg-blue-50 border border-blue-200'
-                        : isDark
-                          ? 'text-slate-300 hover:text-white hover:bg-white/5'
-                          : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                );
-              })}
+              <p
+                className={`px-3 pt-5 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] ${
+                  'light:text-slate-400 dark:text-slate-500'
+                }`}
+              >
+                Resources
+              </p>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+                {resourceLinks.map(({ name, path, icon: Icon }) => {
+                  const active = isPathActive(pathname, path);
+                  return (
+                    <li key={path}>
+                      <Link
+                        href={path}
+                        aria-current={active ? 'page' : undefined}
+                        className={`flex items-center gap-3 h-12 px-3 rounded-xl text-base font-semibold border transition-colors ${
+                          active
+                            ? 'light:text-blue-600 light:bg-blue-50 light:border-blue-200 dark:text-white dark:bg-blue-600/20 dark:border-blue-500/40'
+                            : 'light:text-slate-700 light:border-transparent light:hover:text-slate-900 light:hover:bg-slate-100 dark:text-slate-300 dark:border-transparent dark:hover:text-white dark:hover:bg-white/5'
+                        }`}
+                      >
+                        <Icon className={`h-4 w-4 shrink-0 ${'light:text-blue-600 dark:text-blue-400'}`} />
+                        <span>{name}</span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
 
-              <div className="pt-3 flex items-center justify-between px-2">
-                <span className={`text-xs font-bold ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                  Appearance
-                </span>
-                <ThemeToggle />
-              </div>
-
-              <div className="pt-2">
+              <div className={`mt-5 pt-5 border-t ${'light:border-slate-200 dark:border-white/10'}`}>
                 <Link
                   href="/contact"
-                  onClick={() => setIsOpen(false)}
-                  className="w-full btn-primary text-white rounded-xl py-3.5 font-bold text-base flex items-center justify-center space-x-2 border border-blue-400/30"
+                  className="w-full btn-primary text-white rounded-xl h-12 font-bold text-base flex items-center justify-center gap-2 border border-blue-400/30"
                 >
-                  <span>Start Your Project</span>
+                  <span>Get In Touch</span>
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </div>
@@ -229,4 +394,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

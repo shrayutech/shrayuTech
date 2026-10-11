@@ -1,3 +1,4 @@
+import { getPageDates } from '../../src/data/contentRegistry';
 import Link from 'next/link';
 import Breadcrumbs from '../../src/components/Breadcrumbs';
 import ContentFreshnessBadge from '../../src/components/ContentFreshnessBadge';
@@ -22,6 +23,7 @@ export default function TermsPage() {
   const url = `${SCHEMA_BASE_URL}/terms`;
 
   const webPage = buildWebPageSchema({
+    ...getPageDates('terms'),
     title: 'Terms of Service | Shrayu Technologies',
     description: 'Terms of Service for Shrayu Technologies software consulting and engineering solutions.',
     url

@@ -20,7 +20,7 @@
 - **Head-to-Head Comparison Engine**: Curated technical comparison matrices evaluating software architectures, frameworks, and deployment corridors.
 - **First-Party Empirical Research**: Reproducible data-driven studies computed directly from production repositories, CI/CD pipelines, and delivery hubs (with sample size gating and zero fabrication).
 - **AI Content Governance & Editorial Workflow**: Human-in-the-loop content review studio with hallucination defenses, prompt injection protection, token accounting, and strict admin noindex shields.
-- **Centralized SEO & OpenGraph Engine**: Native Next.js App Router metadata with canonical URL normalization, multilingual hreflang alternates, and dynamic robots directives.
+- **Centralized SEO & OpenGraph Engine**: Native Next.js App Router metadata with canonical URL normalization, hreflang alternates, and dynamic robots directives.
 
 ---
 
@@ -92,7 +92,12 @@ npm install
 
 ### Environment Configuration
 
-Create a `.env` file in the root directory:
+Two env files, both git-ignored (copy the keys from `.env.example`):
+
+| File | Loaded by | Purpose |
+|---|---|---|
+| `.env.development` | `next dev` | Local development |
+| `.env.production` | `next build` / `next start` | Production (on Vercel, set the same keys in the dashboard) |
 
 ```env
 NEXT_PUBLIC_SITE_URL=https://shrayutech.vercel.app

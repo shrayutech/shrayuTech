@@ -1,3 +1,4 @@
+import { getPageDates } from '../src/data/contentRegistry';
 import Home from '../src/views/Home';
 import SchemaMarkup from '../src/components/seo/schema/SchemaMarkup';
 import {
@@ -19,6 +20,7 @@ export const metadata = buildPageMetadata({
 
 export default function HomePage() {
   const webPage = buildWebPageSchema({
+    ...getPageDates('home'),
     title: 'Shrayu Technologies | Premium Software Development & AI Engineering',
     description: 'Premier software engineering company specializing in bespoke backend microservices, Next.js web applications, artificial intelligence, and cloud architectures.',
     url: SCHEMA_BASE_URL

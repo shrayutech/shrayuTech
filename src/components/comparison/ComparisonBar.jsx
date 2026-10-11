@@ -5,13 +5,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowRightLeft, X, ArrowRight, Trash2 } from 'lucide-react';
 import { useComparison } from '../../context/ComparisonContext.jsx';
-import { useTheme } from '../../context/ThemeContext';
 import { COMPARISON_CONFIG } from '../../config/comparison.config.js';
 import { normalizeComparisonSlug } from '../../utils/comparisonUtils.js';
 
 export default function ComparisonBar() {
   const { selected, removeItem, clearItems, isHydrated } = useComparison();
-  const { isDark } = useTheme();
   const router = useRouter();
 
   if (!isHydrated) return null;
@@ -38,9 +36,7 @@ export default function ComparisonBar() {
     <div className="fixed bottom-6 inset-x-4 sm:inset-x-8 md:max-w-4xl md:mx-auto z-40 animate-slide-up">
       <div
         className={`p-4 sm:p-5 rounded-2xl sm:rounded-3xl border backdrop-blur-2xl shadow-2xl transition-all duration-300 flex flex-col sm:flex-row items-center justify-between gap-4 ${
-          isDark
-            ? 'bg-slate-900/90 border-blue-500/40 shadow-blue-950/50 text-white'
-            : 'bg-white/95 border-blue-400/50 shadow-slate-300/60 text-slate-900'
+          'light:bg-white/95 light:border-blue-400/50 light:shadow-slate-300/60 light:text-slate-900 dark:bg-slate-900/90 dark:border-blue-500/40 dark:shadow-blue-950/50 dark:text-white'
         }`}
       >
         {/* Left: Info & Chips */}
@@ -68,9 +64,7 @@ export default function ComparisonBar() {
                 <div
                   key={itemId}
                   className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
-                    isDark
-                      ? 'bg-white/10 border-white/15 text-slate-200'
-                      : 'bg-slate-100 border-slate-200 text-slate-800'
+                    'light:bg-slate-100 light:border-slate-200 light:text-slate-800 dark:bg-white/10 dark:border-white/15 dark:text-slate-200'
                   }`}
                 >
                   <span className="max-w-[140px] truncate">{name}</span>

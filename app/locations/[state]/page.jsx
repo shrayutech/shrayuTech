@@ -66,12 +66,12 @@ export default async function StateLocationPage({ params }) {
             <span>State Delivery Network • {state.country}</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-white">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-slate-900 dark:text-white">
             Software Development in{' '}
             <span className="gradient-text-animated">{state.name}</span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed text-slate-300">
+          <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed text-slate-600 dark:text-slate-300">
             {state.overview}
           </p>
         </div>
@@ -81,10 +81,10 @@ export default async function StateLocationPage({ params }) {
           {state.highlights.map((item, idx) => (
             <div
               key={idx}
-              className="p-5 rounded-2xl glass-card-3d border border-white/10 flex items-start gap-3"
+              className="p-5 rounded-2xl glass-card-3d border border-slate-200 dark:border-white/10 flex items-start gap-3"
             >
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-              <p className="text-xs font-semibold text-slate-300 leading-relaxed">
+              <CheckCircle2 className="w-5 h-5 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-300 leading-relaxed">
                 {item}
               </p>
             </div>
@@ -98,11 +98,11 @@ export default async function StateLocationPage({ params }) {
               <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">
                 Active Hubs in {state.name}
               </span>
-              <h2 className="text-3xl font-black tracking-tight text-white">
+              <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
                 Available Engineering Centers ({state.cities.length})
               </h2>
             </div>
-            <p className="text-xs text-slate-400 font-medium max-w-md">
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium max-w-md">
               Each delivery center is backed by senior engineers, transparent sprint tracking, and verifiable production code.
             </p>
           </div>
@@ -116,8 +116,8 @@ export default async function StateLocationPage({ params }) {
 
         {/* RELATED STATES INTERNAL LINKING */}
         {otherStates.length > 0 && (
-          <div className="pt-8 border-t border-white/10 space-y-6">
-            <h3 className="text-xl font-bold text-white">
+          <div className="pt-8 border-t border-slate-200 dark:border-white/10 space-y-6">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
               Other Regional Software Engineering Hubs
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -125,20 +125,20 @@ export default async function StateLocationPage({ params }) {
                 <Link
                   key={s.slug}
                   href={`/locations/${s.slug}`}
-                  className="p-6 rounded-2xl glass-card-3d border border-white/10 hover:border-blue-500/40 transition-all flex items-center justify-between group"
+                  className="p-6 rounded-2xl glass-card-3d border border-slate-200 dark:border-white/10 hover:border-blue-500/40 transition-all flex items-center justify-between group"
                 >
                   <div className="space-y-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
                       {s.region}
                     </span>
-                    <h4 className="text-lg font-bold text-white group-hover:text-blue-300 transition-colors">
+                    <h4 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
                       {s.name}
                     </h4>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
                       {s.cities.length} delivery centers available
                     </p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
                 </Link>
               ))}
             </div>

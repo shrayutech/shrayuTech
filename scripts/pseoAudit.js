@@ -75,8 +75,8 @@ allCities.forEach(city => {
   });
 });
 
-assert(validLocationCatPages === 29, `Found exactly 29 valid location+category pages with real delivery capabilities`);
-assert(rejectedEmptyLocationCatPages === 7, `Successfully rejected 7 empty/unsupported combinations (e.g. Nashik AI, Mumbai Mobile)`);
+assert(validLocationCatPages === 6, `Found exactly 6 valid location+category pages with real delivery capabilities`);
+assert(rejectedEmptyLocationCatPages === 0, `No empty/unsupported combinations (HQ supports every category)`);
 
 // 3. Audit Service Deep-Dives
 console.log('\n3. Auditing Service Detail pSEO Pages...');
@@ -119,12 +119,12 @@ curatedComparisons.forEach(comp => {
     assert(comp.metaTitle && comp.metaDescription, `Comparison "${comp.slug}" contains unique metadata`);
   }
 });
-assert(validComparisons === 9, `All 9 curated comparisons validated with complete criteria`);
+assert(validComparisons === 7, `All 7 curated comparisons validated with complete criteria`);
 
 // 6. Audit Canonical URLs & No Duplicates
 console.log('\n6. Auditing Canonical URL Consistency...');
 const sitemapRoutes = getAllIndexablePseoRoutes(PSEO_BASE_URL);
-assert(sitemapRoutes.length === 81, `getAllIndexablePseoRoutes() returns exactly 81 validated programmatic URLs`);
+assert(sitemapRoutes.length === 50, `getAllIndexablePseoRoutes() returns exactly 50 validated programmatic URLs`);
 
 const urlSet = new Set();
 let duplicatesCount = 0;
@@ -174,16 +174,16 @@ Invalid pages:         0
 TEMPLATES BREAKDOWN
 -----------------------------------------
 1. National Locations Directory:      1 page
-2. State Hubs (Maharashtra, Karnataka): 2 pages
-3. City Delivery Hubs (6 cities):     6 pages
-4. Location + Category Hubs:         29 pages (out of 36 potential)
+2. State Hubs (Maharashtra):            1 page
+3. City Delivery Hubs (HQ):           1 page
+4. Location + Category Hubs:          6 pages (out of 6 potential)
 5. Service Detail Deep-Dives:         9 pages
 6. Production System Case Studies:   25 pages
-7. Architectural Comparisons:         9 pages
+7. Architectural Comparisons:         7 pages
 -----------------------------------------
-Total Valid Programmatic Pages:      81 pages
+Total Valid Programmatic Pages:      50 pages
 Total Core Static Pages:              9 pages (including /compare hub)
-Total Website Indexable URLs:        90 pages
+Total Website Indexable URLs:        59 pages
 ====================================================
 `);
 

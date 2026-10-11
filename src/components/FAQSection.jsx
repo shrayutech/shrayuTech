@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 import { defaultServiceFAQs } from '../data/servicesData';
 
 export { defaultServiceFAQs };
@@ -19,7 +18,6 @@ export default function FAQSection({
   subtitle = 'Clear answers about our engineering methodology, intellectual property rights, and delivery standards',
   faqs = defaultServiceFAQs
 }) {
-  const { isDark } = useTheme();
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggle = (idx) => {
@@ -45,7 +43,7 @@ export default function FAQSection({
       {/* Search Engine Schema */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c') }}
       />
 
       <div className="text-center max-w-2xl mx-auto space-y-2">
@@ -53,11 +51,11 @@ export default function FAQSection({
           <HelpCircle className="w-3.5 h-3.5" />
           <span>Engineering FAQ</span>
         </div>
-        <h3 className={`text-2xl sm:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+        <h3 className={`text-2xl sm:text-3xl font-black tracking-tight ${'light:text-slate-900 dark:text-white'}`}>
           {title}
         </h3>
         {subtitle && (
-          <p className={`text-xs sm:text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+          <p className={`text-xs sm:text-sm font-medium ${'light:text-slate-600 dark:text-slate-300'}`}>
             {subtitle}
           </p>
         )}
@@ -70,9 +68,7 @@ export default function FAQSection({
             <div
               key={idx}
               className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
-                isDark
-                  ? 'bg-white/[0.03] border-white/10 hover:border-blue-500/30'
-                  : 'bg-white border-slate-200 hover:border-blue-300 shadow-sm'
+                'light:bg-white light:border-slate-200 light:hover:border-blue-300 light:shadow-sm dark:bg-white/[0.03] dark:border-white/10 dark:hover:border-blue-500/30'
               }`}
             >
               <button
@@ -85,9 +81,7 @@ export default function FAQSection({
                   className={`text-sm sm:text-base font-bold transition-colors ${
                     isOpen
                       ? 'text-blue-500'
-                      : isDark
-                      ? 'text-white'
-                      : 'text-slate-900'
+                      : 'light:text-slate-900 dark:text-white'
                   }`}
                 >
                   {item.q}
@@ -102,9 +96,7 @@ export default function FAQSection({
               {isOpen && (
                 <div
                   className={`px-6 pb-5 pt-1 text-xs sm:text-sm font-medium leading-relaxed border-t ${
-                    isDark
-                      ? 'text-slate-300 border-white/5 bg-black/20'
-                      : 'text-slate-600 border-slate-100 bg-slate-50/50'
+                    'light:text-slate-600 light:border-slate-100 light:bg-slate-50/50 dark:text-slate-300 dark:border-white/5 dark:bg-black/20'
                   }`}
                 >
                   <p>{item.a}</p>

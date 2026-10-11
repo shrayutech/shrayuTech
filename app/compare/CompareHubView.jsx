@@ -19,7 +19,6 @@ import Breadcrumbs from '../../src/components/Breadcrumbs';
 import ComparisonTable from '../../src/components/comparison/ComparisonTable';
 import ComparisonSchema from '../../src/components/comparison/ComparisonSchema';
 import SpotlightCard from '../../src/components/SpotlightCard';
-import { useTheme } from '../../src/context/ThemeContext';
 import { useComparison } from '../../src/context/ComparisonContext.jsx';
 import { COMPARISON_CONFIG } from '../../src/config/comparison.config.js';
 import {
@@ -33,7 +32,6 @@ import {
 export default function CompareHubView() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { isDark } = useTheme();
   const { selected, addItem, removeItem, clearItems, isHydrated } = useComparison();
 
   // Active tab: 'systems' | 'services' | 'locations'
@@ -134,12 +132,12 @@ export default function CompareHubView() {
             <span>Side-by-Side Evaluator</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-white">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-slate-900 dark:text-white">
             Technical Architecture{' '}
             <span className="gradient-text-animated">Comparison Engine</span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto text-slate-300">
+          <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto text-slate-600 dark:text-slate-300">
             Objectively evaluate verified software systems, engineering capabilities, and delivery hubs using real production metrics without artificial scores.
           </p>
 
@@ -154,9 +152,7 @@ export default function CompareHubView() {
                   className={`px-5 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border ${
                     isActive
                       ? 'bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/25'
-                      : isDark
-                        ? 'bg-white/5 hover:bg-white/10 text-slate-300 border-white/10'
-                        : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
+                      : 'light:bg-white light:hover:bg-slate-100 light:text-slate-700 light:border-slate-200 dark:bg-white/5 dark:hover:bg-white/10 dark:text-slate-300 dark:border-white/10'
                   }`}
                 >
                   {typeDef.key === 'systems' && <Code2 className="w-4 h-4" />}
@@ -170,17 +166,17 @@ export default function CompareHubView() {
         </div>
 
         {/* ENTITY PICKER DRAWER */}
-        <div className="p-6 rounded-3xl glass-card-3d border border-white/10 space-y-4">
+        <div className="p-6 rounded-3xl glass-card-3d border border-slate-200 dark:border-white/10 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
                 Select {typeConfig.label} to Compare
               </span>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Click any item to add or remove it from the table (Minimum {COMPARISON_CONFIG.MIN_ITEMS}, Maximum {COMPARISON_CONFIG.MAX_ITEMS}).
               </p>
             </div>
-            <div className="text-xs font-bold text-slate-300">
+            <div className="text-xs font-bold text-slate-600 dark:text-slate-300">
               {comparedItems.length} of {COMPARISON_CONFIG.MAX_ITEMS} Selected
             </div>
           </div>
@@ -196,12 +192,10 @@ export default function CompareHubView() {
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 border ${
                     isSelected
                       ? 'bg-blue-600 text-white border-blue-500 shadow-md'
-                      : isDark
-                        ? 'bg-white/5 hover:bg-white/10 text-slate-300 border-white/10'
-                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'
+                      : 'light:bg-slate-100 light:hover:bg-slate-200 light:text-slate-700 light:border-slate-200 dark:bg-white/5 dark:hover:bg-white/10 dark:text-slate-300 dark:border-white/10'
                   }`}
                 >
-                  {isSelected ? <Check className="w-3.5 h-3.5 text-white" /> : <Plus className="w-3.5 h-3.5 text-slate-400" />}
+                  {isSelected ? <Check className="w-3.5 h-3.5 text-white" /> : <Plus className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />}
                   <span className="max-w-[200px] truncate">{ent.name}</span>
                 </button>
               );
@@ -212,11 +206,11 @@ export default function CompareHubView() {
         {/* DYNAMIC COMPARISON TABLE */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-black text-white">
+            <h2 className="text-2xl font-black text-slate-900 dark:text-white">
               Comparative Analysis
             </h2>
             {comparedItems.length >= 2 && (
-              <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1.5">
+              <span className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4" />
                 <span>Verified Technical Attributes</span>
               </span>
@@ -233,15 +227,15 @@ export default function CompareHubView() {
 
         {/* CURATED POPULAR COMPARISONS */}
         {curated.length > 0 && (
-          <div className="pt-12 border-t border-white/10 space-y-6">
+          <div className="pt-12 border-t border-slate-200 dark:border-white/10 space-y-6">
             <div className="space-y-1">
               <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">
                 Recommended Benchmarks
               </span>
-              <h3 className="text-2xl font-black text-white">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white">
                 Curated Technical Comparisons
               </h3>
-              <p className="text-xs text-slate-400 font-medium max-w-xl">
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
                 Explore pre-indexed, in-depth architectural comparisons evaluated by our senior practitioners.
               </p>
             </div>
@@ -253,21 +247,21 @@ export default function CompareHubView() {
                   className="glass-card-3d rounded-3xl p-6 sm:p-7 space-y-4 flex flex-col justify-between"
                 >
                   <div className="space-y-3">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
                       {c.categoryContext}
                     </span>
-                    <h4 className="text-lg font-bold text-white leading-snug">
+                    <h4 className="text-lg font-bold text-slate-900 dark:text-white leading-snug">
                       {c.title}
                     </h4>
-                    <p className="text-xs text-slate-300 leading-relaxed font-medium line-clamp-3">
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium line-clamp-3">
                       {c.overview}
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-white/10">
+                  <div className="pt-4 border-t border-slate-200 dark:border-white/10">
                     <Link
                       href={`/compare/${c.type}/${c.slug}`}
-                      className="inline-flex items-center space-x-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors uppercase tracking-wider group"
+                      className="inline-flex items-center space-x-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors uppercase tracking-wider group"
                     >
                       <span>Read In-Depth Comparison</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />

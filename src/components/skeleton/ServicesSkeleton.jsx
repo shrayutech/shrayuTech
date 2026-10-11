@@ -2,7 +2,6 @@
 import React from 'react';
 import SkeletonServiceCard from './SkeletonServiceCard';
 import SkeletonBase from './SkeletonBase';
-import { useTheme } from '../../context/ThemeContext';
 
 /**
  * ServicesSkeleton — Services page skeleton.
@@ -12,7 +11,6 @@ import { useTheme } from '../../context/ThemeContext';
  *   3. Bottom CTA banner
  */
 const ServicesSkeleton = () => {
-  const { isDark } = useTheme();
 
   return (
     <div className="relative min-h-screen pt-36 pb-32 px-6 sm:px-8 overflow-hidden transition-colors duration-300">
@@ -42,7 +40,7 @@ const ServicesSkeleton = () => {
         <div className="pt-8">
           <div
             className={`rounded-[2.5rem] p-12 sm:p-16 text-center space-y-6 border ${
-              isDark ? 'bg-[#0B1021] border-white/15' : 'bg-slate-900 border-slate-800'
+              'light:bg-slate-900 light:border-slate-800 dark:bg-[#0B1021] dark:border-white/15'
             }`}
           >
             <div className="space-y-4 flex flex-col items-center">

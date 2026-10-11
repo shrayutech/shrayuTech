@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { ArrowRight, Code, Globe, Smartphone, Cpu, Cloud, Palette, Network, Layers, Settings } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 
 const serviceCatalog = [
   {
@@ -60,7 +59,6 @@ export default function RelatedServices({
   title = 'Complementary Engineering Services',
   subtitle = 'Pair your architectural requirements with our full-stack service capabilities'
 }) {
-  const { isDark } = useTheme();
 
   const services = serviceCatalog
     .filter((s) => !currentService || s.title.toLowerCase() !== currentService.toLowerCase())
@@ -71,12 +69,12 @@ export default function RelatedServices({
       {(title || subtitle) && (
         <div className="text-center max-w-2xl mx-auto space-y-2">
           {title && (
-            <h3 className={`text-xl sm:text-2xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h3 className={`text-xl sm:text-2xl font-black tracking-tight ${'light:text-slate-900 dark:text-white'}`}>
               {title}
             </h3>
           )}
           {subtitle && (
-            <p className={`text-xs sm:text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            <p className={`text-xs sm:text-sm font-medium ${'light:text-slate-600 dark:text-slate-300'}`}>
               {subtitle}
             </p>
           )}
@@ -90,27 +88,25 @@ export default function RelatedServices({
             <div
               key={idx}
               className={`p-6 rounded-2xl border transition-all duration-200 flex flex-col justify-between space-y-4 ${
-                isDark
-                  ? 'bg-white/[0.03] border-white/10 hover:border-blue-500/40 hover:bg-white/[0.06] shadow-xl shadow-black/20'
-                  : 'bg-white border-slate-200 hover:border-blue-400 hover:bg-blue-50/30 shadow-sm hover:shadow-md'
+                'light:bg-white light:border-slate-200 light:hover:border-blue-400 light:hover:bg-blue-50/30 light:shadow-sm light:hover:shadow-md dark:bg-white/[0.03] dark:border-white/10 dark:hover:border-blue-500/40 dark:hover:bg-white/[0.06] dark:shadow-xl dark:shadow-black/20'
               }`}
             >
               <div className="space-y-3">
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                    isDark ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'bg-blue-50 text-blue-600 border border-blue-200'
+                    'light:bg-blue-50 light:text-blue-600 light:border light:border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border dark:border-blue-500/20'
                   }`}
                 >
                   <Icon className="w-5 h-5" />
                 </div>
                 <h4
                   className={`text-base font-bold transition-colors ${
-                    isDark ? 'text-white' : 'text-slate-900'
+                    'light:text-slate-900 dark:text-white'
                   }`}
                 >
                   {service.title}
                 </h4>
-                <p className={`text-xs font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                <p className={`text-xs font-medium leading-relaxed ${'light:text-slate-600 dark:text-slate-300'}`}>
                   {service.desc}
                 </p>
               </div>

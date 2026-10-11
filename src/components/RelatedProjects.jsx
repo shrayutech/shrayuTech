@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { ArrowRight, Github, ExternalLink, Code2 } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 import { portfolioProjects } from '../data/portfolioProjects';
 
 /**
@@ -18,7 +17,6 @@ export default function RelatedProjects({
   title = 'Verified Engineering Case Studies',
   subtitle = 'Production-grade implementations demonstrating technical execution'
 }) {
-  const { isDark } = useTheme();
 
   // Filter projects
   const related = portfolioProjects
@@ -44,12 +42,12 @@ export default function RelatedProjects({
       {(title || subtitle) && (
         <div className="text-center max-w-2xl mx-auto space-y-2">
           {title && (
-            <h3 className={`text-xl sm:text-2xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h3 className={`text-xl sm:text-2xl font-black tracking-tight ${'light:text-slate-900 dark:text-white'}`}>
               {title}
             </h3>
           )}
           {subtitle && (
-            <p className={`text-xs sm:text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            <p className={`text-xs sm:text-sm font-medium ${'light:text-slate-600 dark:text-slate-300'}`}>
               {subtitle}
             </p>
           )}
@@ -61,9 +59,7 @@ export default function RelatedProjects({
           <div
             key={project.id}
             className={`p-6 rounded-2xl border transition-all duration-200 flex flex-col justify-between space-y-4 ${
-              isDark
-                ? 'bg-white/[0.03] border-white/10 hover:border-blue-500/40 hover:bg-white/[0.06] shadow-xl shadow-black/20'
-                : 'bg-white border-slate-200 hover:border-blue-400 hover:bg-blue-50/30 shadow-sm hover:shadow-md'
+              'light:bg-white light:border-slate-200 light:hover:border-blue-400 light:hover:bg-blue-50/30 light:shadow-sm light:hover:shadow-md dark:bg-white/[0.03] dark:border-white/10 dark:hover:border-blue-500/40 dark:hover:bg-white/[0.06] dark:shadow-xl dark:shadow-black/20'
             }`}
           >
             <div className="space-y-3">
@@ -71,9 +67,7 @@ export default function RelatedProjects({
                 <Link
                   href={`/portfolio?category=${encodeURIComponent(project.category)}`}
                   className={`text-[10px] font-bold px-2.5 py-1 rounded-full border transition-colors ${
-                    isDark
-                      ? 'bg-blue-500/10 border-blue-500/20 text-blue-400 hover:bg-blue-500/20'
-                      : 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100'
+                    'light:bg-blue-50 light:border-blue-200 light:text-blue-700 light:hover:bg-blue-100 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400 dark:hover:bg-blue-500/20'
                   }`}
                 >
                   {project.category}
@@ -84,9 +78,7 @@ export default function RelatedProjects({
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`p-1.5 rounded-lg border transition-colors ${
-                      isDark
-                        ? 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10'
-                        : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-900'
+                      'light:bg-slate-100 light:border-slate-200 light:text-slate-600 light:hover:text-slate-900 dark:bg-white/5 dark:border-white/10 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/10'
                     }`}
                     title="View GitHub Repository"
                   >
@@ -98,9 +90,7 @@ export default function RelatedProjects({
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`p-1.5 rounded-lg border transition-colors ${
-                        isDark
-                          ? 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10'
-                          : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-900'
+                        'light:bg-slate-100 light:border-slate-200 light:text-slate-600 light:hover:text-slate-900 dark:bg-white/5 dark:border-white/10 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/10'
                       }`}
                       title="View Live Demo"
                     >
@@ -113,12 +103,12 @@ export default function RelatedProjects({
               <div>
                 <h4
                   className={`text-base font-bold transition-colors ${
-                    isDark ? 'text-white' : 'text-slate-900'
+                    'light:text-slate-900 dark:text-white'
                   }`}
                 >
                   {project.title.replace(/-/g, ' ')}
                 </h4>
-                <p className={`text-xs font-medium line-clamp-3 mt-1.5 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                <p className={`text-xs font-medium line-clamp-3 mt-1.5 leading-relaxed ${'light:text-slate-600 dark:text-slate-300'}`}>
                   {project.highlight}
                 </p>
               </div>
@@ -129,9 +119,7 @@ export default function RelatedProjects({
                   <span
                     key={idx}
                     className={`text-[9px] font-bold px-2 py-0.5 rounded-md border ${
-                      isDark
-                        ? 'bg-white/5 border-white/10 text-slate-300'
-                        : 'bg-slate-100 border-slate-200 text-slate-700'
+                      'light:bg-slate-100 light:border-slate-200 light:text-slate-700 dark:bg-white/5 dark:border-white/10 dark:text-slate-300'
                     }`}
                   >
                     {tech}

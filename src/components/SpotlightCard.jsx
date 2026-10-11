@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from 'react';
-import { useTheme } from '../context/ThemeContext';
 
 const SpotlightCard = ({
   children,
@@ -10,7 +9,6 @@ const SpotlightCard = ({
   ...props
 }) => {
   const cardRef = useRef(null);
-  const { isDark } = useTheme();
 
   const handleMouseMove = (e) => {
     // Only track if device supports hover
@@ -25,10 +23,6 @@ const SpotlightCard = ({
     cardRef.current.style.setProperty('--mouse-y', `${y}px`);
   };
 
-  const defaultSpotlightColor = isDark
-    ? 'rgba(59, 130, 246, 0.15)'
-    : 'rgba(37, 99, 235, 0.08)';
-
   return (
     <div
       ref={cardRef}
@@ -40,7 +34,7 @@ const SpotlightCard = ({
         className="pointer-events-none absolute inset-0 rounded-[inherit] transition-opacity duration-300 opacity-0 group-hover:opacity-100 z-0"
         style={{
           background: `radial-gradient(450px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${
-            spotlightColor || defaultSpotlightColor
+            spotlightColor || 'var(--spotlight-color)'
           }, transparent 70%)`
         }}
       />

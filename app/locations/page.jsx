@@ -10,9 +10,9 @@ import { buildPageMetadata } from '../../src/utils/seo/metadataBuilders';
 
 export const metadata = buildPageMetadata({
   title: 'Regional Engineering Hubs & Locations in India',
-  description: 'Discover software engineering hubs and delivery centers across India, including Chhatrapati Sambhajinagar HQ, Pune, Mumbai, Nagpur, Nashik, and Bengaluru.',
+  description: 'Discover Shrayu Technologies headquarters and software delivery hub in Chhatrapati Sambhajinagar, Maharashtra, serving clients across India.',
   path: '/locations',
-  keywords: ['engineering hubs India', 'software delivery centers', 'Maharashtra tech corridor', 'Karnataka IT hub']
+  keywords: ['engineering hubs India', 'software delivery centers', 'Maharashtra tech corridor', 'Chhatrapati Sambhajinagar software company']
 });
 
 export default function LocationsLandingPage() {
@@ -48,7 +48,7 @@ export default function LocationsLandingPage() {
             <span className="gradient-text-animated">Delivery Hubs</span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto text-slate-300">
+          <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto text-slate-600 dark:text-slate-300">
             Shrayu Technologies operates from our global headquarters in Maharashtra, partnering with venture-backed startups and enterprises across India's premier tech corridors.
           </p>
 
@@ -59,25 +59,25 @@ export default function LocationsLandingPage() {
         </div>
 
         {/* HEADQUARTERS HIGHLIGHT BANNER */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-slate-900/40 border border-blue-500/30 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+        <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-blue-50 via-indigo-50 to-white dark:from-blue-900/40 dark:via-indigo-900/30 dark:to-slate-900/40 border border-blue-500/30 backdrop-blur-xl shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
             <div className="space-y-3 max-w-2xl">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                <span className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-500/30">
                   Global Headquarters &amp; Central Lab
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <span className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
                   Active
                 </span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-white">
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
                 Chhatrapati Sambhajinagar, Maharashtra
               </h2>
-              <p className="text-sm text-slate-300 leading-relaxed font-medium">
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                 Our central engineering laboratory houses our core systems architects, AI researchers, and founding leadership. All primary R&amp;D, client code audits, and sprint planning originate from our Maharashtra headquarters.
               </p>
-              <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-300 pt-1">
+              <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-600 dark:text-slate-300 pt-1">
                 <span>📍 PIN: 431001</span>
                 <span>📞 +91 70200 41614</span>
                 <span>✉️ shrayutech@gmail.com</span>
@@ -109,11 +109,11 @@ export default function LocationsLandingPage() {
               <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">
                 Regional Coverage
               </span>
-              <h2 className="text-3xl font-black tracking-tight text-white">
+              <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
                 Explore by State &amp; Territory
               </h2>
             </div>
-            <p className="text-xs text-slate-400 font-medium max-w-md">
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium max-w-md">
               We deploy dedicated engineering squads across key metropolitan regions, providing both remote and on-site technical architecture.
             </p>
           </div>
@@ -126,22 +126,22 @@ export default function LocationsLandingPage() {
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-widest text-blue-400">
+                    <span className="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
                       {state.region} • {state.country}
                     </span>
-                    <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300">
+                    <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300">
                       {state.cities.length} Hubs
                     </span>
                   </div>
 
-                  <h3 className="text-2xl font-black text-white">{state.name}</h3>
+                  <h3 className="text-2xl font-black text-slate-900 dark:text-white">{state.name}</h3>
 
-                  <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                     {state.overview}
                   </p>
 
                   <div className="space-y-2 pt-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
                       Active Tech Hubs:
                     </span>
                     <div className="flex flex-wrap gap-2">
@@ -149,25 +149,25 @@ export default function LocationsLandingPage() {
                         <Link
                           key={c.slug}
                           href={`/locations/${state.slug}/${c.slug}`}
-                          className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-white/5 hover:bg-blue-600/20 border border-white/10 hover:border-blue-500/40 text-slate-200 hover:text-white transition-all flex items-center gap-1.5 group"
+                          className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-blue-600/20 border border-slate-200 dark:border-white/10 hover:border-blue-500/40 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-all flex items-center gap-1.5 group"
                         >
                           <span>{c.name}</span>
                           {c.isHeadquarters && (
-                            <span className="text-[9px] font-bold text-emerald-400 uppercase">
+                            <span className="text-[9px] font-bold text-emerald-700 dark:text-emerald-400 uppercase">
                               HQ
                             </span>
                           )}
-                          <ArrowRight className="w-3 h-3 text-slate-400 group-hover:text-blue-400 group-hover:translate-x-0.5 transition-all" />
+                          <ArrowRight className="w-3 h-3 text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-0.5 transition-all" />
                         </Link>
                       ))}
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/10">
+                <div className="pt-4 border-t border-slate-200 dark:border-white/10">
                   <Link
                     href={`/locations/${state.slug}`}
-                    className="inline-flex items-center space-x-2 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors uppercase tracking-wider group"
+                    className="inline-flex items-center space-x-2 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors uppercase tracking-wider group"
                   >
                     <span>View all {state.name} engineering centers</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -184,10 +184,10 @@ export default function LocationsLandingPage() {
             <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">
               All Delivery Hubs
             </span>
-            <h2 className="text-3xl font-black tracking-tight text-white">
+            <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
               Verified Technical Delivery Hubs
             </h2>
-            <p className="text-xs text-slate-400 font-medium">
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
               Explore localized software capabilities, key tech corridors, and verified case studies per city.
             </p>
           </div>

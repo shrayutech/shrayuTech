@@ -1,3 +1,4 @@
+import { getPageDates } from '../../src/data/contentRegistry';
 import Services from '../../src/views/Services';
 import SchemaMarkup from '../../src/components/seo/schema/SchemaMarkup';
 import {
@@ -23,6 +24,7 @@ export default function ServicesPage() {
   const url = `${SCHEMA_BASE_URL}/services`;
 
   const webPage = buildWebPageSchema({
+    ...getPageDates('services'),
     title: 'Software Engineering Services | Shrayu Technologies',
     description: 'Explore our enterprise software services: custom web and mobile development, AI & ML solutions, cloud infrastructure, and UI/UX design.',
     url

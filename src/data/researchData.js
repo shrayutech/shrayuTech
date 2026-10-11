@@ -114,7 +114,7 @@ export const researchReports = [
     publishedYear: 2026,
     publishedMonth: 'October',
     author: 'Shrayu Technologies Regional Operations Group',
-    status: 'published',
+    status: 'draft', // unpublished: describes the removed Pune/Mumbai/Nagpur/Nashik/Bengaluru hubs
     isIndexable: true,
     sampleSize: regionalStats.totalCities,
     sampleUnit: 'physical engineering delivery hubs',

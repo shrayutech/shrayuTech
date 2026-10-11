@@ -1,3 +1,4 @@
+import { getPageDates } from '../../src/data/contentRegistry';
 import { Suspense } from 'react';
 import CompareHubView from './CompareHubView';
 import SchemaMarkup from '../../src/components/seo/schema/SchemaMarkup';
@@ -14,7 +15,7 @@ import { buildPageMetadata } from '../../src/utils/seo/metadataBuilders';
 
 export const metadata = buildPageMetadata({
   title: 'Compare Software Architectures & Delivery Hubs',
-  description: 'Objectively compare verified open-source software architectures, engineering services, and regional delivery hubs. Evaluate tech stacks and benchmarks.',
+  description: 'Objectively compare verified open-source software architectures and engineering services. Evaluate tech stacks and benchmarks.',
   path: '/compare',
   keywords: ['software comparison', 'architecture comparison', 'tech stack benchmarks', 'delivery hubs']
 });
@@ -23,8 +24,9 @@ export default function ComparePage() {
   const url = `${SCHEMA_BASE_URL}/compare`;
 
   const webPage = buildWebPageSchema({
+    ...getPageDates('compare'),
     title: 'Technical Comparison Engine | Shrayu Technologies',
-    description: 'Objectively compare verified open-source software architectures, engineering services, and regional delivery hubs.',
+    description: 'Objectively compare verified open-source software architectures and engineering services.',
     url
   });
 
@@ -35,7 +37,7 @@ export default function ComparePage() {
 
   const comparisonItemList = buildItemListSchema({
     name: 'Curated Software & Architecture Benchmarks',
-    description: 'Direct head-to-head architectural decision matrices across systems, services, and engineering hubs',
+    description: 'Direct head-to-head architectural decision matrices across systems and services',
     items: curatedComparisons.map(c => ({
       name: c.title,
       description: c.overview,

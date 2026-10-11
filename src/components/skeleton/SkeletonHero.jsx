@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
 import SkeletonBase from './SkeletonBase';
-import { useTheme } from '../../context/ThemeContext';
 
 /**
  * SkeletonHero — Homepage hero section skeleton.
@@ -12,7 +11,6 @@ import { useTheme } from '../../context/ThemeContext';
  * No fake charts. No dashboard. No code editors.
  */
 const SkeletonHero = () => {
-  const { isDark } = useTheme();
 
   return (
     <section className="relative pt-36 pb-28 md:pt-44 md:pb-36 px-6 sm:px-8 max-w-5xl mx-auto z-10">
@@ -42,7 +40,7 @@ const SkeletonHero = () => {
         {/* Trust indicators: ✓ Technical Excellence  ✓ Startup Agility  ✓ Process Transparency */}
         <div
           className={`pt-8 border-t flex flex-wrap justify-center gap-8 w-full max-w-xl ${
-            isDark ? 'border-white/10' : 'border-slate-200'
+            'light:border-slate-200 dark:border-white/10'
           }`}
         >
           {[116, 96, 132].map((w, i) => (

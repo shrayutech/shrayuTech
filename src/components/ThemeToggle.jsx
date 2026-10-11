@@ -12,19 +12,13 @@ const ThemeToggle = ({ compact = false }) => {
     return (
       <button
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-        className={`p-2.5 rounded-xl border transition-all duration-300 flex items-center justify-center ${
-          theme === 'dark'
-            ? 'bg-white/5 border-white/10 text-amber-400 hover:bg-white/10 hover:border-amber-400/40'
-            : 'bg-slate-100 border-slate-200 text-indigo-600 hover:bg-slate-200 hover:border-indigo-400/40'
-        }`}
+        className="p-2.5 rounded-xl border transition-all duration-300 flex items-center justify-center light:bg-slate-100 light:border-slate-200 light:text-indigo-600 light:hover:bg-slate-200 light:hover:border-indigo-400/40 dark:bg-white/5 dark:border-white/10 dark:text-amber-400 dark:hover:bg-white/10 dark:hover:border-amber-400/40"
         aria-label={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} mode`}
         title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} mode`}
       >
-        {theme === 'dark' ? (
-          <Sun className="w-4 h-4 transition-transform hover:rotate-45 duration-300" />
-        ) : (
-          <Moon className="w-4 h-4 transition-transform hover:-rotate-12 duration-300" />
-        )}
+        {/* Icon chosen by CSS so the server-rendered HTML already shows the right one */}
+        <Sun className="w-4 h-4 transition-transform hover:rotate-45 duration-300 hidden dark:block" />
+        <Moon className="w-4 h-4 transition-transform hover:-rotate-12 duration-300 dark:hidden" />
       </button>
     );
   }

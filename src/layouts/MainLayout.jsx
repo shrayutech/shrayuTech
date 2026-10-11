@@ -3,6 +3,7 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ScrollProgress from '../components/ScrollProgress';
+import ScrollReveal from '../components/ScrollReveal';
 import SkeletonNavbar from '../components/skeleton/SkeletonNavbar';
 import SkeletonFooter from '../components/skeleton/SkeletonFooter';
 import SkeletonWrapper from '../components/skeleton/SkeletonWrapper';
@@ -15,6 +16,7 @@ const MainLayout = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen bg-app-main text-app-primary antialiased selection:bg-blue-600/30 selection:text-blue-200 transition-colors duration-300">
       <ScrollProgress />
+      <ScrollReveal />
       <SkeletonWrapper loading={isLoading} skeleton={<SkeletonNavbar />}>
         <Navbar />
       </SkeletonWrapper>

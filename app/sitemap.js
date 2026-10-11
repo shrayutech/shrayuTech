@@ -1,68 +1,65 @@
+import { contentRegistry } from '../src/data/contentRegistry';
 import { getAllIndexablePseoRoutes } from '../src/utils/pseoEngine';
 import { getPublishedResearchReports } from '../src/data/researchData';
 
 export default function sitemap() {
   const baseUrl = 'https://shrayutech.vercel.app';
   const currentDate = new Date().toISOString();
+  // Real per-page edit dates from the content registry (falls back to build time for unknown keys)
+  const pageDate = (key) => contentRegistry[key]?.lastUpdated || currentDate;
 
   const coreRoutes = [
     {
       url: `${baseUrl}/`,
-      lastModified: currentDate,
+      lastModified: pageDate('home'),
       changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
       url: `${baseUrl}/services`,
-      lastModified: currentDate,
+      lastModified: pageDate('services'),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/portfolio`,
-      lastModified: currentDate,
+      lastModified: pageDate('portfolio'),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/compare`,
-      lastModified: currentDate,
+      lastModified: pageDate('compare'),
       changeFrequency: 'weekly',
       priority: 0.85,
     },
     {
       url: `${baseUrl}/research`,
-      lastModified: currentDate,
+      lastModified: pageDate('research'),
       changeFrequency: 'weekly',
       priority: 0.85,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: currentDate,
+      lastModified: pageDate('about'),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: currentDate,
+      lastModified: pageDate('contact'),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/careers`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
-    {
       url: `${baseUrl}/privacy`,
-      lastModified: currentDate,
+      lastModified: pageDate('privacy'),
       changeFrequency: 'yearly',
       priority: 0.4,
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: currentDate,
+      lastModified: pageDate('terms'),
       changeFrequency: 'yearly',
       priority: 0.4,
     },

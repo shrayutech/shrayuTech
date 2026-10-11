@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
 import SkeletonBase from './SkeletonBase';
-import { useTheme } from '../../context/ThemeContext';
 
 /**
  * SkeletonNavbar — Mirrors the real Shrayu Technologies navbar exactly.
@@ -9,14 +8,11 @@ import { useTheme } from '../../context/ThemeContext';
  * Mobile: logo + hamburger icon.
  */
 const SkeletonNavbar = () => {
-  const { isDark } = useTheme();
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 py-5 transition-all duration-300 ${
-        isDark
-          ? 'bg-[#030712]/80 backdrop-blur-xl border-b border-white/8'
-          : 'bg-white/85 backdrop-blur-xl border-b border-slate-200/80'
+        'light:bg-white/85 light:backdrop-blur-xl light:border-b light:border-slate-200/80 dark:bg-[#030712]/80 dark:backdrop-blur-xl dark:border-b dark:border-white/8'
       }`}
       aria-label="Navigation loading"
       aria-busy="true"
@@ -41,9 +37,7 @@ const SkeletonNavbar = () => {
             {/* Nav pill container */}
             <div
               className={`flex items-center space-x-1 px-2 py-1.5 rounded-full border ${
-                isDark
-                  ? 'bg-white/[0.04] border-white/10'
-                  : 'bg-slate-100 border-slate-200'
+                'light:bg-slate-100 light:border-slate-200 dark:bg-white/[0.04] dark:border-white/10'
               }`}
             >
               {/* Home, About, Services, Portfolio, Contact */}
@@ -61,7 +55,7 @@ const SkeletonNavbar = () => {
             {/* Theme toggle circle */}
             <SkeletonBase variant="circle" width="2.25rem" height="2.25rem" />
 
-            {/* "Start Project →" CTA button */}
+            {/* "Get In Touch →" CTA button */}
             <SkeletonBase variant="button" width="138px" height="2.625rem" radius="9999px" />
           </div>
 

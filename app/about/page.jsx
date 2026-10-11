@@ -1,3 +1,4 @@
+import { getPageDates } from '../../src/data/contentRegistry';
 import About from '../../src/views/About';
 import SchemaMarkup from '../../src/components/seo/schema/SchemaMarkup';
 import {
@@ -21,6 +22,7 @@ export const metadata = buildPageMetadata({
 export default function AboutPage() {
   const url = `${SCHEMA_BASE_URL}/about`;
   const webPage = buildWebPageSchema({
+    ...getPageDates('about'),
     title: 'About Us | Shrayu Technologies',
     description: 'Learn about Shrayu Technologies, our mission, core values, leadership team, and our commitment to software craftsmanship.',
     url,

@@ -117,7 +117,7 @@ export default async function PortfolioCaseStudyPage({ params }) {
             </span>
 
             {project.visualType && (
-              <span className="inline-flex items-center space-x-1.5 bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-1 rounded-full text-emerald-500 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
+              <span className="inline-flex items-center space-x-1.5 bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-1 rounded-full text-emerald-700 dark:text-emerald-500 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
                 <Activity className="w-3.5 h-3.5" />
                 <span>{project.visualType} visual engine</span>
               </span>
@@ -315,15 +315,15 @@ export default async function PortfolioCaseStudyPage({ params }) {
         )}
 
         {/* COMPARISON CTA */}
-        <div className="p-8 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-950/20 via-slate-900/40 to-slate-900/60 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="p-8 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-50 via-white to-slate-50 dark:from-purple-950/20 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-left">
-            <span className="text-xs font-bold uppercase tracking-wider text-purple-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">
               Interactive Comparison
             </span>
-            <h3 className="text-xl sm:text-2xl font-bold text-white">
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
               Compare This System Against Alternative Architectures
             </h3>
-            <p className="text-sm text-slate-300 max-w-xl">
+            <p className="text-sm text-slate-600 dark:text-slate-300 max-w-xl">
               Use our technical comparison engine to benchmark {project.title} against other production systems in algorithmic complexity, throughput, and hardware requirements.
             </p>
           </div>

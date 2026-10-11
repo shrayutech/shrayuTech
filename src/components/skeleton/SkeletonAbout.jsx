@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
 import SkeletonBase from './SkeletonBase';
-import { useTheme } from '../../context/ThemeContext';
 
 /**
  * SkeletonAbout — About page skeleton matching actual page sections:
@@ -12,11 +11,8 @@ import { useTheme } from '../../context/ThemeContext';
  *   5. Future Roadmap: section title → 3-col roadmap cards
  */
 const SkeletonAbout = () => {
-  const { isDark } = useTheme();
 
-  const cardClass = isDark
-    ? 'bg-[#0F1728]/70 border-white/[0.07]'
-    : 'bg-white border-slate-200';
+  const cardClass = 'light:bg-white light:border-slate-200 dark:bg-[#0F1728]/70 dark:border-white/[0.07]';
 
   return (
     <div className="max-w-6xl mx-auto relative z-10 space-y-24">
@@ -132,7 +128,7 @@ const SkeletonAbout = () => {
       </div>
 
       {/* ── 5. FUTURE ROADMAP — 3-col ── */}
-      <div className={`pt-12 border-t space-y-12 ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+      <div className={`pt-12 border-t space-y-12 ${'light:border-slate-200 dark:border-white/10'}`}>
         <div className="flex justify-center">
           <SkeletonBase variant="heading" width="200px" height="2rem" radius="6px" />
         </div>

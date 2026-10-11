@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation';
+import { getPageDates } from '../../src/data/contentRegistry';
 import Careers from '../../src/views/Careers';
 import SchemaMarkup from '../../src/components/seo/schema/SchemaMarkup';
 import {
@@ -17,9 +19,13 @@ export const metadata = buildPageMetadata({
 });
 
 export default function CareersPage() {
+  // Careers page is hidden for now. Delete this line (and restore the links) to bring it back.
+  notFound();
+
   const url = `${SCHEMA_BASE_URL}/careers`;
 
   const webPage = buildWebPageSchema({
+    ...getPageDates('careers'),
     title: 'Careers & Engineering Collective | Shrayu Technologies',
     description: 'Join Shrayu Technologies and help us build the digital future. Explore open positions in engineering, design, and product management.',
     url

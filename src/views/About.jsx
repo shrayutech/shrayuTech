@@ -1,5 +1,6 @@
 "use client";
 import Link from 'next/link';
+import { revealOnScroll } from '../utils/motionPresets';
 import { motion } from 'framer-motion';
 import {
   ShieldCheck,
@@ -15,15 +16,12 @@ import {
 import SEO from '../components/SEO';
 import Breadcrumbs from '../components/Breadcrumbs';
 import RelatedServices from '../components/RelatedServices';
-import ContentFreshnessBadge from '../components/ContentFreshnessBadge';
-import { useTheme } from '../context/ThemeContext';
 import { useSkeleton } from '../context/SkeletonContext';
 import SkeletonWrapper from '../components/skeleton/SkeletonWrapper';
 import AboutSkeleton from '../components/skeleton/AboutSkeleton';
 import SpotlightCard from '../components/SpotlightCard';
 
 const About = () => {
-  const { isDark } = useTheme();
   const { isLoading } = useSkeleton();
 
   const values = [
@@ -91,7 +89,6 @@ const About = () => {
         <div className="max-w-6xl mx-auto relative z-10 space-y-20">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <Breadcrumbs items={[{ label: 'About Us' }]} />
-            <ContentFreshnessBadge pageKey="about" />
           </div>
 
           {/* Header Title */}
@@ -105,43 +102,40 @@ const About = () => {
               <Sparkles className="w-3.5 h-3.5" />
               <span>Our Origin & Philosophy</span>
             </div>
-            <h1 className={`text-4xl sm:text-5xl md:text-6xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h1 className={`text-4xl sm:text-5xl md:text-6xl font-black tracking-tight ${'light:text-slate-900 dark:text-white'}`}>
               We Engineer{' '}
               <span className="gradient-text-animated">
                 Clean Digital Systems
               </span>
             </h1>
-            <p className={`text-base sm:text-lg font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            <p className={`text-base sm:text-lg font-medium leading-relaxed ${'light:text-slate-600 dark:text-slate-300'}`}>
               Shrayu Technologies is a modern software engineering startup dedicated to building high-quality digital products, websites, mobile applications, and custom software.
             </p>
           </motion.div>
 
           {/* Story & Philosophy Section */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            {...revealOnScroll}
             className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
           >
             <div className="lg:col-span-6 space-y-6">
-              <h2 className={`text-2xl sm:text-3xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <h2 className={`text-2xl sm:text-3xl font-black ${'light:text-slate-900 dark:text-white'}`}>
                 Who We Are
               </h2>
-              <p className={`text-sm sm:text-base leading-relaxed font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              <p className={`text-sm sm:text-base leading-relaxed font-medium ${'light:text-slate-600 dark:text-slate-300'}`}>
                 Shrayu Technologies was founded with a single objective: to engineer clean, maintainable software products that scale seamlessly. We eliminate unnecessary corporate management layers and focus directly on technical craftsmanship, transparent communication, and rapid execution.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                <div className={`p-4 rounded-2xl border-l-4 border-blue-500 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 ${isDark ? 'bg-white/5 border-r border-t border-b border-white/10' : 'bg-white border-r border-t border-b border-slate-200'}`}>
+                <div className={`p-4 rounded-2xl border-l-4 border-blue-500 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 ${'light:bg-white light:border-r light:border-t light:border-b light:border-slate-200 dark:bg-white/5 dark:border-r dark:border-t dark:border-b dark:border-white/10'}`}>
                   <span className="text-[10px] text-blue-500 font-extrabold uppercase tracking-wider block mb-1">Our Vision</span>
-                  <span className={`text-xs font-semibold leading-relaxed block ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  <span className={`text-xs font-semibold leading-relaxed block ${'light:text-slate-700 dark:text-slate-300'}`}>
                     Making high-performance software engineering accessible to growing businesses.
                   </span>
                 </div>
-                <div className={`p-4 rounded-2xl border-l-4 border-indigo-500 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 ${isDark ? 'bg-white/5 border-r border-t border-b border-white/10' : 'bg-white border-r border-t border-b border-slate-200'}`}>
+                <div className={`p-4 rounded-2xl border-l-4 border-indigo-500 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 ${'light:bg-white light:border-r light:border-t light:border-b light:border-slate-200 dark:bg-white/5 dark:border-r dark:border-t dark:border-b dark:border-white/10'}`}>
                   <span className="text-[10px] text-indigo-500 font-extrabold uppercase tracking-wider block mb-1">Our Mission</span>
-                  <span className={`text-xs font-semibold leading-relaxed block ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  <span className={`text-xs font-semibold leading-relaxed block ${'light:text-slate-700 dark:text-slate-300'}`}>
                     Delivering clean, secure, and fully documented codebases on time.
                   </span>
                 </div>
@@ -150,24 +144,24 @@ const About = () => {
 
             <div className="lg:col-span-6">
               <SpotlightCard className="glass-card-3d rounded-3xl p-8 space-y-6 shadow-2xl">
-                <h3 className={`text-lg font-bold flex items-center space-x-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                <h3 className={`text-lg font-bold flex items-center space-x-2 ${'light:text-slate-900 dark:text-white'}`}>
                   <GitBranch className="w-5 h-5 text-blue-500" />
                   <span>Our Tech Philosophy</span>
                 </h3>
                 <ul className="space-y-4 text-xs font-semibold">
-                  <li className={`flex items-center space-x-3 transition-colors ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  <li className={`flex items-center space-x-3 transition-colors ${'light:text-slate-700 dark:text-slate-300'}`}>
                     <div className="w-2.5 h-2.5 bg-blue-500 rounded-full shrink-0 shadow-sm shadow-blue-500/50"></div>
                     <span>Prefer functional purity & modular architecture.</span>
                   </li>
-                  <li className={`flex items-center space-x-3 transition-colors ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  <li className={`flex items-center space-x-3 transition-colors ${'light:text-slate-700 dark:text-slate-300'}`}>
                     <div className="w-2.5 h-2.5 bg-indigo-500 rounded-full shrink-0 shadow-sm shadow-indigo-500/50"></div>
                     <span>Minimize runtime dependencies to ensure optimal performance.</span>
                   </li>
-                  <li className={`flex items-center space-x-3 transition-colors ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  <li className={`flex items-center space-x-3 transition-colors ${'light:text-slate-700 dark:text-slate-300'}`}>
                     <div className="w-2.5 h-2.5 bg-cyan-500 rounded-full shrink-0 shadow-sm shadow-cyan-500/50"></div>
                     <span>Deploy stateless APIs optimized for multi-region scale.</span>
                   </li>
-                  <li className={`flex items-center space-x-3 transition-colors ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                  <li className={`flex items-center space-x-3 transition-colors ${'light:text-slate-700 dark:text-slate-300'}`}>
                     <div className="w-2.5 h-2.5 bg-purple-500 rounded-full shrink-0 shadow-sm shadow-purple-500/50"></div>
                     <span>Maintain comprehensive OpenAPI specs and documentation.</span>
                   </li>
@@ -178,13 +172,10 @@ const About = () => {
 
           {/* Core Values Section */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            {...revealOnScroll}
             className="space-y-12"
           >
-            <h2 className={`text-2xl sm:text-3xl font-black text-center ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h2 className={`text-2xl sm:text-3xl font-black text-center ${'light:text-slate-900 dark:text-white'}`}>
               Our Core Values
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -194,12 +185,12 @@ const About = () => {
                   className="glass-card-3d rounded-3xl p-8 space-y-4"
                 >
                   <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${
-                    isDark ? 'bg-white/5 border border-white/10' : 'bg-slate-100 border border-slate-200'
+                    'light:bg-slate-100 light:border light:border-slate-200 dark:bg-white/5 dark:border dark:border-white/10'
                   }`}>
                     {val.icon}
                   </div>
-                  <h3 className={`font-bold text-lg transition-colors ${isDark ? 'text-white group-hover:text-blue-400' : 'text-slate-900 group-hover:text-blue-600'}`}>{val.title}</h3>
-                  <p className={`text-xs leading-relaxed font-semibold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{val.desc}</p>
+                  <h3 className={`font-bold text-lg transition-colors ${'light:text-slate-900 light:group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400'}`}>{val.title}</h3>
+                  <p className={`text-xs leading-relaxed font-semibold ${'light:text-slate-600 dark:text-slate-300'}`}>{val.desc}</p>
                 </SpotlightCard>
               ))}
             </div>
@@ -207,15 +198,12 @@ const About = () => {
 
           {/* Team Section */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            {...revealOnScroll}
             className="space-y-12 text-center"
           >
             <div className="space-y-3 max-w-2xl mx-auto">
-              <h2 className={`text-2xl sm:text-3xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>Meet the Team</h2>
-              <p className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              <h2 className={`text-2xl sm:text-3xl font-black ${'light:text-slate-900 dark:text-white'}`}>Meet the Team</h2>
+              <p className={`text-sm font-semibold ${'light:text-slate-600 dark:text-slate-300'}`}>
                 A passionate team building exceptional digital products.
               </p>
             </div>
@@ -231,12 +219,12 @@ const About = () => {
                       {member.initials}
                     </div>
                     <div className="space-y-1">
-                      <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{member.name}</h3>
+                      <h3 className={`text-xl font-bold ${'light:text-slate-900 dark:text-white'}`}>{member.name}</h3>
                       <span className="text-xs text-blue-500 font-bold uppercase tracking-wider block">
                         {member.role}
                       </span>
                     </div>
-                    <p className={`text-xs font-semibold leading-relaxed max-w-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                    <p className={`text-xs font-semibold leading-relaxed max-w-sm ${'light:text-slate-600 dark:text-slate-300'}`}>
                       {member.bio}
                     </p>
                   </div>
@@ -247,9 +235,7 @@ const About = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 hover:-translate-y-1 active:scale-95 ${
-                        isDark
-                          ? 'bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-blue-600/20 hover:border-blue-500/40 hover:shadow-md hover:shadow-blue-500/20'
-                          : 'bg-slate-100 border border-slate-200 text-slate-700 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-300 hover:shadow-md hover:shadow-blue-500/10'
+                        'light:bg-slate-100 light:border light:border-slate-200 light:text-slate-700 light:hover:text-blue-600 light:hover:bg-blue-50 light:hover:border-blue-300 light:hover:shadow-md light:hover:shadow-blue-500/10 dark:bg-white/5 dark:border dark:border-white/10 dark:text-slate-300 dark:hover:text-white dark:hover:bg-blue-600/20 dark:hover:border-blue-500/40 dark:hover:shadow-md dark:hover:shadow-blue-500/20'
                       }`}
                       aria-label="LinkedIn Profile"
                     >
@@ -260,9 +246,7 @@ const About = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 hover:-translate-y-1 active:scale-95 ${
-                        isDark
-                          ? 'bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-blue-600/20 hover:border-blue-500/40 hover:shadow-md hover:shadow-blue-500/20'
-                          : 'bg-slate-100 border border-slate-200 text-slate-700 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-300 hover:shadow-md hover:shadow-blue-500/10'
+                        'light:bg-slate-100 light:border light:border-slate-200 light:text-slate-700 light:hover:text-blue-600 light:hover:bg-blue-50 light:hover:border-blue-300 light:hover:shadow-md light:hover:shadow-blue-500/10 dark:bg-white/5 dark:border dark:border-white/10 dark:text-slate-300 dark:hover:text-white dark:hover:bg-blue-600/20 dark:hover:border-blue-500/40 dark:hover:shadow-md dark:hover:shadow-blue-500/20'
                       }`}
                       aria-label="GitHub Profile"
                     >
@@ -272,38 +256,14 @@ const About = () => {
                 </SpotlightCard>
               ))}
             </div>
-
-            {/* Hiring Callout Banner */}
-            <div className="pt-4 max-w-4xl mx-auto">
-              <SpotlightCard className="glass-card-3d rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-left">
-                <div className="space-y-1.5">
-                  <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    Looking to Build Scalable Systems With Us?
-                  </h3>
-                  <p className={`text-xs font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                    We are always scouting talented software engineers, ML researchers, and UI designers to join our remote-first collective.
-                  </p>
-                </div>
-                <Link
-                  href="/careers"
-                  className="btn-primary group px-6 py-3 rounded-full text-xs font-bold whitespace-nowrap flex items-center space-x-2 shrink-0 active:scale-95 transition-all text-white shadow-lg shadow-blue-500/20"
-                >
-                  <span>Explore Open Roles</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-                </Link>
-              </SpotlightCard>
-            </div>
           </motion.div>
 
           {/* Future Roadmap Section */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className={`pt-12 border-t space-y-12 ${isDark ? 'border-white/10' : 'border-slate-200'}`}
+            {...revealOnScroll}
+            className={`pt-12 border-t space-y-12 ${'light:border-slate-200 dark:border-white/10'}`}
           >
-            <h2 className={`text-2xl sm:text-3xl font-black text-center ${isDark ? 'text-white' : 'text-slate-900'}`}>Future Roadmap</h2>
+            <h2 className={`text-2xl sm:text-3xl font-black text-center ${'light:text-slate-900 dark:text-white'}`}>Future Roadmap</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {roadmap.map((item, idx) => (
                 <SpotlightCard
@@ -311,19 +271,19 @@ const About = () => {
                   className="glass-card-3d rounded-3xl p-8 space-y-4"
                 >
                   <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border ${
-                    isDark ? 'text-blue-400 bg-blue-500/10 border-blue-500/20' : 'text-blue-700 bg-blue-50 border-blue-200'
+                    'light:text-blue-700 light:bg-blue-50 light:border-blue-200 dark:text-blue-400 dark:bg-blue-500/10 dark:border-blue-500/20'
                   }`}>
                     {item.phase}
                   </span>
-                  <h3 className={`font-bold text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>{item.title}</h3>
-                  <p className={`text-xs font-semibold leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{item.desc}</p>
+                  <h3 className={`font-bold text-base ${'light:text-slate-900 dark:text-white'}`}>{item.title}</h3>
+                  <p className={`text-xs font-semibold leading-relaxed ${'light:text-slate-600 dark:text-slate-300'}`}>{item.desc}</p>
                 </SpotlightCard>
               ))}
             </div>
           </motion.div>
 
           {/* Related Services Section */}
-          <div className={`pt-12 border-t ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+          <div className={`pt-12 border-t ${'light:border-slate-200 dark:border-white/10'}`}>
             <RelatedServices
               limit={3}
               title="Explore Our Core Engineering Capabilities"
@@ -333,11 +293,8 @@ const About = () => {
 
           {/* Bottom Conversion & Internal Linking Section */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className={`pt-8 border-t ${isDark ? 'border-white/10' : 'border-slate-200'}`}
+            {...revealOnScroll}
+            className={`pt-8 border-t ${'light:border-slate-200 dark:border-white/10'}`}
           >
             <div className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-gradient-to-tr from-blue-950 via-[#0B1021] to-indigo-950 border border-white/15 p-8 sm:p-12 text-center shadow-2xl space-y-6">
               <div className="relative z-10 space-y-4">

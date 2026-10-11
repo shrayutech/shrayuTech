@@ -108,16 +108,16 @@ export default async function LocationCategoryPage({ params }) {
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-white">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-slate-900 dark:text-white">
             {category.name} in{' '}
             <span className="gradient-text-animated">{city.name}</span>
           </h1>
 
-          <p className="text-base sm:text-lg font-semibold text-blue-400">
+          <p className="text-base sm:text-lg font-semibold text-blue-600 dark:text-blue-400">
             {category.tagline}
           </p>
 
-          <p className="text-base sm:text-lg font-medium leading-relaxed text-slate-300">
+          <p className="text-base sm:text-lg font-medium leading-relaxed text-slate-600 dark:text-slate-300">
             {category.description} Shrayu Technologies provides organizations in {city.name} with dedicated software architects, rapid agile deployment cadences, and robust technical infrastructure.
           </p>
         </div>
@@ -127,12 +127,12 @@ export default async function LocationCategoryPage({ params }) {
           {/* Deliverables (7 cols) */}
           <div className="lg:col-span-7 space-y-6">
             <SpotlightCard className="glass-card-3d rounded-3xl p-8 space-y-6">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2.5">
-                <ShieldCheck className="w-6 h-6 text-emerald-400" />
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2.5">
+                <ShieldCheck className="w-6 h-6 text-emerald-700 dark:text-emerald-400" />
                 <span>Architecture Deliverables for {city.name}</span>
               </h2>
 
-              <p className="text-xs text-slate-300 leading-relaxed font-medium">
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                 Our engineering sprints for {category.name.toLowerCase()} adhere to strict software quality benchmarks, comprehensive unit test coverage, and automated CI/CD pipelines.
               </p>
 
@@ -140,10 +140,10 @@ export default async function LocationCategoryPage({ params }) {
                 {category.keyFeatures.map((feat, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3"
+                    className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-start gap-3"
                   >
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span className="text-xs font-semibold text-slate-200">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
+                    <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">
                       {feat}
                     </span>
                   </div>
@@ -151,12 +151,12 @@ export default async function LocationCategoryPage({ params }) {
               </div>
 
               {/* Local corridor context */}
-              <div className="pt-4 border-t border-white/10 space-y-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-blue-400 block">
+              <div className="pt-4 border-t border-slate-200 dark:border-white/10 space-y-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 block">
                   Service Availability in {city.name}
                 </span>
-                <p className="text-xs text-slate-300 leading-relaxed font-medium">
-                  Available for remote sprints and on-site engineering workshops across {city.name}’s key business corridors, including {city.keyLocalities?.join(', ')}.
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                  Available for remote sprints and on-site engineering workshops across {city.name} and the rest of India.
                 </p>
               </div>
 
@@ -182,35 +182,35 @@ export default async function LocationCategoryPage({ params }) {
           <div className="lg:col-span-5 space-y-6">
             <SpotlightCard className="glass-card-3d rounded-3xl p-8 space-y-6">
               <div className="space-y-2">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                   {city.stateName} Hub Contact
                 </span>
-                <h3 className="text-xl font-bold text-white">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                   Shrayu Technologies - {city.name}
                 </h3>
-                <p className="text-xs text-slate-400">{city.hubRole}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{city.hubRole}</p>
               </div>
 
-              <div className="space-y-3 text-xs pt-2 border-t border-white/10">
+              <div className="space-y-3 text-xs pt-2 border-t border-slate-200 dark:border-white/10">
                 <div className="flex items-start gap-2.5">
-                  <span className="font-bold text-slate-400 uppercase">Office:</span>
-                  <span className="text-slate-300">{city.address}</span>
+                  <span className="font-bold text-slate-500 dark:text-slate-400 uppercase">Office:</span>
+                  <span className="text-slate-600 dark:text-slate-300">{city.address}</span>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <span className="font-bold text-slate-400 uppercase">Phone:</span>
-                  <a href={`tel:${city.phone}`} className="text-blue-400 hover:underline">
+                  <span className="font-bold text-slate-500 dark:text-slate-400 uppercase">Phone:</span>
+                  <a href={`tel:${city.phone}`} className="text-blue-600 dark:text-blue-400 hover:underline">
                     {city.phone}
                   </a>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <span className="font-bold text-slate-400 uppercase">Email:</span>
-                  <a href={`mailto:${city.email}`} className="text-blue-400 hover:underline">
+                  <span className="font-bold text-slate-500 dark:text-slate-400 uppercase">Email:</span>
+                  <a href={`mailto:${city.email}`} className="text-blue-600 dark:text-blue-400 hover:underline">
                     {city.email}
                   </a>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <span className="font-bold text-slate-400 uppercase">Hours:</span>
-                  <span className="text-slate-400">{city.businessHours}</span>
+                  <span className="font-bold text-slate-500 dark:text-slate-400 uppercase">Hours:</span>
+                  <span className="text-slate-500 dark:text-slate-400">{city.businessHours}</span>
                 </div>
               </div>
             </SpotlightCard>
@@ -224,10 +224,10 @@ export default async function LocationCategoryPage({ params }) {
               <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">
                 Verified Systems
               </span>
-              <h2 className="text-3xl font-black tracking-tight text-white">
+              <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
                 Relevant Engineering Systems in {category.shortName}
               </h2>
-              <p className="text-xs text-slate-400 font-medium max-w-xl">
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
                 Explore open source production repositories demonstrating our core competencies in this domain.
               </p>
             </div>
@@ -239,26 +239,26 @@ export default async function LocationCategoryPage({ params }) {
                   className="glass-card-3d rounded-3xl p-6 space-y-4 flex flex-col justify-between"
                 >
                   <div className="space-y-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
                       {p.category}
                     </span>
-                    <h4 className="text-base font-bold text-white line-clamp-1">{p.title}</h4>
-                    <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
+                    <h4 className="text-base font-bold text-slate-900 dark:text-white line-clamp-1">{p.title}</h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
                       {p.description}
                     </p>
                   </div>
 
-                  <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                  <div className="pt-3 border-t border-slate-200 dark:border-white/10 flex items-center justify-between">
                     <a
                       href={p.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
                     >
                       <span>Repository</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
-                    <span className="text-[10px] text-slate-400 font-semibold">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">
                       {p.techStack[0]}
                     </span>
                   </div>
@@ -270,8 +270,8 @@ export default async function LocationCategoryPage({ params }) {
 
         {/* RELATED SERVICES IN THIS CITY */}
         {otherCategories.length > 0 && (
-          <div className="pt-8 border-t border-white/10 space-y-6">
-            <h3 className="text-xl font-bold text-white">
+          <div className="pt-8 border-t border-slate-200 dark:border-white/10 space-y-6">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
               Other Software Capabilities in {city.name}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -279,17 +279,17 @@ export default async function LocationCategoryPage({ params }) {
                 <Link
                   key={oc.slug}
                   href={`/locations/${city.stateSlug}/${city.slug}/${oc.slug}`}
-                  className="p-5 rounded-2xl glass-card-3d border border-white/10 hover:border-blue-500/40 transition-all flex items-center justify-between group"
+                  className="p-5 rounded-2xl glass-card-3d border border-slate-200 dark:border-white/10 hover:border-blue-500/40 transition-all flex items-center justify-between group"
                 >
                   <div className="space-y-1">
-                    <h4 className="text-sm font-bold text-white group-hover:text-blue-300 transition-colors">
+                    <h4 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
                       {oc.name}
                     </h4>
-                    <p className="text-xs text-slate-400 line-clamp-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
                       {oc.tagline}
                     </p>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-4 h-4 text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
                 </Link>
               ))}
             </div>

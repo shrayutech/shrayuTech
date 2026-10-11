@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
 import SkeletonBase from './SkeletonBase';
-import { useTheme } from '../../context/ThemeContext';
 
 /**
  * SkeletonHeroDashboard - Clean, high-fidelity hero visual skeleton.
@@ -9,14 +8,11 @@ import { useTheme } from '../../context/ThemeContext';
  * representing the real platform showcase visual.
  */
 const SkeletonHeroDashboard = ({ className = '' }) => {
-  const { isDark } = useTheme();
 
   return (
     <div
       className={`w-full h-[320px] sm:h-[400px] md:h-[460px] rounded-3xl border p-6 sm:p-8 flex flex-col justify-between shadow-2xl transition-all duration-300 ${
-        isDark
-          ? 'bg-[#141A2A]/90 border-white/10'
-          : 'bg-[#E9EEF5] border-slate-200'
+        'light:bg-[#E9EEF5] light:border-slate-200 dark:bg-[#141A2A]/90 dark:border-white/10'
       } ${className}`}
     >
       {/* Top Header Placeholder */}
@@ -40,7 +36,7 @@ const SkeletonHeroDashboard = ({ className = '' }) => {
         <div className="md:col-span-5 hidden md:block">
           <div
             className={`p-6 rounded-2xl border space-y-3 ${
-              isDark ? 'bg-[#1B2335] border-white/10' : 'bg-[#E2E8F0] border-slate-300'
+              'light:bg-[#E2E8F0] light:border-slate-300 dark:bg-[#1B2335] dark:border-white/10'
             }`}
           >
             <SkeletonBase variant="circle" width="3rem" height="3rem" />

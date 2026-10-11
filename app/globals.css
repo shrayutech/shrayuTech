@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* `dark:` / `light:` utilities follow the site's theme toggle (class on <html>, set before first
+   paint by the inline script in app/layout.jsx), not the OS color-scheme setting. Using these
+   instead of `isDark ? ... : ...` in JS keeps server-rendered HTML correct for both themes. */
+/* Anything not explicitly light is dark, so pages without JS keep the original dark design */
+@custom-variant dark (&:where(:root:not(.light), :root:not(.light) *));
+@custom-variant light (&:where(.light, .light *));
+
 @theme {
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
@@ -34,6 +41,7 @@
 html.dark {
   color-scheme: dark;
   --bg-app: #030712;
+  --spotlight-color: rgba(59, 130, 246, 0.15);
   --text-app-primary: #F8FAFC;
   --text-app-secondary: #94A3B8;
   --text-app-muted: #64748B;
@@ -104,6 +112,8 @@ html.light {
   --shadow-card: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
   --shadow-card-hover: 0 20px 40px -10px rgba(37, 99, 235, 0.15), 0 0 15px 0 rgba(37, 99, 235, 0.08);
 
+  --spotlight-color: rgba(37, 99, 235, 0.08);
+
   --badge-bg: #EFF6FF;
   --badge-border: #BFDBFE;
   --badge-text: #1D4ED8;
@@ -143,6 +153,7 @@ html.light {
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 90px; /* keep #anchor targets clear of the fixed navbar */
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   background-color: var(--bg-app);
   color: var(--text-app-primary);
@@ -187,7 +198,6 @@ body {
     radial-gradient(circle 800px at 80% 20%, rgba(79, 70, 229, 0.2), transparent 60%),
     radial-gradient(circle 600px at 15% 80%, rgba(56, 189, 248, 0.15), transparent 50%);
   background-size: 140% 140%;
-  animation: atmosphereDrift 22s ease-in-out infinite alternate;
   transition: background-color var(--duration-normal) ease-in-out;
 }
 html.light .bg-hero-atmosphere {
@@ -197,7 +207,6 @@ html.light .bg-hero-atmosphere {
     radial-gradient(circle 800px at 80% 20%, rgba(79, 70, 229, 0.06), transparent 60%),
     radial-gradient(circle 600px at 15% 80%, rgba(6, 182, 212, 0.06), transparent 50%);
   background-size: 140% 140%;
-  animation: atmosphereDrift 22s ease-in-out infinite alternate;
 }
 
 .bg-services-atmosphere {
@@ -207,7 +216,6 @@ html.light .bg-hero-atmosphere {
     radial-gradient(circle 700px at 10% 50%, rgba(37, 99, 235, 0.2), transparent 60%),
     radial-gradient(circle 600px at 90% 90%, rgba(56, 189, 248, 0.15), transparent 50%);
   background-size: 130% 130%;
-  animation: atmosphereDrift 24s ease-in-out infinite alternate;
   transition: background-color var(--duration-normal) ease-in-out;
 }
 html.light .bg-services-atmosphere {
@@ -217,7 +225,6 @@ html.light .bg-services-atmosphere {
     radial-gradient(circle 700px at 10% 50%, rgba(37, 99, 235, 0.07), transparent 60%),
     radial-gradient(circle 600px at 90% 90%, rgba(6, 182, 212, 0.05), transparent 50%);
   background-size: 130% 130%;
-  animation: atmosphereDrift 24s ease-in-out infinite alternate;
 }
 
 .bg-portfolio-atmosphere {
@@ -226,7 +233,6 @@ html.light .bg-services-atmosphere {
     radial-gradient(circle 900px at 50% 10%, rgba(37, 99, 235, 0.22), transparent 65%),
     radial-gradient(circle 700px at 85% 70%, rgba(147, 51, 234, 0.18), transparent 60%);
   background-size: 130% 130%;
-  animation: atmosphereDrift 20s ease-in-out infinite alternate;
   transition: background-color var(--duration-normal) ease-in-out;
 }
 html.light .bg-portfolio-atmosphere {
@@ -235,7 +241,6 @@ html.light .bg-portfolio-atmosphere {
     radial-gradient(circle 900px at 50% 10%, rgba(37, 99, 235, 0.07), transparent 65%),
     radial-gradient(circle 700px at 85% 70%, rgba(147, 51, 234, 0.05), transparent 60%);
   background-size: 130% 130%;
-  animation: atmosphereDrift 20s ease-in-out infinite alternate;
 }
 
 .bg-about-atmosphere {
@@ -244,7 +249,6 @@ html.light .bg-portfolio-atmosphere {
     radial-gradient(circle 800px at 20% 20%, rgba(56, 189, 248, 0.2), transparent 60%),
     radial-gradient(circle 800px at 80% 80%, rgba(79, 70, 229, 0.2), transparent 60%);
   background-size: 130% 130%;
-  animation: atmosphereDrift 20s ease-in-out infinite alternate;
   transition: background-color var(--duration-normal) ease-in-out;
 }
 html.light .bg-about-atmosphere {
@@ -253,7 +257,6 @@ html.light .bg-about-atmosphere {
     radial-gradient(circle 800px at 20% 20%, rgba(6, 182, 212, 0.07), transparent 60%),
     radial-gradient(circle 800px at 80% 80%, rgba(79, 70, 229, 0.06), transparent 60%);
   background-size: 130% 130%;
-  animation: atmosphereDrift 20s ease-in-out infinite alternate;
 }
 
 .bg-contact-atmosphere {
@@ -262,7 +265,6 @@ html.light .bg-about-atmosphere {
     radial-gradient(ellipse 70% 50% at 50% 30%, rgba(37, 99, 235, 0.3), transparent 70%),
     radial-gradient(circle 600px at 90% 10%, rgba(56, 189, 248, 0.18), transparent 50%);
   background-size: 130% 130%;
-  animation: atmosphereDrift 22s ease-in-out infinite alternate;
   transition: background-color var(--duration-normal) ease-in-out;
 }
 html.light .bg-contact-atmosphere {
@@ -271,7 +273,6 @@ html.light .bg-contact-atmosphere {
     radial-gradient(ellipse 70% 50% at 50% 30%, rgba(37, 99, 235, 0.08), transparent 70%),
     radial-gradient(circle 600px at 90% 10%, rgba(6, 182, 212, 0.06), transparent 50%);
   background-size: 130% 130%;
-  animation: atmosphereDrift 22s ease-in-out infinite alternate;
 }
 
 /* Layer 4: Architectural Blueprint Mesh & Circuit Grid */
@@ -485,6 +486,33 @@ html.light .noise-overlay {
   animation: floatHeroVisual 6s ease-in-out infinite;
 }
 
+/* ==========================================
+   SMOOTH INTERACTION DEFAULTS
+   ========================================== */
+
+/* In the base layer so any Tailwind transition-* / duration-* utility still wins */
+@layer base {
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [role="button"] {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: var(--ease-standard);
+    transition-duration: var(--duration-fast);
+  }
+
+  img {
+    transition: opacity var(--duration-normal) var(--ease-smooth);
+  }
+
+  :focus-visible {
+    outline-offset: 3px;
+    transition: outline-offset var(--duration-fast) var(--ease-standard);
+  }
+}
+
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
@@ -504,6 +532,64 @@ html.dark ::-webkit-scrollbar-thumb {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #2563EB;
+}
+
+/* ==========================================
+   HERO ROTATING TEXT (see HeroRotatingText.jsx)
+   ========================================== */
+
+/* Every statement sits in the same grid cell, so the height is that of the longest one */
+.hero-rotator-stack {
+  display: grid;
+}
+
+.hero-rotator-item {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(0.4em);
+  transition:
+    opacity 600ms ease-in-out,
+    transform 600ms ease-in-out;
+}
+
+/* The new line starts once the old one is half faded, so they don't blur together (~1s total) */
+.hero-rotator-item[data-state='active'] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 700ms ease-in-out 300ms,
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1) 300ms;
+}
+
+.hero-rotator-item[data-state='leaving'] {
+  transform: translateY(-0.4em);
+}
+
+/* Reduced motion: statements still change, but with a plain cross-fade and no movement */
+@media (prefers-reduced-motion: reduce) {
+  .hero-rotator-item,
+  .hero-rotator-item[data-state='leaving'] {
+    transform: none;
+    transition: opacity 700ms ease-in-out !important;
+  }
+}
+
+/* ==========================================
+   SCROLL REVEAL (see ScrollReveal.jsx)
+   ========================================== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.7s ease-out 0.15s,
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+
+/* `transform: none` (not translateY(0)) so sticky/fixed children work once revealed */
+.reveal.reveal-in {
+  opacity: 1;
+  transform: none;
 }
 
 /* ==========================================

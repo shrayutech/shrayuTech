@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
 import SkeletonBase from './SkeletonBase';
-import { useTheme } from '../../context/ThemeContext';
 
 /**
  * SkeletonFooter — Matches the real Shrayu Technologies footer.
@@ -9,12 +8,11 @@ import { useTheme } from '../../context/ThemeContext';
  * Bottom bar: copyright | privacy | terms | scroll-top.
  */
 const SkeletonFooter = () => {
-  const { isDark } = useTheme();
 
   return (
     <footer
       className={`relative pt-24 pb-12 border-t overflow-hidden ${
-        isDark ? 'bg-[#02050D] border-white/10' : 'bg-slate-100 border-slate-200'
+        'light:bg-slate-100 light:border-slate-200 dark:bg-[#02050D] dark:border-white/10'
       }`}
       aria-label="Footer loading"
       aria-busy="true"

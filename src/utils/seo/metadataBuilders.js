@@ -22,7 +22,7 @@ export const SITE_METADATA_CONFIG = {
   defaultImage: 'https://shrayutech.vercel.app/logo.png',
   locale: 'en_US',
   twitterHandle: '@ayushkhobragade',
-  supportedLanguages: ['en', 'hi', 'mr']
+  supportedLanguages: ['en']
 };
 
 /**
@@ -300,9 +300,9 @@ export function buildLocationMetadata({ state, city, category } = {}) {
   // Default: National Locations Hub
   return buildPageMetadata({
     title: 'Regional Software Engineering Delivery Hubs in India',
-    description: 'Explore Shrayu Technologies delivery hubs across Western and Southern India, headquartered in Chhatrapati Sambhajinagar with pods in Pune, Mumbai, and Bengaluru.',
+    description: 'Explore Shrayu Technologies headquarters and delivery hub in Chhatrapati Sambhajinagar, Maharashtra, serving clients across India.',
     path: '/locations',
-    keywords: ['Software Development Hubs India', 'Maharashtra IT', 'Karnataka Software', 'Delivery Centers']
+    keywords: ['Software Development Hubs India', 'Maharashtra IT', 'Chhatrapati Sambhajinagar', 'Delivery Centers']
   });
 }
 

@@ -102,7 +102,7 @@ export default function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
         />
       </head>
       <body>
@@ -120,7 +120,6 @@ export default function RootLayout({ children }) {
                 <li><a href="/portfolio">Portfolio & Case Studies</a></li>
                 <li><a href="/compare">Technical Comparisons</a></li>
                 <li><a href="/locations">Engineering Locations & Hubs</a></li>
-                <li><a href="/careers">Careers</a></li>
                 <li><a href="/contact">Contact Us</a></li>
               </ul>
             </nav>

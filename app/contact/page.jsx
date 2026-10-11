@@ -1,3 +1,4 @@
+import { getPageDates } from '../../src/data/contentRegistry';
 import Contact from '../../src/views/Contact';
 import SchemaMarkup from '../../src/components/seo/schema/SchemaMarkup';
 import {
@@ -20,6 +21,7 @@ export default function ContactPage() {
   const url = `${SCHEMA_BASE_URL}/contact`;
 
   const webPage = buildWebPageSchema({
+    ...getPageDates('contact'),
     title: 'Contact Us | Shrayu Technologies',
     description: 'Get in touch with Shrayu Technologies. Request a free project consultation or submit a project brief.',
     url,

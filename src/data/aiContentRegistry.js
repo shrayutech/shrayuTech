@@ -58,48 +58,7 @@ export const initialAiContentRecords = [
       similarityScore: 0.42
     }
   },
-  {
-    id: 'ai-loc-pune-v1',
-    entityType: 'location',
-    entityId: 'maharashtra/pune',
-    contentType: 'delivery_hub_overview',
-    language: 'en',
-    version: 1,
-    title: 'Pune Software Engineering Delivery Pod',
-    summary: 'Enterprise client delivery hub operating from Hinjawadi Phase 1, supporting custom software and cloud infrastructure.',
-    content: {
-      highlights: [
-        'Physical facility in Hinjawadi IT Park, Pune',
-        'Direct client consulting and bi-weekly sprint review pod',
-        'Connected with Chhatrapati Sambhajinagar central R&D lab'
-      ],
-      faqs: [
-        {
-          question: 'Where is Shrayu Technologies located in Pune?',
-          answer: 'Our Pune engineering hub is located in Hinjawadi Phase 1, Pune, Maharashtra 411057.'
-        }
-      ],
-      seoTitle: 'Software Engineering Hub in Pune, Hinjawadi | Shrayu Technologies',
-      metaDescription: 'Partner with our Pune software development hub in Hinjawadi. Enterprise delivery pods for microservices, Next.js, and cloud architectures.'
-    },
-    status: 'published',
-    sourceDataHash: 'hash-pune-hub-202',
-    aiProvider: 'grounded-deterministic',
-    aiModel: 'deterministic-grounded-v1',
-    promptVersion: 'location-description-v1',
-    generatedAt: '2026-10-04T11:00:00.000Z',
-    reviewedBy: 'Regional Director',
-    reviewedAt: '2026-10-05T16:00:00.000Z',
-    publishedAt: '2026-10-06T10:00:00.000Z',
-    updatedAt: '2026-10-06T10:00:00.000Z',
-    needsRefresh: false,
-    validationResults: {
-      isValid: true,
-      errors: [],
-      warnings: [],
-      similarityScore: 0.38
-    }
-  },
+
   {
     id: 'ai-serv-custom-v1',
     entityType: 'service',

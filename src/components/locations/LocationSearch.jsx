@@ -3,7 +3,6 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, MapPin, Building, ArrowRight, X } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
 import { searchLocations } from '../../utils/locationUtils';
 
 export default function LocationSearch() {
@@ -11,7 +10,6 @@ export default function LocationSearch() {
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const { isDark } = useTheme();
   const router = useRouter();
 
   const handleSearch = (e) => {
@@ -45,9 +43,7 @@ export default function LocationSearch() {
     <div className="relative w-full max-w-xl mx-auto">
       <div
         className={`relative flex items-center rounded-2xl border transition-all duration-300 shadow-lg ${
-          isDark
-            ? 'bg-white/5 border-white/15 focus-within:border-blue-500/60 focus-within:bg-white/10'
-            : 'bg-white border-slate-200 focus-within:border-blue-500/60 focus-within:shadow-blue-500/10'
+          'light:bg-white light:border-slate-200 light:focus-within:border-blue-500/60 light:focus-within:shadow-blue-500/10 dark:bg-white/5 dark:border-white/15 dark:focus-within:border-blue-500/60 dark:focus-within:bg-white/10'
         }`}
       >
         <Search className="w-5 h-5 ml-4 shrink-0 text-blue-500" />
@@ -55,9 +51,9 @@ export default function LocationSearch() {
           type="text"
           value={query}
           onChange={handleSearch}
-          placeholder="Search by city, state, or tech corridor (e.g. Pune, CIDCO, BKC)..."
+          placeholder="Search by city, state, or tech corridor (e.g. Sambhajinagar, CIDCO, Waluj)..."
           className={`w-full py-4 px-3 text-sm font-medium bg-transparent outline-none transition-colors ${
-            isDark ? 'text-white placeholder:text-slate-400' : 'text-slate-900 placeholder:text-slate-500'
+            'light:text-slate-900 light:placeholder:text-slate-500 dark:text-white dark:placeholder:text-slate-400'
           }`}
           onFocus={() => {
             if (query.trim().length > 1) setIsOpen(true);
@@ -78,9 +74,7 @@ export default function LocationSearch() {
       {isOpen && (
         <div
           className={`absolute top-full mt-2 w-full rounded-2xl border backdrop-blur-xl shadow-2xl z-50 overflow-hidden transition-all duration-200 ${
-            isDark
-              ? 'bg-slate-900/95 border-white/15 divide-y divide-white/10'
-              : 'bg-white/95 border-slate-200 divide-y divide-slate-100'
+            'light:bg-white/95 light:border-slate-200 light:divide-y light:divide-slate-100 dark:bg-slate-900/95 dark:border-white/15 dark:divide-y dark:divide-white/10'
           }`}
         >
           {results.length > 0 ? (
@@ -93,13 +87,13 @@ export default function LocationSearch() {
                   key={idx}
                   onClick={() => handleSelect(item.url)}
                   className={`w-full flex items-center justify-between p-3 rounded-xl text-left transition-colors group ${
-                    isDark ? 'hover:bg-white/10 text-white' : 'hover:bg-slate-50 text-slate-900'
+                    'light:hover:bg-slate-50 light:text-slate-900 dark:hover:bg-white/10 dark:text-white'
                   }`}
                 >
                   <div className="flex items-center space-x-3 min-w-0">
                     <div
                       className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                        isDark ? 'bg-blue-500/10 text-blue-400' : 'bg-blue-50 text-blue-600'
+                        'light:bg-blue-50 light:text-blue-600 dark:bg-blue-500/10 dark:text-blue-400'
                       }`}
                     >
                       {item.type === 'state' ? (
@@ -128,11 +122,11 @@ export default function LocationSearch() {
             </div>
           ) : (
             <div className="p-6 text-center space-y-2">
-              <p className={`text-xs font-semibold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              <p className={`text-xs font-semibold ${'light:text-slate-600 dark:text-slate-300'}`}>
                 No specific delivery hub matched "{query}"
               </p>
               <p className="text-[11px] text-slate-400">
-                Try searching for <strong>Pune</strong>, <strong>Mumbai</strong>, <strong>Sambhajinagar</strong>, <strong>Nagpur</strong>, or <strong>Bengaluru</strong>.
+                Try searching for <strong>Sambhajinagar</strong>, <strong>Aurangabad</strong>, or <strong>Maharashtra</strong>.
               </p>
             </div>
           )}

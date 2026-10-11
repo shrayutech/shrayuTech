@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { X, Sparkles, ArrowRight, ExternalLink } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
 import {
   checkRedditReferral,
   getRedditSessionData,
@@ -14,7 +13,6 @@ import {
 export default function RedditReferralBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const [sessionInfo, setSessionInfo] = useState(null);
-  const { isDark } = useTheme();
 
   useEffect(() => {
     // Only run on client after mount to prevent hydration mismatches
@@ -42,9 +40,7 @@ export default function RedditReferralBanner() {
     >
       <div
         className={`px-4 py-3 sm:py-2.5 transition-colors ${
-          isDark
-            ? 'bg-gradient-to-r from-orange-950/60 via-slate-900 to-slate-900 text-slate-200 border-orange-500/20'
-            : 'bg-gradient-to-r from-orange-50 via-white to-orange-50/40 text-slate-800 border-orange-200/80'
+          'light:bg-gradient-to-r light:from-orange-50 light:via-white light:to-orange-50/40 light:text-slate-800 light:border-orange-200/80 dark:bg-gradient-to-r dark:from-orange-950/60 dark:via-slate-900 dark:to-slate-900 dark:text-slate-200 dark:border-orange-500/20'
         }`}
       >
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm">
@@ -71,9 +67,7 @@ export default function RedditReferralBanner() {
             <Link
               href="/portfolio"
               className={`inline-flex items-center gap-1 px-3 py-1 rounded-md text-xs font-semibold border transition-all ${
-                isDark
-                  ? 'border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white'
-                  : 'border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                'light:border-slate-300 light:text-slate-700 light:hover:bg-slate-100 light:hover:text-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
               }`}
             >
               Verified Code
@@ -82,9 +76,7 @@ export default function RedditReferralBanner() {
               onClick={handleDismiss}
               aria-label="Dismiss Reddit welcome notification"
               className={`p-1 rounded-md transition-colors ${
-                isDark
-                  ? 'text-slate-400 hover:text-white hover:bg-slate-800'
-                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-200'
+                'light:text-slate-500 light:hover:text-slate-900 light:hover:bg-slate-200 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800'
               }`}
             >
               <X className="w-4 h-4" />

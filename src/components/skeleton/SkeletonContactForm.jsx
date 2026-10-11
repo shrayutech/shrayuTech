@@ -1,14 +1,12 @@
 "use client";
 import React from 'react';
 import SkeletonBase from './SkeletonBase';
-import { useTheme } from '../../context/ThemeContext';
 
 /**
  * SkeletonContactForm — Contact page layout skeleton.
  * 12-col grid: left (5 cols) direct communication card + map frame | right (7 cols) inquiry form.
  */
 const SkeletonContactForm = ({ className = '' }) => {
-  const { isDark } = useTheme();
 
   return (
     <div className={`grid grid-cols-1 lg:grid-cols-12 gap-12 items-start ${className}`}>
@@ -19,7 +17,7 @@ const SkeletonContactForm = ({ className = '' }) => {
         {/* Direct Communication card */}
         <div
           className={`rounded-3xl p-8 space-y-6 border ${
-            isDark ? 'bg-[#0F1728]/70 border-white/[0.07]' : 'bg-white border-slate-200'
+            'light:bg-white light:border-slate-200 dark:bg-[#0F1728]/70 dark:border-white/[0.07]'
           }`}
         >
           {/* Section title: "Direct Communication" */}
@@ -47,7 +45,7 @@ const SkeletonContactForm = ({ className = '' }) => {
           </div>
 
           {/* Social icons row: GitHub + LinkedIn */}
-          <div className={`pt-5 border-t flex space-x-3 ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+          <div className={`pt-5 border-t flex space-x-3 ${'light:border-slate-200 dark:border-white/10'}`}>
             <SkeletonBase variant="icon" width="2.5rem" height="2.5rem" radius="0.75rem" />
             <SkeletonBase variant="icon" width="2.5rem" height="2.5rem" radius="0.75rem" />
           </div>
@@ -68,7 +66,7 @@ const SkeletonContactForm = ({ className = '' }) => {
       {/* RIGHT: Project Inquiry Form card (7 cols) */}
       <div
         className={`lg:col-span-7 rounded-3xl p-8 sm:p-10 space-y-6 border ${
-          isDark ? 'bg-[#0F1728]/70 border-white/[0.07]' : 'bg-white border-slate-200'
+          'light:bg-white light:border-slate-200 dark:bg-[#0F1728]/70 dark:border-white/[0.07]'
         }`}
       >
         {/* Card header: "Project Inquiry Form" + subtitle */}

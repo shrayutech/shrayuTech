@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 
 /**
  * Reusable SEO Breadcrumbs Component
@@ -11,7 +10,6 @@ import { useTheme } from '../context/ThemeContext';
  * - Supports dark/light mode with smooth hover transitions
  */
 const Breadcrumbs = ({ items = [] }) => {
-  const { isDark } = useTheme();
 
   const baseUrl = 'https://shrayutech.vercel.app';
 
@@ -39,21 +37,19 @@ const Breadcrumbs = ({ items = [] }) => {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c') }}
       />
       <nav aria-label="Breadcrumb" className="mb-6 inline-flex">
         <ol
           className={`flex flex-wrap items-center gap-1.5 px-4 py-2 rounded-full border text-xs font-semibold backdrop-blur-md transition-colors ${
-            isDark
-              ? 'bg-white/5 border-white/10 text-slate-400'
-              : 'bg-white/80 border-slate-200 text-slate-600 shadow-sm'
+            'light:bg-white/80 light:border-slate-200 light:text-slate-600 light:shadow-sm dark:bg-white/5 dark:border-white/10 dark:text-slate-400'
           }`}
         >
           <li className="inline-flex items-center">
             <Link
               href="/"
               className={`inline-flex items-center space-x-1.5 transition-colors ${
-                isDark ? 'hover:text-blue-400' : 'hover:text-blue-600'
+                'light:hover:text-blue-600 dark:hover:text-blue-400'
               }`}
             >
               <Home className="w-3.5 h-3.5" />
@@ -70,7 +66,7 @@ const Breadcrumbs = ({ items = [] }) => {
                   <Link
                     href={item.href}
                     className={`transition-colors ${
-                      isDark ? 'hover:text-blue-400' : 'hover:text-blue-600'
+                      'light:hover:text-blue-600 dark:hover:text-blue-400'
                     }`}
                   >
                     {item.label}
@@ -78,7 +74,7 @@ const Breadcrumbs = ({ items = [] }) => {
                 ) : (
                   <span
                     className={`font-bold ${
-                      isDark ? 'text-white' : 'text-slate-900'
+                      'light:text-slate-900 dark:text-white'
                     }`}
                     aria-current={isLast ? 'page' : undefined}
                   >

@@ -22,13 +22,6 @@ export const COMPARISON_CONFIG = {
       singularLabel: 'Service',
       description: 'Compare engineering deliverables, technology stacks, and deployment frameworks across our core service capabilities.',
       baseRoute: '/services'
-    },
-    locations: {
-      key: 'locations',
-      label: 'Regional Delivery Hubs',
-      singularLabel: 'Delivery Hub',
-      description: 'Compare tech corridors, local service capabilities, and operational infrastructure across our Indian engineering hubs.',
-      baseRoute: '/locations'
     }
   }
 };

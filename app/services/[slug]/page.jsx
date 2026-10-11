@@ -69,11 +69,10 @@ export default async function ServiceDetailPage({ params }) {
 
   // Find all regional hubs supporting this service
   const allCities = statesData.flatMap((state) => state.cities);
-  const regionalHubs = allCities.filter((city) =>
-    city.supportedCategories.includes(service.slug) ||
-    (service.slug === 'cloud-infrastructure' && city.supportedCategories.includes('cloud-devops')) ||
-    (service.slug === 'devops-ci-cd' && city.supportedCategories.includes('cloud-devops'))
-  );
+  // Location hubs group cloud-infrastructure and devops-ci-cd under the 'cloud-devops' category
+  const locationCategorySlug =
+    service.slug === 'cloud-infrastructure' || service.slug === 'devops-ci-cd' ? 'cloud-devops' : service.slug;
+  const regionalHubs = allCities.filter((city) => city.supportedCategories.includes(locationCategorySlug));
 
   // Other related services for cross-linking
   const otherServices = servicesData.filter((s) => s.slug !== service.slug).slice(0, 3);
@@ -249,7 +248,7 @@ export default async function ServiceDetailPage({ params }) {
               {regionalHubs.map((hub) => (
                 <Link
                   key={hub.slug}
-                  href={`/locations/${hub.stateSlug}/${hub.slug}/${service.slug}`}
+                  href={`/locations/${hub.stateSlug}/${hub.slug}/${locationCategorySlug}`}
                   className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-blue-500/50 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md transition-all group hover:scale-[1.01]"
                 >
                   <div className="flex items-center justify-between mb-2">
@@ -368,15 +367,15 @@ export default async function ServiceDetailPage({ params }) {
         )}
 
         {/* RELATED COMPARISONS & CROSS-LINKING */}
-        <div className="p-8 rounded-3xl border border-blue-500/20 bg-gradient-to-br from-blue-950/20 via-slate-900/40 to-slate-900/60 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="p-8 rounded-3xl border border-blue-500/20 bg-gradient-to-br from-blue-50 via-white to-slate-50 dark:from-blue-950/20 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-left">
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
               Architectural Tradeoffs
             </span>
-            <h3 className="text-xl sm:text-2xl font-bold text-white">
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
               Evaluating Between Different Delivery Models?
             </h3>
-            <p className="text-sm text-slate-300 max-w-xl">
+            <p className="text-sm text-slate-600 dark:text-slate-300 max-w-xl">
               Inspect our multi-vector comparison benchmark matrix analyzing maintenance, security, and TCO across custom software vs off-the-shelf platforms.
             </p>
           </div>

@@ -55,13 +55,13 @@ export default function ResearchExportActions({ report }) {
 
       <button
         onClick={handleCopyCitation}
-        className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-white text-xs sm:text-sm font-semibold transition-all active:scale-95 cursor-pointer"
+        className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/10 hover:bg-slate-100 dark:hover:bg-white/15 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-xs sm:text-sm font-semibold transition-all active:scale-95 cursor-pointer"
         title="Copy academic BibTeX citation to clipboard"
       >
         {copied ? (
           <>
-            <Check className="w-4 h-4 text-emerald-400" />
-            <span className="text-emerald-400">Citation Copied!</span>
+            <Check className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
+            <span className="text-emerald-700 dark:text-emerald-400">Citation Copied!</span>
           </>
         ) : (
           <>

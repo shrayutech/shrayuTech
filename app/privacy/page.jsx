@@ -1,3 +1,4 @@
+import { getPageDates } from '../../src/data/contentRegistry';
 import Link from 'next/link';
 import Breadcrumbs from '../../src/components/Breadcrumbs';
 import ContentFreshnessBadge from '../../src/components/ContentFreshnessBadge';
@@ -22,6 +23,7 @@ export default function PrivacyPage() {
   const url = `${SCHEMA_BASE_URL}/privacy`;
 
   const webPage = buildWebPageSchema({
+    ...getPageDates('privacy'),
     title: 'Privacy Policy | Shrayu Technologies',
     description: 'Privacy Policy of Shrayu Technologies. Learn how we safeguard user and client project data.',
     url

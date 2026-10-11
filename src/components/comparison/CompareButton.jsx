@@ -3,7 +3,6 @@
 import React from 'react';
 import { Plus, Check, ArrowRightLeft } from 'lucide-react';
 import { useComparison } from '../../context/ComparisonContext.jsx';
-import { useTheme } from '../../context/ThemeContext';
 
 export default function CompareButton({
   type = 'systems',
@@ -12,7 +11,6 @@ export default function CompareButton({
   className = ''
 }) {
   const { isInComparison, addItem, removeItem, isHydrated } = useComparison();
-  const { isDark } = useTheme();
 
   if (!item || !isHydrated) return null;
 
@@ -38,9 +36,7 @@ export default function CompareButton({
         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all ${
           isSelected
             ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-            : isDark
-              ? 'bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10'
-              : 'bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 border border-slate-200'
+            : 'light:bg-slate-100 light:hover:bg-slate-200 light:text-slate-700 light:hover:text-slate-900 light:border light:border-slate-200 dark:bg-white/5 dark:hover:bg-white/10 dark:text-slate-300 dark:hover:text-white dark:border dark:border-white/10'
         } ${className}`}
       >
         {isSelected ? (
@@ -64,9 +60,7 @@ export default function CompareButton({
       className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
         isSelected
           ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/25'
-          : isDark
-            ? 'bg-white/5 hover:bg-blue-600/20 text-slate-300 hover:text-white border border-white/10 hover:border-blue-500/40'
-            : 'bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 border border-slate-200 hover:border-blue-300'
+          : 'light:bg-slate-100 light:hover:bg-blue-50 light:text-slate-700 light:hover:text-blue-600 light:border light:border-slate-200 light:hover:border-blue-300 dark:bg-white/5 dark:hover:bg-blue-600/20 dark:text-slate-300 dark:hover:text-white dark:border dark:border-white/10 dark:hover:border-blue-500/40'
       } ${className}`}
     >
       {isSelected ? (

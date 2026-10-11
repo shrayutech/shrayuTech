@@ -1,5 +1,6 @@
 "use client";
 import { motion } from 'framer-motion';
+import { revealOnScroll } from '../utils/motionPresets';
 import Link from 'next/link';
 import {
   Code,
@@ -19,17 +20,14 @@ import SEO from '../components/SEO';
 import Breadcrumbs from '../components/Breadcrumbs';
 import RelatedCategories from '../components/RelatedCategories';
 import RelatedProjects from '../components/RelatedProjects';
-import ContentFreshnessBadge from '../components/ContentFreshnessBadge';
 import CompareButton from '../components/comparison/CompareButton';
 import FAQSection from '../components/FAQSection';
-import { useTheme } from '../context/ThemeContext';
 import { useSkeleton } from '../context/SkeletonContext';
 import SkeletonWrapper from '../components/skeleton/SkeletonWrapper';
 import ServicesSkeleton from '../components/skeleton/ServicesSkeleton';
 import SpotlightCard from '../components/SpotlightCard';
 
 const Services = () => {
-  const { isDark } = useTheme();
   const { isLoading } = useSkeleton();
 
   const serviceCategories = [
@@ -150,7 +148,6 @@ const Services = () => {
         <div className="max-w-7xl mx-auto relative z-10 space-y-20">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <Breadcrumbs items={[{ label: 'Software Services' }]} />
-            <ContentFreshnessBadge pageKey="services" />
           </div>
 
           {/* Header Section */}
@@ -164,13 +161,13 @@ const Services = () => {
               <Sparkles className="w-3.5 h-3.5" />
               <span>Engineering Capabilities</span>
             </div>
-            <h1 className={`text-4xl sm:text-5xl md:text-6xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h1 className={`text-4xl sm:text-5xl md:text-6xl font-black tracking-tight ${'light:text-slate-900 dark:text-white'}`}>
               Our Software Development{' '}
               <span className="gradient-text-animated">
                 Services
               </span>
             </h1>
-            <p className={`text-base sm:text-lg font-medium leading-relaxed max-w-2xl mx-auto ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            <p className={`text-base sm:text-lg font-medium leading-relaxed max-w-2xl mx-auto ${'light:text-slate-600 dark:text-slate-300'}`}>
               We deliver end-to-end software development services tailored for modern business environments, from full-stack SaaS platforms to AI backend pipelines aligned with{' '}
               <a
                 href="https://www.w3.org"
@@ -194,10 +191,7 @@ const Services = () => {
 
           {/* Services Grid */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            {...revealOnScroll}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {serviceCategories.map((service, idx) => (
@@ -207,38 +201,38 @@ const Services = () => {
               >
                 <div className="space-y-6">
                   <div className="flex justify-between items-start">
-                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${isDark ? 'bg-white/5 border border-white/10' : 'bg-slate-100 border border-slate-200'}`}>
+                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${'light:bg-slate-100 light:border light:border-slate-200 dark:bg-white/5 dark:border dark:border-white/10'}`}>
                       {service.icon}
                     </div>
                     <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border transition-colors ${
-                      isDark ? 'text-blue-400 bg-blue-500/10 border-blue-500/20 group-hover:border-blue-500/40' : 'text-blue-700 bg-blue-50 border-blue-200 group-hover:border-blue-300'
+                      'light:text-blue-700 light:bg-blue-50 light:border-blue-200 light:group-hover:border-blue-300 dark:text-blue-400 dark:bg-blue-500/10 dark:border-blue-500/20 dark:group-hover:border-blue-500/40'
                     }`}>
                       {service.tagline}
                     </span>
                   </div>
 
                   <div className="space-y-2">
-                    <h3 className={`text-2xl font-bold transition-colors ${isDark ? 'text-white group-hover:text-blue-400' : 'text-slate-900 group-hover:text-blue-600'}`}>{service.title}</h3>
-                    <p className={`text-xs font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{service.desc}</p>
+                    <h3 className={`text-2xl font-bold transition-colors ${'light:text-slate-900 light:group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400'}`}>{service.title}</h3>
+                    <p className={`text-xs font-medium leading-relaxed ${'light:text-slate-600 dark:text-slate-300'}`}>{service.desc}</p>
                   </div>
 
                   <div className="space-y-3 pt-2">
                     {service.features.map((feat, fIdx) => (
                       <div key={fIdx} className="flex items-center space-x-2.5">
                         <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
-                        <span className={`text-xs font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{feat}</span>
+                        <span className={`text-xs font-semibold ${'light:text-slate-700 dark:text-slate-300'}`}>{feat}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className={`space-y-5 pt-4 border-t ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+                <div className={`space-y-5 pt-4 border-t ${'light:border-slate-200 dark:border-white/10'}`}>
                   <div className="flex flex-wrap gap-2">
                     {service.techs.map((tech, tIdx) => (
                       <span
                         key={tIdx}
                         className={`px-3 py-1 rounded-md font-bold text-[10px] uppercase border transition-colors ${
-                          isDark ? 'bg-white/5 text-slate-300 border-white/10 group-hover:border-blue-500/30' : 'bg-slate-100 text-slate-700 border-slate-200 group-hover:border-blue-300'
+                          'light:bg-slate-100 light:text-slate-700 light:border-slate-200 light:group-hover:border-blue-300 dark:bg-white/5 dark:text-slate-300 dark:border-white/10 dark:group-hover:border-blue-500/30'
                         }`}
                       >
                         {tech}
@@ -263,7 +257,7 @@ const Services = () => {
                       <Link
                         href={service.portfolioLink}
                         className={`text-[11px] font-semibold transition-colors hover:underline ${
-                          isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'
+                          'light:text-slate-500 light:hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
                         }`}
                       >
                         Codebases
@@ -298,10 +292,7 @@ const Services = () => {
 
           {/* Bottom Conversion Banner */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            {...revealOnScroll}
             className="pt-8"
           >
             <div className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-gradient-to-tr from-blue-950 via-[#0B1021] to-indigo-950 border border-white/15 p-8 sm:p-12 md:p-16 text-center shadow-2xl space-y-6">

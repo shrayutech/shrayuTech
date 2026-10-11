@@ -23,9 +23,7 @@ import {
 import SEO from '../components/SEO';
 import Breadcrumbs from '../components/Breadcrumbs';
 import RelatedCategories from '../components/RelatedCategories';
-import ContentFreshnessBadge from '../components/ContentFreshnessBadge';
 import CompareButton from '../components/comparison/CompareButton';
-import { useTheme } from '../context/ThemeContext';
 import { useSkeleton } from '../context/SkeletonContext';
 import SkeletonWrapper from '../components/skeleton/SkeletonWrapper';
 import PortfolioSkeleton from '../components/skeleton/PortfolioSkeleton';
@@ -36,56 +34,56 @@ import { normalizeProjectSlug } from '../utils/portfolioUtils';
 const categoryConfig = {
   AI: {
     icon: Brain,
-    badgeDark: 'bg-purple-500/15 text-purple-300 border-purple-500/30',
-    badgeLight: 'bg-purple-50 text-purple-700 border-purple-200',
-    highlightDark: 'bg-purple-500/10 border-purple-500/20 text-purple-300',
-    highlightLight: 'bg-purple-50/80 border-purple-200 text-purple-800',
-    headerGradientDark: 'from-purple-950/40 via-purple-900/20 to-transparent',
-    headerGradientLight: 'from-purple-100/70 via-purple-50/30 to-transparent',
+    badgeDark: 'dark:bg-purple-500/15 dark:text-purple-300 dark:border-purple-500/30',
+    badgeLight: 'light:bg-purple-50 light:text-purple-700 light:border-purple-200',
+    highlightDark: 'dark:bg-purple-500/10 dark:border-purple-500/20 dark:text-purple-300',
+    highlightLight: 'light:bg-purple-50/80 light:border-purple-200 light:text-purple-800',
+    headerGradientDark: 'dark:from-purple-950/40 dark:via-purple-900/20 dark:to-transparent',
+    headerGradientLight: 'light:from-purple-100/70 light:via-purple-50/30 light:to-transparent',
     spotlight: 'rgba(168, 85, 247, 0.15)',
     accentColor: 'text-purple-400'
   },
   'Data Science': {
     icon: Database,
-    badgeDark: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-    badgeLight: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    highlightDark: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300',
-    highlightLight: 'bg-emerald-50/80 border-emerald-200 text-emerald-800',
-    headerGradientDark: 'from-emerald-950/40 via-emerald-900/20 to-transparent',
-    headerGradientLight: 'from-emerald-100/70 via-emerald-50/30 to-transparent',
+    badgeDark: 'dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/30',
+    badgeLight: 'light:bg-emerald-50 light:text-emerald-700 light:border-emerald-200',
+    highlightDark: 'dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-300',
+    highlightLight: 'light:bg-emerald-50/80 light:border-emerald-200 light:text-emerald-800',
+    headerGradientDark: 'dark:from-emerald-950/40 dark:via-emerald-900/20 dark:to-transparent',
+    headerGradientLight: 'light:from-emerald-100/70 light:via-emerald-50/30 light:to-transparent',
     spotlight: 'rgba(16, 185, 129, 0.15)',
     accentColor: 'text-emerald-400'
   },
   'Machine Learning': {
     icon: Cpu,
-    badgeDark: 'bg-blue-500/15 text-blue-300 border-blue-500/30',
-    badgeLight: 'bg-blue-50 text-blue-700 border-blue-200',
-    highlightDark: 'bg-blue-500/10 border-blue-500/20 text-blue-300',
-    highlightLight: 'bg-blue-50/80 border-blue-200 text-blue-800',
-    headerGradientDark: 'from-blue-950/40 via-blue-900/20 to-transparent',
-    headerGradientLight: 'from-blue-100/70 via-blue-50/30 to-transparent',
+    badgeDark: 'dark:bg-blue-500/15 dark:text-blue-300 dark:border-blue-500/30',
+    badgeLight: 'light:bg-blue-50 light:text-blue-700 light:border-blue-200',
+    highlightDark: 'dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-300',
+    highlightLight: 'light:bg-blue-50/80 light:border-blue-200 light:text-blue-800',
+    headerGradientDark: 'dark:from-blue-950/40 dark:via-blue-900/20 dark:to-transparent',
+    headerGradientLight: 'light:from-blue-100/70 light:via-blue-50/30 light:to-transparent',
     spotlight: 'rgba(59, 130, 246, 0.15)',
     accentColor: 'text-blue-400'
   },
   Python: {
     icon: Terminal,
-    badgeDark: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-    badgeLight: 'bg-amber-50 text-amber-700 border-amber-200',
-    highlightDark: 'bg-amber-500/10 border-amber-500/20 text-amber-300',
-    highlightLight: 'bg-amber-50/80 border-amber-200 text-amber-800',
-    headerGradientDark: 'from-amber-950/40 via-amber-900/20 to-transparent',
-    headerGradientLight: 'from-amber-100/70 via-amber-50/30 to-transparent',
+    badgeDark: 'dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/30',
+    badgeLight: 'light:bg-amber-50 light:text-amber-700 light:border-amber-200',
+    highlightDark: 'dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-300',
+    highlightLight: 'light:bg-amber-50/80 light:border-amber-200 light:text-amber-800',
+    headerGradientDark: 'dark:from-amber-950/40 dark:via-amber-900/20 dark:to-transparent',
+    headerGradientLight: 'light:from-amber-100/70 light:via-amber-50/30 light:to-transparent',
     spotlight: 'rgba(245, 158, 11, 0.15)',
     accentColor: 'text-amber-400'
   },
   'Full-Stack Development': {
     icon: Layers,
-    badgeDark: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
-    badgeLight: 'bg-cyan-50 text-cyan-700 border-cyan-200',
-    highlightDark: 'bg-cyan-500/10 border-cyan-500/20 text-cyan-300',
-    highlightLight: 'bg-cyan-50/80 border-cyan-200 text-cyan-800',
-    headerGradientDark: 'from-cyan-950/40 via-cyan-900/20 to-transparent',
-    headerGradientLight: 'from-cyan-100/70 via-cyan-50/30 to-transparent',
+    badgeDark: 'dark:bg-cyan-500/15 dark:text-cyan-300 dark:border-cyan-500/30',
+    badgeLight: 'light:bg-cyan-50 light:text-cyan-700 light:border-cyan-200',
+    highlightDark: 'dark:bg-cyan-500/10 dark:border-cyan-500/20 dark:text-cyan-300',
+    highlightLight: 'light:bg-cyan-50/80 light:border-cyan-200 light:text-cyan-800',
+    headerGradientDark: 'dark:from-cyan-950/40 dark:via-cyan-900/20 dark:to-transparent',
+    headerGradientLight: 'light:from-cyan-100/70 light:via-cyan-50/30 light:to-transparent',
     spotlight: 'rgba(6, 182, 212, 0.15)',
     accentColor: 'text-cyan-400'
   }
@@ -97,7 +95,6 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedId, setExpandedId] = useState(null);
-  const { isDark } = useTheme();
   const { isLoading } = useSkeleton();
 
   // Synchronize category state from URL query parameter
@@ -184,7 +181,6 @@ const Products = () => {
                   : [{ label: 'Portfolio & Case Studies' }]
               }
             />
-            <ContentFreshnessBadge pageKey="portfolio" />
           </div>
 
           {/* ========================================================= */}
@@ -203,7 +199,7 @@ const Products = () => {
 
             <h1
               className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight ${
-                isDark ? 'text-white' : 'text-slate-900'
+                'light:text-slate-900 dark:text-white'
               }`}
             >
               Case Studies &{' '}
@@ -214,7 +210,7 @@ const Products = () => {
 
             <p
               className={`text-base sm:text-lg font-medium leading-relaxed max-w-3xl mx-auto ${
-                isDark ? 'text-slate-300' : 'text-slate-600'
+                'light:text-slate-600 dark:text-slate-300'
               }`}
             >
               Explore 25 verified production-grade systems across AI, Data Science,
@@ -231,14 +227,12 @@ const Products = () => {
             <div className="max-w-md mx-auto">
               <div
                 className={`relative flex items-center rounded-2xl border transition-all duration-200 shadow-sm ${
-                  isDark
-                    ? 'bg-slate-900/60 border-slate-800 focus-within:border-blue-500/60 focus-within:ring-2 focus-within:ring-blue-500/20'
-                    : 'bg-white border-slate-300 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20'
+                  'light:bg-white light:border-slate-300 light:focus-within:border-blue-500 light:focus-within:ring-2 light:focus-within:ring-blue-500/20 dark:bg-slate-900/60 dark:border-slate-800 dark:focus-within:border-blue-500/60 dark:focus-within:ring-2 dark:focus-within:ring-blue-500/20'
                 }`}
               >
                 <Search
                   className={`w-4 h-4 ml-4 shrink-0 ${
-                    isDark ? 'text-slate-400' : 'text-slate-500'
+                    'light:text-slate-500 dark:text-slate-400'
                   }`}
                 />
                 <input
@@ -247,9 +241,7 @@ const Products = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Filter by title, stack (e.g. React, XGBoost, A*)..."
                   className={`w-full py-3 px-3 text-xs sm:text-sm bg-transparent border-0 focus:outline-none ${
-                    isDark
-                      ? 'text-white placeholder-slate-500'
-                      : 'text-slate-900 placeholder-slate-400'
+                    'light:text-slate-900 light:placeholder-slate-400 dark:text-white dark:placeholder-slate-500'
                   }`}
                   aria-label="Filter portfolio projects"
                 />
@@ -257,9 +249,7 @@ const Products = () => {
                   <button
                     onClick={() => setSearchQuery('')}
                     className={`mr-3 p-1 rounded-lg text-xs font-semibold transition-colors ${
-                      isDark
-                        ? 'text-slate-400 hover:text-white hover:bg-slate-800'
-                        : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
+                      'light:text-slate-500 light:hover:text-slate-900 light:hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800'
                     }`}
                     title="Clear search"
                   >
@@ -280,12 +270,8 @@ const Products = () => {
                     onClick={() => handleSelectCategory(category)}
                     className={`relative inline-flex items-center space-x-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer active:scale-95 ${
                       isActive
-                        ? isDark
-                          ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30 border border-blue-500'
-                          : 'bg-blue-600 text-white shadow-lg shadow-blue-600/20 border border-blue-700'
-                        : isDark
-                        ? 'bg-slate-900/60 border border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-white'
-                        : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                        ? 'light:bg-blue-600 light:text-white light:shadow-lg light:shadow-blue-600/20 light:border light:border-blue-700 dark:bg-blue-600 dark:text-white dark:shadow-lg dark:shadow-blue-600/30 dark:border dark:border-blue-500'
+                        : 'light:bg-white light:border light:border-slate-200 light:text-slate-700 light:hover:bg-slate-50 light:hover:text-slate-900 dark:bg-slate-900/60 dark:border dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
                     }`}
                   >
                     <span>{category}</span>
@@ -293,9 +279,7 @@ const Products = () => {
                       className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ${
                         isActive
                           ? 'bg-white/25 text-white'
-                          : isDark
-                          ? 'bg-white/10 text-slate-400'
-                          : 'bg-slate-100 text-slate-600'
+                          : 'light:bg-slate-100 light:text-slate-600 dark:bg-white/10 dark:text-slate-400'
                       }`}
                     >
                       {count}
@@ -310,7 +294,7 @@ const Products = () => {
               <span>
                 Showing{' '}
                 <strong
-                  className={isDark ? 'text-slate-200' : 'text-slate-800'}
+                  className={'light:text-slate-800 dark:text-slate-200'}
                 >
                   {filteredProjects.length}
                 </strong>{' '}
@@ -336,15 +320,13 @@ const Products = () => {
           {filteredProjects.length === 0 ? (
             <div
               className={`text-center py-20 px-6 rounded-3xl border ${
-                isDark
-                  ? 'bg-slate-900/40 border-slate-800 text-slate-400'
-                  : 'bg-slate-50 border-slate-200 text-slate-600'
+                'light:bg-slate-50 light:border-slate-200 light:text-slate-600 dark:bg-slate-900/40 dark:border-slate-800 dark:text-slate-400'
               }`}
             >
               <Code2 className="w-12 h-12 mx-auto mb-4 opacity-40 text-blue-500" />
               <h2
                 className={`text-lg font-bold ${
-                  isDark ? 'text-white' : 'text-slate-900'
+                  'light:text-slate-900 dark:text-white'
                 }`}
               >
                 No projects matched your filter
@@ -372,7 +354,7 @@ const Products = () => {
                     key={project.id}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-40px' }}
+                    viewport={{ once: true, margin: '0px 0px -15% 0px' }}
                     transition={{
                       duration: 0.5,
                       delay: Math.min((idx % 3) * 0.1, 0.3),
@@ -383,25 +365,19 @@ const Products = () => {
                     <SpotlightCard
                       spotlightColor={config.spotlight}
                       className={`glass-card-3d rounded-3xl overflow-hidden border shadow-xl flex flex-col h-full transition-all duration-300 hover:-translate-y-1 ${
-                        isDark
-                          ? 'border-white/10 bg-[#0F1728]/80 hover:border-white/20'
-                          : 'border-slate-200 bg-white hover:border-blue-200 hover:shadow-2xl'
+                        'light:border-slate-200 light:bg-white light:hover:border-blue-200 light:hover:shadow-2xl dark:border-white/10 dark:bg-[#0F1728]/80 dark:hover:border-white/20'
                       }`}
                     >
                       {/* CARD TOP DECORATIVE HEADER */}
                       <div
                         className={`p-5 sm:p-6 bg-gradient-to-b border-b flex items-center justify-between ${
-                          isDark
-                            ? `${config.headerGradientDark} border-white/5`
-                            : `${config.headerGradientLight} border-slate-100`
+                          `${config.headerGradientLight} ${config.headerGradientDark} light:border-slate-100 dark:border-white/5`
                         }`}
                       >
                         <div className="flex items-center space-x-2.5">
                           <div
                             className={`w-9 h-9 rounded-xl flex items-center justify-center border shadow-sm ${
-                              isDark
-                                ? 'bg-slate-900/80 border-white/10 text-white'
-                                : 'bg-white border-slate-200 text-slate-800'
+                              'light:bg-white light:border-slate-200 light:text-slate-800 dark:bg-slate-900/80 dark:border-white/10 dark:text-white'
                             }`}
                           >
                             <IconComponent className={`w-4 h-4 ${config.accentColor}`} />
@@ -411,7 +387,7 @@ const Products = () => {
                             onClick={() => handleSelectCategory(project.category)}
                             title={`Filter projects by ${project.category}`}
                             className={`px-2.5 py-1 rounded-lg text-[11px] font-bold uppercase tracking-wider border transition-all cursor-pointer hover:scale-105 active:scale-95 ${
-                              isDark ? config.badgeDark : config.badgeLight
+                              `${config.badgeLight} ${config.badgeDark}`
                             }`}
                           >
                             {project.category}
@@ -422,9 +398,7 @@ const Products = () => {
                           <CompareButton type="systems" item={project} variant="compact" />
                           <span
                             className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-md ${
-                              isDark
-                                ? 'bg-white/5 text-slate-400'
-                                : 'bg-slate-100 text-slate-600'
+                              'light:bg-slate-100 light:text-slate-600 dark:bg-white/5 dark:text-slate-400'
                             }`}
                           >
                             #{String(project.id).padStart(2, '0')}
@@ -438,9 +412,7 @@ const Products = () => {
                         <div>
                           <h2
                             className={`text-lg sm:text-xl font-extrabold tracking-tight leading-snug break-words transition-colors ${
-                              isDark
-                                ? 'text-white group-hover:text-blue-300'
-                                : 'text-slate-900 group-hover:text-blue-600'
+                              'light:text-slate-900 light:group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-300'
                             }`}
                           >
                             {project.title}
@@ -450,7 +422,7 @@ const Products = () => {
                         {/* Highlight Banner */}
                         <div
                           className={`p-3 rounded-xl border text-xs font-semibold leading-relaxed flex items-start space-x-2 ${
-                            isDark ? config.highlightDark : config.highlightLight
+                            `${config.highlightLight} ${config.highlightDark}`
                           }`}
                         >
                           <Sparkles className="w-3.5 h-3.5 shrink-0 mt-0.5 opacity-80" />
@@ -460,7 +432,7 @@ const Products = () => {
                         {/* Professional Verified Description */}
                         <p
                           className={`text-xs sm:text-sm font-medium leading-relaxed flex-1 ${
-                            isDark ? 'text-slate-300' : 'text-slate-600'
+                            'light:text-slate-600 dark:text-slate-300'
                           }`}
                         >
                           {project.description}
@@ -473,9 +445,7 @@ const Products = () => {
                               <span
                                 key={tIdx}
                                 className={`px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase border transition-colors ${
-                                  isDark
-                                    ? 'bg-white/5 border-white/10 text-slate-300 group-hover:border-blue-500/30'
-                                    : 'bg-slate-100 border-slate-200 text-slate-700 group-hover:border-blue-200'
+                                  'light:bg-slate-100 light:border-slate-200 light:text-slate-700 light:group-hover:border-blue-200 dark:bg-white/5 dark:border-white/10 dark:text-slate-300 dark:group-hover:border-blue-500/30'
                                 }`}
                               >
                                 {tech}
@@ -488,9 +458,7 @@ const Products = () => {
                       {/* CARD FOOTER ACTIONS */}
                       <div
                         className={`p-5 sm:p-6 pt-4 border-t mt-auto flex items-center justify-between gap-3 ${
-                          isDark
-                            ? 'border-white/5 bg-slate-900/40'
-                            : 'border-slate-100 bg-slate-50/60'
+                          'light:border-slate-100 light:bg-slate-50/60 dark:border-white/5 dark:bg-slate-900/40'
                         }`}
                       >
                         {/* Primary GitHub Link */}
@@ -513,9 +481,7 @@ const Products = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`inline-flex items-center justify-center space-x-1.5 px-3 py-2.5 rounded-xl text-xs font-bold border transition-all duration-200 active:scale-95 ${
-                              isDark
-                                ? 'bg-white/5 border-white/10 text-slate-200 hover:bg-white/10 hover:text-white hover:border-blue-400'
-                                : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-blue-600 hover:border-blue-300'
+                              'light:bg-white light:border-slate-200 light:text-slate-700 light:hover:bg-slate-100 light:hover:text-blue-600 light:hover:border-blue-300 dark:bg-white/5 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/10 dark:hover:text-white dark:hover:border-blue-400'
                             }`}
                             title="Open Live Demo"
                           >
@@ -528,9 +494,7 @@ const Products = () => {
                         <button
                           onClick={() => toggleExpand(project.id)}
                           className={`w-9 h-9 rounded-xl flex items-center justify-center border transition-all duration-200 active:scale-95 shrink-0 cursor-pointer ${
-                            isDark
-                              ? 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10'
-                              : 'bg-white border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100'
+                            'light:bg-white light:border-slate-200 light:text-slate-500 light:hover:text-slate-900 light:hover:bg-slate-100 dark:bg-white/5 dark:border-white/10 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/10'
                           }`}
                           title="Repository Details"
                           aria-label="Toggle repository details"
@@ -552,9 +516,7 @@ const Products = () => {
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.25 }}
                             className={`border-t overflow-hidden text-xs ${
-                              isDark
-                                ? 'border-white/10 bg-black/50 text-slate-300'
-                                : 'border-slate-200 bg-slate-100/90 text-slate-700'
+                              'light:border-slate-200 light:bg-slate-100/90 light:text-slate-700 dark:border-white/10 dark:bg-black/50 dark:text-slate-300'
                             }`}
                           >
                             <div className="p-5 space-y-3 font-mono">
@@ -620,9 +582,7 @@ const Products = () => {
           {/* ========================================================= */}
           <div
             className={`mt-20 p-8 sm:p-12 rounded-3xl border text-center max-w-4xl mx-auto shadow-2xl relative overflow-hidden backdrop-blur-xl ${
-              isDark
-                ? 'bg-gradient-to-br from-slate-900/90 via-blue-950/20 to-slate-900/90 border-blue-500/20 shadow-blue-950/40'
-                : 'bg-gradient-to-br from-white via-blue-50/50 to-slate-50 border-blue-200/60 shadow-blue-500/5'
+              'light:bg-gradient-to-br light:from-white light:via-blue-50/50 light:to-slate-50 light:border-blue-200/60 light:shadow-blue-500/5 dark:bg-gradient-to-br dark:from-slate-900/90 dark:via-blue-950/20 dark:to-slate-900/90 dark:border-blue-500/20 dark:shadow-blue-950/40'
             }`}
           >
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-500 border border-blue-500/20 mb-4">
@@ -630,14 +590,14 @@ const Products = () => {
             </div>
             <h2
               className={`text-2xl sm:text-3xl font-extrabold tracking-tight mb-4 ${
-                isDark ? 'text-white' : 'text-slate-900'
+                'light:text-slate-900 dark:text-white'
               }`}
             >
               Need a Production System Built to These Standards?
             </h2>
             <p
               className={`text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed ${
-                isDark ? 'text-slate-300' : 'text-slate-600'
+                'light:text-slate-600 dark:text-slate-300'
               }`}
             >
               Whether you need scalable enterprise full-stack development, distributed data pipelines, or fine-tuned AI workflows, explore our full spectrum of offerings or contact our engineering team directly.
@@ -653,9 +613,7 @@ const Products = () => {
               <Link
                 href="/contact"
                 className={`w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 rounded-xl font-bold text-sm border transition-all duration-200 hover:-translate-y-0.5 ${
-                  isDark
-                    ? 'bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-blue-400'
-                    : 'bg-white border-slate-300 text-slate-800 hover:bg-slate-100 hover:text-blue-600 hover:border-blue-300'
+                  'light:bg-white light:border-slate-300 light:text-slate-800 light:hover:bg-slate-100 light:hover:text-blue-600 light:hover:border-blue-300 dark:bg-white/5 dark:border-white/10 dark:text-white dark:hover:bg-white/10 dark:hover:border-blue-400'
                 }`}
               >
                 <span>Request Architecture Consultation</span>

@@ -46,7 +46,7 @@ export default function GroundedAssistant() {
       } else if (q.includes('hub') || q.includes('maharashtra') || q.includes('city') || q.includes('office') || q.includes('location')) {
         const mh = statesData.find(s => s.slug === 'maharashtra');
         matchedLocations = mh ? mh.cities.slice(0, 4) : [];
-        answerText = `In Maharashtra, Shrayu Technologies operates its Global Headquarters and Core R&D Lab in Chhatrapati Sambhajinagar (CIDCO), alongside enterprise delivery pods in Pune (Hinjawadi), Mumbai (BKC), Nagpur (MIHAN SEZ), and Nashik (Ambad MIDC).`;
+        answerText = `In Maharashtra, Shrayu Technologies operates its Global Headquarters and Core R&D Lab in Chhatrapati Sambhajinagar (CIDCO), delivering software to clients across India remotely and on-site.`;
       } else if (q.includes('web') || q.includes('next.js') || q.includes('react') || q.includes('service')) {
         const s = servicesData.find(x => x.slug === 'web-development');
         if (s) matchedServices.push(s);
@@ -54,7 +54,7 @@ export default function GroundedAssistant() {
       } else {
         // Fallback grounded answer
         matchedSystems = portfolioProjects.slice(0, 2);
-        answerText = `Shrayu Technologies is an enterprise software engineering company headquartered in Chhatrapati Sambhajinagar with delivery hubs across Maharashtra and Karnataka. We engineer bespoke backend microservices, Next.js web applications, and CPU-efficient AI solutions.`;
+        answerText = `Shrayu Technologies is an enterprise software engineering company headquartered in Chhatrapati Sambhajinagar, Maharashtra. We engineer bespoke backend microservices, Next.js web applications, and CPU-efficient AI solutions.`;
       }
 
       setResponse({
