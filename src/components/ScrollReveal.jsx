@@ -51,6 +51,14 @@ const ScrollReveal = () => {
       cancelAnimationFrame(frame);
       mo.disconnect();
       io.disconnect();
+      // Elements that outlive this page (the layout's footer) would otherwise stay hidden: they keep
+      // `.reveal` but nothing observes them anymore, and the next scan skips them. Reset any that
+      // never revealed so the next page (or React's dev double-effect) picks them up again.
+      document.querySelectorAll('[data-reveal]').forEach((el) => {
+        if (el.classList.contains('reveal-in')) return;
+        el.classList.remove('reveal');
+        delete el.dataset.reveal;
+      });
     };
   }, [pathname]);
 
