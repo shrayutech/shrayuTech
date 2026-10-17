@@ -7,7 +7,6 @@ import ScrollReveal from '../components/ScrollReveal';
 import SkeletonNavbar from '../components/skeleton/SkeletonNavbar';
 import SkeletonFooter from '../components/skeleton/SkeletonFooter';
 import SkeletonWrapper from '../components/skeleton/SkeletonWrapper';
-import SkeletonControlToggle from '../components/SkeletonControlToggle';
 import { useSkeleton } from '../context/SkeletonContext';
 
 const MainLayout = ({ children }) => {
@@ -26,7 +25,6 @@ const MainLayout = ({ children }) => {
       <SkeletonWrapper loading={isLoading} skeleton={<SkeletonFooter />}>
         <Footer />
       </SkeletonWrapper>
-      <SkeletonControlToggle />
     </div>
   );
 };
