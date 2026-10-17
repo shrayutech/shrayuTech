@@ -246,18 +246,6 @@ const SAMonogramShowcase = () => {
           >
             {/* Ambient inner rim glow */}
             <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 via-transparent to-blue-500/10 pointer-events-none" />
-
-            {/* Top Monogram Identity Badge */}
-            <div className="w-full flex items-center justify-between pb-4 border-b border-white/10 mb-5 text-[11px] font-bold tracking-wider uppercase">
-              <span className="flex items-center space-x-1.5 text-cyan-400">
-                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-sm shadow-cyan-400/80" />
-                <span>SA Monogram</span>
-              </span>
-              <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>
-                Shrayu Identity
-              </span>
-            </div>
-
             {/* Logo Viewer Display Area */}
             <div className="relative w-full aspect-square max-w-[320px] mx-auto rounded-2xl overflow-hidden flex items-center justify-center p-3">
               {/* Backlit glow disc */}
@@ -268,13 +256,13 @@ const SAMonogramShowcase = () => {
                 }}
               />
 
-              <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-cyan-500/30">
+              <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-white border border-slate-200/60 flex items-center justify-center p-3">
                 <Image
-                  src="/images/about/sa-monogram.jpg"
-                  alt="Shrayu Technologies SA Monogram Logo - Modern Futuristic Technology Identity"
+                  src="/logo.png"
+                  alt="Shrayu Technologies Logo"
                   fill
                   priority
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-contain p-2 transition-transform duration-500 group-hover:scale-105 drop-shadow-md"
                   sizes="(max-width: 640px) 280px, 320px"
                 />
               </div>
