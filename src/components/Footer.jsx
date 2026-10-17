@@ -122,8 +122,8 @@ const Footer = () => {
           <div className="col-span-2 lg:col-span-3 space-y-5">
             <Link href="/" className="flex items-center space-x-3 group w-max">
               <div
-                className={`w-10 h-10 flex items-center justify-center rounded-xl p-1 transition-all duration-300 group-hover:scale-105 ${
-                  'light:bg-white light:border light:border-slate-200 light:group-hover:border-blue-500/40 dark:bg-white/5 dark:border dark:border-white/10 dark:group-hover:border-blue-500/40'
+                className={`w-10 h-10 flex items-center justify-center rounded-xl overflow-hidden transition-all duration-300 group-hover:scale-105 ${
+                  'light:bg-slate-900 light:border light:border-slate-800 light:group-hover:border-blue-500/40 dark:bg-white/5 dark:border dark:border-white/10 dark:group-hover:border-blue-500/40'
                 }`}
               >
                 <img
@@ -131,7 +131,7 @@ const Footer = () => {
                   alt="Shrayu Technologies Logo"
                   width="40"
                   height="40"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex flex-col">
