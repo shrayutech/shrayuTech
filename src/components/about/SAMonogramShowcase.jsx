@@ -256,13 +256,13 @@ const SAMonogramShowcase = () => {
                 }}
               />
 
-              <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-cyan-500/30">
+              <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-white border border-slate-200/60 flex items-center justify-center p-3">
                 <Image
-                  src="/images/about/sa-monogram.jpg"
-                  alt="Shrayu Technologies SA Monogram Logo - Modern Futuristic Technology Identity"
+                  src="/logo.png"
+                  alt="Shrayu Technologies Logo"
                   fill
                   priority
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-contain p-2 transition-transform duration-500 group-hover:scale-105 drop-shadow-md"
                   sizes="(max-width: 640px) 280px, 320px"
                 />
               </div>
