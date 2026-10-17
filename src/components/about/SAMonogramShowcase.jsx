@@ -339,11 +339,6 @@ const SAMonogramShowcase = () => {
                 <span>Vector Spec</span>
               </button>
             </div>
-
-            {/* Subtitle caption */}
-            <p className={`text-[11px] text-center mt-3 font-semibold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              S + A Monogram • Metallic Chrome with Electric Cyan Luminescence
-            </p>
           </SpotlightCard>
         </div>
 
