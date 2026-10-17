@@ -30,7 +30,29 @@ const SkeletonAbout = () => {
         </div>
       </div>
 
-      {/* ── 2. STORY & PHILOSOPHY — 2-col ── */}
+      {/* ── 2. SA MONOGRAM & BRAND STORY SKELETON ── */}
+      <div className={`rounded-[2.5rem] p-8 sm:p-12 lg:p-14 border ${cardClass} grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center`}>
+        <div className="lg:col-span-5 flex justify-center">
+          <SkeletonBase variant="card" width="100%" height="340px" radius="1.5rem" className="max-w-md" />
+        </div>
+        <div className="lg:col-span-7 space-y-5">
+          <SkeletonBase variant="badge" width="180px" height="24px" radius="9999px" />
+          <SkeletonBase variant="heading" width="80%" height="2.75rem" radius="6px" />
+          <div className="space-y-2">
+            <SkeletonBase variant="text" width="98%" height="1rem" radius="4px" />
+            <SkeletonBase variant="text" width="92%" height="1rem" radius="4px" />
+            <SkeletonBase variant="text" width="70%" height="1rem" radius="4px" />
+          </div>
+          <SkeletonBase variant="card" width="100%" height="70px" radius="1rem" />
+          <div className="grid grid-cols-3 gap-3 pt-2">
+            {[1, 2, 3].map((n) => (
+              <SkeletonBase key={n} variant="card" width="100%" height="60px" radius="0.75rem" />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── 3. STORY & PHILOSOPHY — 2-col ── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
         {/* Left: "Who We Are" text + Vision/Mission mini cards */}

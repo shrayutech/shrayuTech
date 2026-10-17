@@ -20,6 +20,7 @@ import { useSkeleton } from '../context/SkeletonContext';
 import SkeletonWrapper from '../components/skeleton/SkeletonWrapper';
 import AboutSkeleton from '../components/skeleton/AboutSkeleton';
 import SpotlightCard from '../components/SpotlightCard';
+import SAMonogramShowcase from '../components/about/SAMonogramShowcase';
 
 const About = () => {
   const { isLoading } = useSkeleton();
@@ -112,6 +113,9 @@ const About = () => {
               Shrayu Technologies is a modern software engineering startup dedicated to building high-quality digital products, websites, mobile applications, and custom software.
             </p>
           </motion.div>
+
+          {/* SA Monogram Brand Story Showcase */}
+          <SAMonogramShowcase />
 
           {/* Story & Philosophy Section */}
           <motion.div
