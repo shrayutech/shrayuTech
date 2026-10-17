@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Compass, Lightbulb, Cpu, Target, Layers } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Sparkles, Compass, Lightbulb, Cpu, Target } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import SpotlightCard from '../SpotlightCard';
 
@@ -182,7 +182,6 @@ export const SAMonogramSVG = ({ className = "w-full h-full", isDark = true }) =>
  */
 const SAMonogramShowcase = () => {
   const { isDark } = useTheme();
-  const [logoMode, setLogoMode] = useState('render'); // 'render' | 'vector'
 
   const taglinePillars = [
     {
@@ -269,75 +268,16 @@ const SAMonogramShowcase = () => {
                 }}
               />
 
-              <AnimatePresence mode="wait">
-                {logoMode === 'render' ? (
-                  <motion.div
-                    key="render"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.35, ease: "easeOut" }}
-                    className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-cyan-500/30"
-                  >
-                    <Image
-                      src="/images/about/sa-monogram.jpg"
-                      alt="Shrayu Technologies SA Monogram Logo - Modern Futuristic Technology Identity"
-                      fill
-                      priority
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 640px) 280px, 320px"
-                    />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="vector"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.35, ease: "easeOut" }}
-                    className={`relative w-full h-full rounded-2xl flex items-center justify-center p-4 ${
-                      isDark ? 'bg-slate-900/90 border border-cyan-500/30' : 'bg-slate-900 border border-slate-700'
-                    }`}
-                  >
-                    <SAMonogramSVG className="w-full h-full max-w-[260px] max-h-[260px]" isDark={true} />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Mode Switcher Pills: 3D Render vs Vector Spec */}
-            <div className="pt-5 w-full flex items-center justify-center gap-2">
-              <button
-                type="button"
-                onClick={() => setLogoMode('render')}
-                className={`px-3 py-1.5 rounded-full text-[11px] font-bold tracking-wide transition-all duration-200 flex items-center space-x-1.5 ${
-                  logoMode === 'render'
-                    ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/30 font-extrabold'
-                    : isDark
-                      ? 'bg-white/5 text-slate-300 hover:text-white hover:bg-white/10 border border-white/10'
-                      : 'bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200 border border-slate-200'
-                }`}
-                aria-pressed={logoMode === 'render'}
-              >
-                <Sparkles className="w-3 h-3" />
-                <span>3D Monogram</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setLogoMode('vector')}
-                className={`px-3 py-1.5 rounded-full text-[11px] font-bold tracking-wide transition-all duration-200 flex items-center space-x-1.5 ${
-                  logoMode === 'vector'
-                    ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/30 font-extrabold'
-                    : isDark
-                      ? 'bg-white/5 text-slate-300 hover:text-white hover:bg-white/10 border border-white/10'
-                      : 'bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200 border border-slate-200'
-                }`}
-                aria-pressed={logoMode === 'vector'}
-              >
-                <Layers className="w-3 h-3" />
-                <span>Vector Spec</span>
-              </button>
+              <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-cyan-500/30">
+                <Image
+                  src="/images/about/sa-monogram.jpg"
+                  alt="Shrayu Technologies SA Monogram Logo - Modern Futuristic Technology Identity"
+                  fill
+                  priority
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 640px) 280px, 320px"
+                />
+              </div>
             </div>
           </SpotlightCard>
         </div>
