@@ -11,8 +11,8 @@ import {
   FlaskConical,
   MapPin
 } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 
 const primaryLinks = [
@@ -43,7 +43,70 @@ const Navbar = () => {
   const resourcesRef = useRef(null);
   const closeTimer = useRef(null);
 
-  const resourcesActive = resourceLinks.some((link) => isPathActive(pathname, link.path));
+  // Active pill sliding indicator state & refs
+  const navContainerRef = useRef(null);
+  const itemRefs = useRef({});
+  const [pendingKey, setPendingKey] = useState(null);
+  const [pillBounds, setPillBounds] = useState({ left: 0, top: 0, width: 0, height: 0, opacity: 0 });
+  const [isInitial, setIsInitial] = useState(true);
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeTimer = useRef(null);
+  const wasHidden = useRef(true);
+  const shouldReduceMotion = useReducedMotion();
+
+  const getActiveKey = useCallback((currentPath) => {
+    if (!currentPath) return null;
+    if (resourceLinks.some((link) => isPathActive(currentPath, link.path))) {
+      return 'resources';
+    }
+    for (const link of primaryLinks) {
+      if (isPathActive(currentPath, link.path)) {
+        return link.path;
+      }
+    }
+    return null;
+  }, []);
+
+  const activeKey = pendingKey ?? getActiveKey(pathname);
+  const resourcesActive = activeKey === 'resources';
+
+  const setItemRef = (key) => (el) => {
+    if (el) {
+      itemRefs.current[key] = el;
+    } else {
+      delete itemRefs.current[key];
+    }
+  };
+
+  const updatePill = useCallback(() => {
+    const container = navContainerRef.current;
+    const currentKey = pendingKey ?? getActiveKey(pathname);
+    const targetEl = currentKey ? itemRefs.current[currentKey] : null;
+
+    if (!container || !targetEl) {
+      wasHidden.current = true;
+      setPillBounds((prev) => (prev.opacity === 0 ? prev : { ...prev, opacity: 0 }));
+      return;
+    }
+
+    const containerRect = container.getBoundingClientRect();
+    if (containerRect.width === 0) return;
+
+    const targetRect = targetEl.getBoundingClientRect();
+    const left = targetRect.left - containerRect.left;
+    const top = targetRect.top - containerRect.top;
+    const width = targetRect.width;
+    const height = targetRect.height;
+
+    setPillBounds({
+      left,
+      top,
+      width,
+      height,
+      opacity: 1,
+    });
+    wasHidden.current = false;
+  }, [pathname, pendingKey, getActiveKey]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -52,10 +115,11 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close any open menu after navigating
+  // Close any open menu after navigating and reset pending key
   useEffect(() => {
     setIsOpen(false);
     setResourcesOpen(false);
+    setPendingKey(null);
   }, [pathname]);
 
   // Escape closes menus; clicking outside closes the Resources dropdown
@@ -87,6 +151,49 @@ const Navbar = () => {
     return () => mq.removeEventListener('change', handleChange);
   }, []);
 
+  // Recalculate active indicator on pathname / state change
+  useEffect(() => {
+    updatePill();
+    const frame = requestAnimationFrame(() => {
+      setIsInitial(false);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [updatePill]);
+
+  // Recalculate on viewport changes, font load, or container resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsResizing(true);
+      updatePill();
+      clearTimeout(resizeTimer.current);
+      resizeTimer.current = setTimeout(() => {
+        setIsResizing(false);
+      }, 150);
+    };
+
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('orientationchange', handleResize, { passive: true });
+
+    if (typeof document !== 'undefined' && document.fonts) {
+      document.fonts.ready.then(updatePill);
+    }
+
+    let observer;
+    if (navContainerRef.current && typeof ResizeObserver !== 'undefined') {
+      observer = new ResizeObserver(() => {
+        updatePill();
+      });
+      observer.observe(navContainerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+      clearTimeout(resizeTimer.current);
+      if (observer) observer.disconnect();
+    };
+  }, [updatePill]);
+
   const openResources = () => {
     clearTimeout(closeTimer.current);
     setResourcesOpen(true);
@@ -98,21 +205,19 @@ const Navbar = () => {
   };
 
   const linkClass = (active) =>
-    `relative inline-flex items-center h-9 px-3 xl:px-4 rounded-full text-sm font-semibold leading-none whitespace-nowrap transition-colors duration-200 ${
+    `relative inline-flex items-center h-9 px-3 xl:px-4 rounded-full text-sm font-semibold leading-none whitespace-nowrap transition-colors duration-300 ${
       active
         ? 'light:text-blue-600 dark:text-white'
         : 'light:text-slate-600 light:hover:text-slate-900 light:hover:bg-slate-200/70 dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/10'
     }`;
 
-  const activePill = (
-    <motion.span
-      layoutId="nav-active-pill"
-      className={`absolute inset-0 rounded-full border ${
-        'light:bg-white light:border-slate-200 light:shadow-sm dark:bg-blue-600/30 dark:border-blue-500/50 dark:shadow-inner dark:shadow-blue-500/20'
-      }`}
-      transition={{ type: 'spring', stiffness: 450, damping: 35 }}
-    />
-  );
+  const pillTransition = shouldReduceMotion || isInitial || isResizing
+    ? { duration: 0 }
+    : {
+        type: 'tween',
+        ease: [0.22, 1, 0.36, 1],
+        duration: 0.38,
+      };
 
   return (
     <nav
@@ -165,20 +270,41 @@ const Navbar = () => {
           {/* Desktop links (centered) */}
           <div className="hidden lg:flex flex-1 justify-center min-w-0">
             <ul
-              className={`flex items-center gap-0.5 p-1 rounded-full border backdrop-blur-md ${
+              ref={navContainerRef}
+              className={`relative flex items-center gap-0.5 p-1 rounded-full border backdrop-blur-md ${
                 'light:bg-slate-100/80 light:border-slate-200 dark:bg-white/[0.04] dark:border-white/10'
               }`}
             >
+              {/* Smooth sliding active indicator pill */}
+              {pillBounds.width > 0 && (
+                <motion.span
+                  aria-hidden="true"
+                  className={`absolute top-0 left-0 rounded-full pointer-events-none border ${
+                    'light:bg-white light:border-slate-200 light:shadow-sm dark:bg-blue-600/30 dark:border-blue-500/50 dark:shadow-inner dark:shadow-blue-500/20'
+                  }`}
+                  initial={false}
+                  animate={{
+                    x: pillBounds.left,
+                    y: pillBounds.top,
+                    width: pillBounds.width,
+                    height: pillBounds.height,
+                    opacity: pillBounds.opacity,
+                  }}
+                  transition={pillTransition}
+                />
+              )}
+
               {primaryLinks.map((link) => {
-                const active = isPathActive(pathname, link.path);
+                const active = activeKey === link.path;
                 return (
                   <li key={link.path}>
                     <Link
+                      ref={setItemRef(link.path)}
                       href={link.path}
+                      onClick={() => setPendingKey(link.path)}
                       className={linkClass(active)}
                       aria-current={active ? 'page' : undefined}
                     >
-                      {active && activePill}
                       <span className="relative z-10">{link.name}</span>
                     </Link>
                   </li>
@@ -193,13 +319,13 @@ const Navbar = () => {
                 onMouseLeave={scheduleCloseResources}
               >
                 <button
+                  ref={setItemRef('resources')}
                   type="button"
                   className={`${linkClass(resourcesActive)} gap-1`}
                   aria-haspopup="true"
                   aria-expanded={resourcesOpen}
                   onClick={() => setResourcesOpen((v) => !v)}
                 >
-                  {resourcesActive && activePill}
                   <span className="relative z-10">Resources</span>
                   <ChevronDown
                     className={`relative z-10 h-4 w-4 transition-transform duration-200 ${
@@ -230,6 +356,10 @@ const Navbar = () => {
                               <li key={path}>
                                 <Link
                                   href={path}
+                                  onClick={() => {
+                                    setPendingKey('resources');
+                                    setResourcesOpen(false);
+                                  }}
                                   aria-current={active ? 'page' : undefined}
                                   className={`flex items-start gap-3 p-3 rounded-xl transition-colors ${
                                     active
@@ -334,7 +464,7 @@ const Navbar = () => {
                       <Link
                         href={link.path}
                         aria-current={active ? 'page' : undefined}
-                        className={`flex items-center h-12 px-3 rounded-xl text-base font-semibold border transition-colors ${
+                        className={`flex items-center h-12 px-3 rounded-xl text-base font-semibold border transition-colors duration-300 ${
                           active
                             ? 'light:text-blue-600 light:bg-blue-50 light:border-blue-200 dark:text-white dark:bg-blue-600/20 dark:border-blue-500/40'
                             : 'light:text-slate-700 light:border-transparent light:hover:text-slate-900 light:hover:bg-slate-100 dark:text-slate-300 dark:border-transparent dark:hover:text-white dark:hover:bg-white/5'
@@ -362,7 +492,7 @@ const Navbar = () => {
                       <Link
                         href={path}
                         aria-current={active ? 'page' : undefined}
-                        className={`flex items-center gap-3 h-12 px-3 rounded-xl text-base font-semibold border transition-colors ${
+                        className={`flex items-center gap-3 h-12 px-3 rounded-xl text-base font-semibold border transition-colors duration-300 ${
                           active
                             ? 'light:text-blue-600 light:bg-blue-50 light:border-blue-200 dark:text-white dark:bg-blue-600/20 dark:border-blue-500/40'
                             : 'light:text-slate-700 light:border-transparent light:hover:text-slate-900 light:hover:bg-slate-100 dark:text-slate-300 dark:border-transparent dark:hover:text-white dark:hover:bg-white/5'
