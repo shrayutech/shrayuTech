@@ -80,7 +80,7 @@ export default function LocationsLandingPage() {
               <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-600 dark:text-slate-300 pt-1">
                 <span>📍 PIN: 431001</span>
                 <span>📞 +91 70200 41614</span>
-                <span>✉️ shrayutech@gmail.com</span>
+                <span>✉️ contact@shrayutech.com</span>
               </div>
             </div>
 

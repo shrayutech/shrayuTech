@@ -141,7 +141,7 @@ export const statesData = [
         address: 'Chhatrapati Sambhajinagar, Maharashtra 431001, India',
         phone: '+91 70200 41614',
         secondaryPhone: '+91 93595 14760',
-        email: 'shrayutech@gmail.com',
+        email: 'contact@shrayutech.com',
         businessHours: 'Mon - Fri: 9:00 AM - 7:00 PM IST',
         mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120074.65487779774!2d75.24430485908954!3d19.865964893706013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdb9815a369bc7f%3A0x7104e3f63300445d!2sChhatrapati%20Sambhajinagar%20(Aurangabad)%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin',
         keyLocalities: [

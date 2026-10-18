@@ -201,8 +201,8 @@ const Footer = () => {
               </li>
               <li className="flex items-start gap-3">
                 <Mail className={iconAccent} />
-                <a href="mailto:shrayutech@gmail.com" className={`${contactLinkClass} whitespace-nowrap`}>
-                  shrayutech@gmail.com
+                <a href="mailto:contact@shrayutech.com" className={`${contactLinkClass} whitespace-nowrap`}>
+                  contact@shrayutech.com
                 </a>
               </li>
               <li className="flex items-start gap-3">

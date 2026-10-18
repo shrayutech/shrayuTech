@@ -44,7 +44,7 @@ export function buildOrganizationSchema(baseUrl = SCHEMA_BASE_URL) {
     url: baseUrl,
     logo: `${baseUrl}/logo.png`,
     description: 'Premier software engineering company specializing in bespoke backend microservices, Next.js web applications, artificial intelligence, and cloud architectures.',
-    email: 'shrayutech@gmail.com',
+    email: 'contact@shrayutech.com',
     telephone: '+91-70200-41614',
     address: {
       '@type': 'PostalAddress',
@@ -62,7 +62,7 @@ export function buildOrganizationSchema(baseUrl = SCHEMA_BASE_URL) {
         '@type': 'ContactPoint',
         telephone: '+91-70200-41614',
         contactType: 'technical support & enterprise inquiries',
-        email: 'shrayutech@gmail.com',
+        email: 'contact@shrayutech.com',
         areaServed: 'IN',
         availableLanguage: ['English', 'Hindi', 'Marathi']
       }

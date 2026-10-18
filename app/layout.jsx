@@ -90,7 +90,7 @@ const jsonLd = {
     "@type": "ContactPoint",
     "telephone": "+91-7020041614",
     "contactType": "customer service",
-    "email": "shrayutech@gmail.com",
+    "email": "contact@shrayutech.com",
     "availableLanguage": ["English", "Hindi"]
   },
   "sameAs": [

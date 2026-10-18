@@ -310,12 +310,10 @@ const Contact = () => {
                     <div>
                       <span className={`uppercase tracking-wider text-[9px] block ${'light:text-slate-500 dark:text-slate-400'}`}>Business Email</span>
                       <a
-                        href="https://mail.google.com/mail/?view=cm&fs=1&to=shrayutech@gmail.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href="mailto:contact@shrayutech.com"
                         className={`text-sm font-bold cursor-pointer hover:underline transition-colors ${'light:text-slate-900 light:hover:text-blue-600 dark:text-white dark:hover:text-blue-400'}`}
                       >
-                        shrayutech@gmail.com
+                        contact@shrayutech.com
                       </a>
                     </div>
                   </div>
