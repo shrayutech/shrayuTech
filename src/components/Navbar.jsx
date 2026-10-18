@@ -11,7 +11,7 @@ import {
   FlaskConical,
   MapPin
 } from 'lucide-react';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 
@@ -151,8 +151,9 @@ const Navbar = () => {
     return () => mq.removeEventListener('change', handleChange);
   }, []);
 
-  // Recalculate active indicator on pathname / state change
-  useEffect(() => {
+  // Recalculate active indicator on pathname / state change. Measured before paint, so on
+  // back/forward the highlighted label and the pill never show a frame out of sync.
+  useLayoutEffect(() => {
     updatePill();
     const frame = requestAnimationFrame(() => {
       setIsInitial(false);
@@ -204,8 +205,10 @@ const Navbar = () => {
     closeTimer.current = setTimeout(() => setResourcesOpen(false), 120);
   };
 
+  // Not positioned, so a link's hover background paints under the pill (z-1) while its label
+  // (z-10) stays on top: the clicked item's fading hover can't show through the arriving pill
   const linkClass = (active) =>
-    `relative inline-flex items-center h-9 px-3 xl:px-4 rounded-full text-sm font-semibold leading-none whitespace-nowrap transition-colors duration-300 ${
+    `inline-flex items-center h-9 px-3 xl:px-4 rounded-full text-sm font-semibold leading-none whitespace-nowrap transition-colors duration-300 ${
       active
         ? 'light:text-blue-600 dark:text-white'
         : 'light:text-slate-600 light:hover:text-slate-900 light:hover:bg-slate-200/70 dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/10'
@@ -222,18 +225,16 @@ const Navbar = () => {
   return (
     <nav
       aria-label="Main navigation"
-      className={`fixed top-0 left-0 right-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ${
+      // Only paint properties change with scroll state. Height and blur stay fixed, so the scroll
+      // reset on every route change doesn't resize the bar while the pill is sliding.
+      className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-xl transition-[background-color,border-color,box-shadow] duration-300 ${
         scrolled
-          ? 'backdrop-blur-xl light:bg-white/85 light:border-slate-200/80 light:shadow-md dark:bg-[#030712]/85 dark:border-white/10 dark:shadow-2xl'
-          : 'backdrop-blur-lg light:bg-white/70 light:border-slate-200/50 dark:bg-[#030712]/60 dark:border-white/5'
+          ? 'light:bg-white/85 light:border-slate-200/80 light:shadow-md dark:bg-[#030712]/85 dark:border-white/10 dark:shadow-2xl'
+          : 'light:bg-white/70 light:border-slate-200/50 dark:bg-[#030712]/60 dark:border-white/5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className={`flex items-center justify-between gap-4 transition-[height] duration-300 ${
-            scrolled ? 'h-16' : 'h-[72px]'
-          }`}
-        >
+        <div className="flex items-center justify-between gap-4 h-[72px]">
           {/* Logo */}
           <Link
             href="/"
@@ -279,7 +280,7 @@ const Navbar = () => {
               {pillBounds.width > 0 && (
                 <motion.span
                   aria-hidden="true"
-                  className={`absolute top-0 left-0 rounded-full pointer-events-none border ${
+                  className={`absolute top-0 left-0 z-1 rounded-full pointer-events-none border ${
                     'light:bg-white light:border-slate-200 light:shadow-sm dark:bg-blue-600/30 dark:border-blue-500/50 dark:shadow-inner dark:shadow-blue-500/20'
                   }`}
                   initial={false}
