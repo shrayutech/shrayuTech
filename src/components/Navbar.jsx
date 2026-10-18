@@ -9,7 +9,7 @@ import {
   FlaskConical,
   MapPin,
 } from 'lucide-react';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 
@@ -33,6 +33,65 @@ const isPathActive = (pathname, path) => {
   return pathname === path || pathname.startsWith(`${path}/`);
 };
 
+const PILL_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)';
+const PILL_DURATION = 380;
+const PILL_MID_WIDTH = 100; // the middle piece is laid out at this width and scaled to fit
+
+// Transforms for the three pieces of the pill (left cap, stretchable middle, right cap) so that
+// together they cover `box`. Each cap is a half-circle plus a 2px flat strip the middle overlaps.
+const pillTransforms = ({ left, top, width, height }) => {
+  const r = height / 2;
+  return [
+    `translate(${left}px, ${top}px)`,
+    `translate(${left + r}px, ${top}px) scaleX(${Math.max(width - 2 * r, 0) / PILL_MID_WIDTH})`,
+    `translate(${left + width - r - 2}px, ${top}px)`,
+  ];
+};
+
+// Moves the pill onto `box` (or fades it out when `box` is null). Only transform and opacity are
+// animated, so the browser runs the slide off the main thread and it keeps moving while the next
+// page mounts. A JS-driven animation of left/width freezes for that whole time in a production
+// build, where routes are prefetched and render the instant a link is clicked.
+const placePillEl = (wrapper, state, box, animate) => {
+  const pieces = [...wrapper.children[0].children];
+  const prev = state.current;
+
+  if (!box) {
+    state.current = null;
+    if (!prev) return;
+    wrapper.getAnimations().forEach((a) => a.cancel());
+    const from = getComputedStyle(wrapper).opacity;
+    wrapper.style.opacity = '0';
+    if (animate) wrapper.animate({ opacity: [from, '0'] }, { duration: 200, easing: PILL_EASING });
+    return;
+  }
+
+  if (prev && ['left', 'top', 'width', 'height'].every((k) => Math.abs(prev[k] - box[k]) < 0.5)) return;
+  state.current = box;
+
+  const capWidth = `${box.height / 2 + 2}px`;
+  const height = `${box.height}px`;
+  const to = pillTransforms(box);
+  // Read where each piece is drawn right now (mid-slide included) before cancelling
+  const from = pieces.map((el) => getComputedStyle(el).transform);
+  const slide = animate && prev && prev.height === box.height;
+
+  pieces.forEach((el, i) => {
+    el.getAnimations().forEach((a) => a.cancel());
+    el.style.height = height;
+    if (i !== 1) el.style.width = capWidth;
+    el.style.transform = to[i];
+    if (slide) el.animate({ transform: [from[i], to[i]] }, { duration: PILL_DURATION, easing: PILL_EASING });
+  });
+
+  if (!prev) {
+    // First show, or showing again after being hidden: appear in place
+    wrapper.getAnimations().forEach((a) => a.cancel());
+    wrapper.style.opacity = '1';
+    if (animate) wrapper.animate({ opacity: [0, 1] }, { duration: 200, easing: PILL_EASING });
+  }
+};
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
@@ -43,6 +102,12 @@ const Navbar = () => {
   const pathname = usePathname();
   const resourcesRef = useRef(null);
   const closeTimer = useRef(null);
+
+  // Active pill sliding indicator refs
+  const navContainerRef = useRef(null);
+  const itemRefs = useRef({});
+  const pillRef = useRef(null);
+  const pillBox = useRef(null);
   const shouldReduceMotion = useReducedMotion();
 
   // Scroll detection with smooth threshold
@@ -71,6 +136,42 @@ const Navbar = () => {
 
   const activeKey = pendingKey ?? getActiveKey(pathname);
   const resourcesActive = activeKey === 'resources';
+
+  const setItemRef = (key) => (el) => {
+    if (el) {
+      itemRefs.current[key] = el;
+    } else {
+      delete itemRefs.current[key];
+    }
+  };
+
+  const activeKeyRef = useRef(activeKey);
+  activeKeyRef.current = activeKey;
+
+  // Positions the pill imperatively (no re-render) on the active item
+  const updatePill = useCallback((animate) => {
+    const container = navContainerRef.current;
+    const wrapper = pillRef.current;
+    // Skip while the desktop bar is display:none (below lg), where everything measures as 0
+    if (!container || !wrapper || container.clientWidth === 0) return;
+
+    const key = activeKeyRef.current;
+    const targetEl = key ? itemRefs.current[key] : null;
+    if (!targetEl) {
+      placePillEl(wrapper, pillBox, null, animate && !shouldReduceMotion);
+      return;
+    }
+
+    // Relative to the container's padding box, which is what the pill's left/top: 0 resolves to
+    const c = container.getBoundingClientRect();
+    const t = targetEl.getBoundingClientRect();
+    placePillEl(wrapper, pillBox, {
+      left: t.left - c.left - container.clientLeft,
+      top: t.top - c.top - container.clientTop,
+      width: t.width,
+      height: t.height,
+    }, animate && !shouldReduceMotion);
+  }, [shouldReduceMotion]);
 
   // Close menus and clear pending key on navigation
   useEffect(() => {
@@ -109,6 +210,37 @@ const Navbar = () => {
     return () => mq.removeEventListener('change', handleChange);
   }, []);
 
+  // Recalculate active indicator on pathname / state change. Measured before paint, so on
+  // back/forward the highlighted label and the pill never show a frame out of sync. Runs in the
+  // click's own render, so the slide is handed to the browser before the next page starts mounting.
+  useLayoutEffect(() => {
+    updatePill(true);
+  }, [activeKey, updatePill]);
+
+  // Re-measure without animating on viewport changes, font load, or container resize
+  useEffect(() => {
+    const snap = () => updatePill(false);
+
+    window.addEventListener('resize', snap, { passive: true });
+    window.addEventListener('orientationchange', snap, { passive: true });
+
+    let cancelled = false;
+    document.fonts?.ready.then(() => !cancelled && snap());
+
+    let observer;
+    if (navContainerRef.current && typeof ResizeObserver !== 'undefined') {
+      observer = new ResizeObserver(snap);
+      observer.observe(navContainerRef.current);
+    }
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('resize', snap);
+      window.removeEventListener('orientationchange', snap);
+      if (observer) observer.disconnect();
+    };
+  }, [updatePill]);
+
   const openResources = () => {
     clearTimeout(closeTimer.current);
     setResourcesOpen(true);
@@ -119,7 +251,7 @@ const Navbar = () => {
     closeTimer.current = setTimeout(() => setResourcesOpen(false), 220);
   };
 
-  // Fluid spring animation preset
+  // Fluid spring animation preset (hover pill and dropdown; the active pill uses placePillEl)
   const springTransition = shouldReduceMotion
     ? { duration: 0.15 }
     : { type: 'spring', stiffness: 420, damping: 30, mass: 0.8 };
@@ -127,18 +259,16 @@ const Navbar = () => {
   return (
     <nav
       aria-label="Main navigation"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+      // Only paint properties change with scroll state. Height, padding and blur stay fixed, so the
+      // scroll reset on every route change doesn't resize the bar while the pill is sliding.
+      className={`fixed top-0 left-0 right-0 z-50 py-3.5 sm:py-4 border-b backdrop-blur-xl backdrop-saturate-150 transition-[background-color,border-color,box-shadow] duration-300 ${
         scrolled
-          ? 'py-2 sm:py-2.5 backdrop-blur-2xl backdrop-saturate-150 light:bg-white/80 light:border-b light:border-slate-200/80 light:shadow-md light:shadow-slate-200/50 dark:bg-[#030712]/80 dark:border-b dark:border-white/10 dark:shadow-2xl dark:shadow-black/60'
-          : 'py-3.5 sm:py-4 backdrop-blur-xl backdrop-saturate-150 light:bg-white/50 light:border-b light:border-slate-200/40 dark:bg-[#030712]/40 dark:border-b dark:border-white/5'
+          ? 'light:bg-white/80 light:border-slate-200/80 light:shadow-md light:shadow-slate-200/50 dark:bg-[#030712]/80 dark:border-white/10 dark:shadow-2xl dark:shadow-black/60'
+          : 'light:bg-white/50 light:border-slate-200/40 dark:bg-[#030712]/40 dark:border-white/5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className={`flex items-center justify-between gap-4 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            scrolled ? 'h-14 sm:h-16' : 'h-16 sm:h-[72px]'
-          }`}
-        >
+        <div className="flex items-center justify-between gap-4 h-16 sm:h-[72px]">
           {/* Brand Logo */}
           <Link
             href="/"
@@ -172,9 +302,30 @@ const Navbar = () => {
           {/* Desktop Navigation Links with Smooth Magnetic Pill */}
           <div className="hidden lg:flex flex-1 justify-center min-w-0">
             <ul
+              ref={navContainerRef}
               onMouseLeave={() => setHoveredKey(null)}
               className="relative flex items-center gap-1 p-1 rounded-full border backdrop-blur-md transition-all duration-300 light:bg-slate-100/80 light:border-slate-200/90 dark:bg-white/[0.04] dark:border-white/10"
             >
+              {/* Active pill, sliding between items. Built from three opaque pieces (see placePillEl) so it can slide and stretch with
+                  transforms alone without squashing its rounded ends. The tone layer's group
+                  opacity gives the dark theme its translucency without doubling where pieces overlap. */}
+              <span
+                ref={pillRef}
+                aria-hidden="true"
+                style={{ opacity: 0 }}
+                className="absolute top-0 left-0 z-1 pointer-events-none"
+              >
+                <span className="absolute top-0 left-0 light:drop-shadow-sm dark:opacity-35">
+                  {['rounded-l-full border border-r-0', 'border-y', 'rounded-r-full border border-l-0'].map((shape, i) => (
+                    <span
+                      key={shape}
+                      style={{ width: i === 1 ? PILL_MID_WIDTH : undefined, transformOrigin: '0 0', willChange: 'transform' }}
+                      className={`absolute top-0 left-0 ${shape} light:bg-white light:border-slate-200 dark:bg-blue-600 dark:border-blue-400`}
+                    />
+                  ))}
+                </span>
+              </span>
+
               {primaryLinks.map((link) => {
                 const isActive = activeKey === link.path;
                 const isHovered = hoveredKey === link.path;
@@ -184,16 +335,7 @@ const Navbar = () => {
                     className="relative"
                     onMouseEnter={() => setHoveredKey(link.path)}
                   >
-                    {/* Active Pill Indicator */}
-                    {isActive && (
-                      <motion.span
-                        layoutId="navbar-active-pill"
-                        className="absolute inset-0 rounded-full light:bg-white light:shadow-sm light:border light:border-slate-200/90 dark:bg-gradient-to-r dark:from-blue-600/30 dark:to-indigo-600/30 dark:border dark:border-blue-500/40 dark:shadow-[0_0_12px_rgba(59,130,246,0.25)] pointer-events-none"
-                        transition={springTransition}
-                      />
-                    )}
-
-                    {/* Smooth Sliding Hover Pill */}
+                    {/* Smooth Sliding Hover Pill (drawn under the active pill) */}
                     <AnimatePresence>
                       {isHovered && !isActive && (
                         <motion.span
@@ -208,6 +350,7 @@ const Navbar = () => {
                     </AnimatePresence>
 
                     <Link
+                      ref={setItemRef(link.path)}
                       href={link.path}
                       onClick={() => setPendingKey(link.path)}
                       aria-current={isActive ? 'page' : undefined}
@@ -233,15 +376,6 @@ const Navbar = () => {
                 }}
                 onMouseLeave={scheduleCloseResources}
               >
-                {/* Active Pill for Resources */}
-                {resourcesActive && (
-                  <motion.span
-                    layoutId="navbar-active-pill"
-                    className="absolute inset-0 rounded-full light:bg-white light:shadow-sm light:border light:border-slate-200/90 dark:bg-gradient-to-r dark:from-blue-600/30 dark:to-indigo-600/30 dark:border dark:border-blue-500/40 dark:shadow-[0_0_12px_rgba(59,130,246,0.25)] pointer-events-none"
-                    transition={springTransition}
-                  />
-                )}
-
                 {/* Hover Pill for Resources */}
                 <AnimatePresence>
                   {hoveredKey === 'resources' && !resourcesActive && (
@@ -257,6 +391,7 @@ const Navbar = () => {
                 </AnimatePresence>
 
                 <button
+                  ref={setItemRef('resources')}
                   type="button"
                   className={`relative z-10 inline-flex items-center gap-1.5 h-9 px-3.5 xl:px-4 rounded-full text-sm font-semibold leading-none whitespace-nowrap transition-colors duration-200 cursor-pointer ${
                     resourcesActive
