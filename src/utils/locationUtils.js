@@ -1,5 +1,6 @@
 import { statesData, locationCategories } from '../data/locationsData.js';
 import { portfolioProjects } from '../data/portfolioProjects.js';
+import { SITE_URL } from '../config/site.config.js';
 
 /**
  * Normalizes state name, alias, or code to canonical slug.
@@ -252,7 +253,7 @@ export function getValidLocationParams() {
 /**
  * Generates sitemap entries for all indexable location pages.
  */
-export function getLocationsForSitemap(baseUrl = 'https://shrayutech.vercel.app') {
+export function getLocationsForSitemap(baseUrl = SITE_URL) {
   const currentDate = new Date().toISOString();
   const entries = [
     {

@@ -23,6 +23,7 @@ import {
   getAllCuratedComparisons
 } from '../../../../src/utils/comparisonUtils.js';
 import { COMPARISON_CONFIG } from '../../../../src/config/comparison.config.js';
+import { getComparisonEntityLink } from '../../../../src/utils/internalLinks.js';
 
 export function generateStaticParams() {
   return curatedComparisons.map((c) => ({
@@ -67,6 +68,9 @@ export default async function CuratedComparisonPage({ params }) {
   // Related comparisons of the same type
   const relatedComparisons = getAllCuratedComparisons(type).filter((c) => c.slug !== slug);
 
+  // Canonical pages of the systems/services being compared
+  const entityLinks = items.map((item) => getComparisonEntityLink(type, item)).filter(Boolean);
+
   const breadcrumbs = [
     { label: 'Home', href: '/' },
     { label: 'Compare', href: '/compare' },
@@ -78,6 +82,7 @@ export default async function CuratedComparisonPage({ params }) {
     <div className="relative min-h-screen pt-36 pb-32 px-6 sm:px-8 overflow-hidden transition-colors duration-300">
       <ComparisonSchema
         title={title}
+        type={type}
         items={items}
         breadcrumbs={breadcrumbs}
       />
@@ -112,6 +117,22 @@ export default async function CuratedComparisonPage({ params }) {
           <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed text-slate-600 dark:text-slate-300">
             {overview}
           </p>
+
+          {entityLinks.length > 0 && (
+            <div className="flex flex-wrap items-center gap-3 text-xs font-bold">
+              <span className="uppercase tracking-wider text-slate-500 dark:text-slate-400">In this comparison:</span>
+              {entityLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-slate-200 dark:border-white/10 text-blue-600 dark:text-blue-400 hover:border-blue-500/50 transition-colors"
+                >
+                  {link.label}
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* SIMILARITIES / WHAT THEY HAVE IN COMMON */}
@@ -205,8 +226,8 @@ export default async function CuratedComparisonPage({ params }) {
                     <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
                       {rc.categoryContext}
                     </span>
-                    <h4 className="text-base font-bold text-slate-900 dark:text-white leading-snug">
-                      {rc.title}
+                    <h4 className="text-base font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 leading-snug">
+                      <Link href={`/compare/${rc.type}/${rc.slug}`}>{rc.title}</Link>
                     </h4>
                     <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2">
                       {rc.overview}
@@ -217,7 +238,7 @@ export default async function CuratedComparisonPage({ params }) {
                       href={`/compare/${rc.type}/${rc.slug}`}
                       className="inline-flex items-center space-x-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors uppercase tracking-wider group"
                     >
-                      <span>Compare</span>
+                      <span>Read Comparison</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </div>

@@ -6,6 +6,7 @@ import {
   composeSchemaGraph,
   SCHEMA_BASE_URL
 } from '../../utils/schema/schemaBuilders';
+import { getComparisonEntityLink } from '../../utils/internalLinks';
 
 /**
  * ComparisonSchema.jsx
@@ -13,6 +14,7 @@ import {
  */
 export default function ComparisonSchema({
   title = '',
+  type = 'systems',
   items = [],
   breadcrumbs = []
 }) {
@@ -20,11 +22,15 @@ export default function ComparisonSchema({
 
   const itemList = buildItemListSchema({
     name: title,
-    items: items.map(item => ({
-      name: item.name || item.title,
-      description: item.description || item.highlight || item.hubRole || undefined,
-      url: item.slug ? `${SCHEMA_BASE_URL}/compare/${item.type || 'systems'}/${item.slug}` : undefined
-    })),
+    items: items.map(item => {
+      // Each compared item points at its own canonical page (case study or service)
+      const link = getComparisonEntityLink(type, item);
+      return {
+        name: item.name || item.title,
+        description: item.description || item.highlight || item.hubRole || undefined,
+        url: link ? `${SCHEMA_BASE_URL}${link.href}` : undefined
+      };
+    }),
     baseUrl: SCHEMA_BASE_URL
   });
 

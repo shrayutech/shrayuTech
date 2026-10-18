@@ -6,7 +6,9 @@
  * using real application data without fabricated claims or duplicate entities.
  */
 
-export const SCHEMA_BASE_URL = 'https://shrayutech.vercel.app';
+import { SITE_URL } from '../../config/site.config.js';
+
+export const SCHEMA_BASE_URL = SITE_URL;
 export const ORG_ID = `${SCHEMA_BASE_URL}/#organization`;
 export const WEBSITE_ID = `${SCHEMA_BASE_URL}/#website`;
 

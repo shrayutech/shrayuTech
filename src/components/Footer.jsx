@@ -41,6 +41,11 @@ const LINK_COLUMNS = [
   }
 ];
 
+const LEGAL_LINKS = [
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms of Service', href: '/terms' }
+];
+
 const PHONES = [
   { label: '+91 70200 41614', href: 'tel:+917020041614' },
   { label: '+91 93595 14760', href: 'tel:+919359514760' }
@@ -225,6 +230,13 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} Shrayu Technologies. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
+            <nav aria-label="Legal" className="flex items-center gap-5">
+              {LEGAL_LINKS.map((link) => (
+                <Link key={link.href} href={link.href} className={linkClass}>
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
             <button type="button" onClick={scrollToTop} aria-label="Scroll back to top" className={iconButtonClass}>
               <ArrowUp className="h-4 w-4" />
             </button>

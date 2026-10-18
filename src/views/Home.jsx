@@ -42,7 +42,7 @@ const heroStatements = [
   'Scalable digital solutions engineered for the future.'
 ];
 
-const Home = () => {
+const Home = ({ featuredResearch = [] }) => {
   const { isLoading } = useSkeleton();
 
   const fadeInUp = {
@@ -83,7 +83,7 @@ const Home = () => {
       icon: <Code className="w-8 h-8 text-blue-500" />,
       desc: 'High-performance, secure business logic engines tailored to your organizational workflows.',
       techs: ['Node.js', 'NestJS', 'PostgreSQL', 'Go'],
-      link: '/services',
+      link: '/services/custom-software',
       actionText: 'Explore Custom Software'
     },
     {
@@ -91,39 +91,39 @@ const Home = () => {
       icon: <Cpu className="w-8 h-8 text-purple-500" />,
       desc: 'Intelligent systems, NLP tools, recommendation models, LLM orchestration, and deep learning.',
       techs: ['Python', 'OpenAI', 'PyTorch', 'LangChain'],
-      link: '/portfolio?category=AI',
-      actionText: 'View AI Case Studies'
+      link: '/services/ai-solutions',
+      actionText: 'Explore AI & ML Solutions'
     },
     {
       title: 'Web Development',
       icon: <Globe className="w-8 h-8 text-indigo-500" />,
       desc: 'Next-gen responsive web portals, SaaS platforms, and SEO-optimized frontend web applications.',
       techs: ['React', 'Next.js', 'Tailwind', 'GraphQL'],
-      link: '/services',
-      actionText: 'Explore Web Architecture'
+      link: '/services/web-development',
+      actionText: 'Explore Web Development'
     },
     {
       title: 'Mobile App Development',
       icon: <Smartphone className="w-8 h-8 text-cyan-500" />,
       desc: 'Cross-platform native iOS & Android applications with offline sync and dynamic UI.',
       techs: ['Flutter', 'Swift', 'Kotlin', 'Firebase'],
-      link: '/services',
-      actionText: 'Explore Mobile Solutions'
+      link: '/services/mobile-apps',
+      actionText: 'Explore Mobile App Development'
     },
     {
       title: 'SaaS Development',
       icon: <Layers className="w-8 h-8 text-violet-500" />,
       desc: 'Multi-tenant product platforms featuring subscription tiers, seat licensing, and billing portals.',
       techs: ['Next.js', 'Stripe', 'Supabase', 'PostgreSQL'],
-      link: '/portfolio?category=Full-Stack%20Development',
-      actionText: 'View SaaS Case Studies'
+      link: '/services/saas-development',
+      actionText: 'Explore SaaS Development'
     },
     {
       title: 'Cloud Solutions & DevOps',
       icon: <Cloud className="w-8 h-8 text-sky-500" />,
       desc: 'Multi-region cloud infrastructure, container orchestration, and zero-downtime CI/CD pipelines.',
       techs: ['AWS', 'Docker', 'Kubernetes', 'Terraform'],
-      link: '/services',
+      link: '/services/cloud-infrastructure',
       actionText: 'Explore Cloud & DevOps'
     }
   ];
@@ -157,7 +157,7 @@ const Home = () => {
       challenge: 'High-throughput telemetry requires zero-latency triage without triggering false positive alert fatigue.',
       solution: 'Constructed an intelligent intrusion detection pipeline combining Random Forest classification and unsupervised telemetry analysis.',
       techs: ['Python', 'Flask', 'Random Forest', 'Scikit-learn', 'Docker'],
-      link: '/portfolio?category=AI'
+      link: '/portfolio/ai-powered-cybersecurity-threat-detection-system'
     },
     {
       title: 'AI Autonomous Navigation System',
@@ -166,7 +166,7 @@ const Home = () => {
       challenge: 'Modeling vehicle kinematics and dynamic obstacle avoidance within strictly constrained memory budgets.',
       solution: 'Engineered A* and Dijkstra graph traversal algorithms calculating collision-free optimal paths in dynamic environments.',
       techs: ['Python 3.10+', 'Pygame', 'OpenCV', 'A* Search', 'Kinematics'],
-      link: '/portfolio?category=AI'
+      link: '/portfolio/ai-autonomous-navigation-system'
     }
   ];
 
@@ -579,7 +579,9 @@ const Home = () => {
                     }`}>
                       {study.category}
                     </span>
-                    <h3 className={`text-2xl font-bold ${'light:text-slate-900 dark:text-white'}`}>{study.title}</h3>
+                    <h3 className={`text-2xl font-bold ${'light:text-slate-900 dark:text-white'}`}>
+                      <Link href={study.link} className="hover:text-blue-500 transition-colors">{study.title}</Link>
+                    </h3>
                     <div className={`p-4 rounded-2xl font-bold text-xs flex items-center space-x-2 border ${
                       'light:bg-emerald-50 light:border-emerald-200 light:text-emerald-700 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400'
                     }`}>
@@ -604,7 +606,7 @@ const Home = () => {
                     </div>
                     <Link href={study.link || '/portfolio'} className="inline-flex items-center space-x-2 text-xs text-blue-500 font-bold uppercase tracking-widest hover:text-blue-600 transition-colors group">
                       <span>Read Full Case Study</span>
-                      <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
                     </Link>
                   </div>
                 </SpotlightCard>
@@ -612,6 +614,53 @@ const Home = () => {
             </div>
           </div>
         </motion.section>
+
+        {/* ORIGINAL RESEARCH (passed in from app/page.jsx) */}
+        {featuredResearch.length > 0 && (
+          <motion.section
+            {...revealOnScroll}
+            className={`py-24 relative z-10 border-t px-6 sm:px-8 ${
+              'light:border-slate-200 dark:border-white/10'
+            }`}
+          >
+            <div className="max-w-7xl mx-auto space-y-12">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                <div className="space-y-4 max-w-2xl">
+                  <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">Original Research</span>
+                  <h2 className={`text-3xl sm:text-4xl font-black tracking-tight ${'light:text-slate-900 dark:text-white'}`}>Data From Our Own Engineering Work</h2>
+                  <p className={`text-base font-medium ${'light:text-slate-600 dark:text-slate-300'}`}>Studies built from our repositories and delivery records, with the methodology and raw data published alongside.</p>
+                </div>
+                <Link href="/research"
+                  className="btn-secondary group text-xs font-bold px-6 py-3 rounded-full flex items-center space-x-2 active:scale-95 transition-all"
+                >
+                  <span>Browse All Research</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {featuredResearch.map((report) => (
+                  <SpotlightCard
+                    key={report.slug}
+                    className={`p-6 rounded-3xl border flex flex-col justify-between gap-4 ${
+                      'light:bg-white light:border-slate-200 dark:bg-white/[0.03] dark:border-white/10'
+                    }`}
+                  >
+                    <div className="space-y-3">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-blue-500">{report.topic}</span>
+                      <h3 className={`text-lg font-bold leading-snug ${'light:text-slate-900 dark:text-white'}`}>
+                        <Link href={`/research/${report.slug}`} className="hover:text-blue-500 transition-colors">
+                          {report.title}
+                        </Link>
+                      </h3>
+                      <p className={`text-xs font-medium leading-relaxed line-clamp-3 ${'light:text-slate-600 dark:text-slate-400'}`}>{report.description}</p>
+                    </div>
+                  </SpotlightCard>
+                ))}
+              </div>
+            </div>
+          </motion.section>
+        )}
 
         {/* FINAL CONVERSION CTA */}
         <section className="py-20 sm:py-28 md:py-32 relative z-10 px-4 sm:px-6 lg:px-8 bg-contact-atmosphere">

@@ -6,7 +6,9 @@
  * crawl budget directives, and indexing policies across all programmatic routes.
  */
 
-export const PSEO_BASE_URL = 'https://shrayutech.vercel.app';
+import { SITE_URL } from '../config/site.config.js';
+
+export const PSEO_BASE_URL = SITE_URL;
 
 export const pseoOpportunityMatrix = [
   {

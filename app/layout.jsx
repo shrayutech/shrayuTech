@@ -76,8 +76,8 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Shrayu Technologies",
-  "url": "https://shrayutech.vercel.app/",
-  "logo": "https://shrayutech.vercel.app/logo.png",
+  "url": `${SITE_METADATA_CONFIG.siteUrl}/`,
+  "logo": `${SITE_METADATA_CONFIG.siteUrl}/logo.png`,
   "description": "Leading software development company providing premium web design, mobile apps, and enterprise solutions.",
   "address": {
     "@type": "PostalAddress",
@@ -122,6 +122,7 @@ export default function RootLayout({ children }) {
                 <li><a href="/services">Software Services</a></li>
                 <li><a href="/portfolio">Portfolio & Case Studies</a></li>
                 <li><a href="/compare">Technical Comparisons</a></li>
+                <li><a href="/research">Original Engineering Research</a></li>
                 <li><a href="/locations">Engineering Locations & Hubs</a></li>
                 <li><a href="/contact">Contact Us</a></li>
               </ul>

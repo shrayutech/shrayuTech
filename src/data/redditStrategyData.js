@@ -210,13 +210,9 @@ export const targetSubreddits = [
         pageTitle: 'Chhatrapati Sambhajinagar HQ & R&D Lab',
         url: '/locations/maharashtra/chhatrapati-sambhajinagar',
         domain: 'Maharashtra tech corridor'
-      },
-
-      {
-        pageTitle: 'Careers & Engineering Collective',
-        url: '/careers',
-        domain: 'Senior engineering culture & remote-first policies'
       }
+      // '/careers' (Careers & Engineering Collective) belongs here again once app/careers/page.jsx
+      // stops returning notFound(); promoting a 404 would waste the referral.
     ],
     opportunityTriggers: [
       'Discussions on emerging tech corridors in Tier-2 Indian cities like Chhatrapati Sambhajinagar',

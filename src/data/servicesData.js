@@ -39,7 +39,12 @@ export const servicesData = [
     ],
     portfolioCategory: 'Python',
     relatedComparisonSlug: 'custom-software-vs-saas-development',
-    supportedHubCities: ['chhatrapati-sambhajinagar']
+    supportedHubCities: ['chhatrapati-sambhajinagar'],
+    // Authoritative standards and official docs this practice follows (rendered on /services/[slug])
+    references: [
+      { label: 'OWASP Top 10 web application security risks', url: 'https://owasp.org/projects/top-ten/' },
+      { label: 'The Twelve-Factor App methodology', url: 'https://12factor.net/' }
+    ]
   },
   {
     slug: 'web-development',
@@ -74,7 +79,11 @@ export const servicesData = [
     ],
     portfolioCategory: 'Full-Stack Development',
     relatedComparisonSlug: 'web-development-vs-mobile-apps',
-    supportedHubCities: ['chhatrapati-sambhajinagar']
+    supportedHubCities: ['chhatrapati-sambhajinagar'],
+    references: [
+      { label: 'Core Web Vitals guidance on web.dev', url: 'https://web.dev/articles/vitals' },
+      { label: 'MDN Web Docs', url: 'https://developer.mozilla.org/en-US/docs/Web' }
+    ]
   },
   {
     slug: 'mobile-apps',
@@ -109,7 +118,11 @@ export const servicesData = [
     ],
     portfolioCategory: 'Full-Stack Development',
     relatedComparisonSlug: 'web-development-vs-mobile-apps',
-    supportedHubCities: ['chhatrapati-sambhajinagar']
+    supportedHubCities: ['chhatrapati-sambhajinagar'],
+    references: [
+      { label: 'Apple Human Interface Guidelines', url: 'https://developer.apple.com/design/human-interface-guidelines/' },
+      { label: 'Android design guidance', url: 'https://developer.android.com/design' }
+    ]
   },
   {
     slug: 'ai-solutions',
@@ -144,7 +157,11 @@ export const servicesData = [
     ],
     portfolioCategory: 'AI',
     relatedComparisonSlug: 'ai-solutions-vs-traditional-automation',
-    supportedHubCities: ['chhatrapati-sambhajinagar']
+    supportedHubCities: ['chhatrapati-sambhajinagar'],
+    references: [
+      { label: 'NIST AI Risk Management Framework', url: 'https://www.nist.gov/itl/ai-risk-management-framework' },
+      { label: 'scikit-learn documentation', url: 'https://scikit-learn.org/stable/' }
+    ]
   },
   {
     slug: 'cloud-infrastructure',
@@ -179,7 +196,11 @@ export const servicesData = [
     ],
     portfolioCategory: 'Python',
     relatedComparisonSlug: 'custom-software-vs-saas-development',
-    supportedHubCities: ['chhatrapati-sambhajinagar']
+    supportedHubCities: ['chhatrapati-sambhajinagar'],
+    references: [
+      { label: 'AWS Well-Architected Framework', url: 'https://aws.amazon.com/architecture/well-architected/' },
+      { label: 'Kubernetes documentation', url: 'https://kubernetes.io/docs/home/' }
+    ]
   },
   {
     slug: 'ui-ux-design',
@@ -214,7 +235,11 @@ export const servicesData = [
     ],
     portfolioCategory: 'Full-Stack Development',
     relatedComparisonSlug: 'web-development-vs-mobile-apps',
-    supportedHubCities: ['chhatrapati-sambhajinagar']
+    supportedHubCities: ['chhatrapati-sambhajinagar'],
+    references: [
+      { label: 'W3C Web Content Accessibility Guidelines (WCAG) 2.2', url: 'https://www.w3.org/TR/WCAG22/' },
+      { label: 'Apple Human Interface Guidelines', url: 'https://developer.apple.com/design/human-interface-guidelines/' }
+    ]
   },
   {
     slug: 'api-development',
@@ -249,7 +274,11 @@ export const servicesData = [
     ],
     portfolioCategory: 'Python',
     relatedComparisonSlug: 'custom-software-vs-saas-development',
-    supportedHubCities: ['chhatrapati-sambhajinagar']
+    supportedHubCities: ['chhatrapati-sambhajinagar'],
+    references: [
+      { label: 'OpenAPI Specification', url: 'https://spec.openapis.org/oas/latest.html' },
+      { label: 'OWASP API Security Top 10', url: 'https://api-security.owasp.org/' }
+    ]
   },
   {
     slug: 'saas-development',
@@ -284,7 +313,11 @@ export const servicesData = [
     ],
     portfolioCategory: 'Full-Stack Development',
     relatedComparisonSlug: 'custom-software-vs-saas-development',
-    supportedHubCities: ['chhatrapati-sambhajinagar']
+    supportedHubCities: ['chhatrapati-sambhajinagar'],
+    references: [
+      { label: 'OWASP Application Security Verification Standard', url: 'https://owasp.org/projects/asvs/' },
+      { label: 'The Twelve-Factor App methodology', url: 'https://12factor.net/' }
+    ]
   },
   {
     slug: 'devops-ci-cd',
@@ -319,7 +352,11 @@ export const servicesData = [
     ],
     portfolioCategory: 'Python',
     relatedComparisonSlug: 'custom-software-vs-saas-development',
-    supportedHubCities: ['chhatrapati-sambhajinagar']
+    supportedHubCities: ['chhatrapati-sambhajinagar'],
+    references: [
+      { label: 'DORA software delivery research', url: 'https://dora.dev/' },
+      { label: 'Docker documentation', url: 'https://docs.docker.com/' }
+    ]
   }
 ];
 

@@ -24,6 +24,11 @@ import {
   getVerifiedProjectsForCategory
 } from '../../../../../src/utils/locationUtils';
 import { locationCategories } from '../../../../../src/data/locationsData';
+import {
+  getServiceForLocationCategory,
+  getServicePath,
+  getProjectPath
+} from '../../../../../src/utils/internalLinks';
 
 export function generateStaticParams() {
   const { categoryParams } = getValidLocationParams();
@@ -65,6 +70,9 @@ export default async function LocationCategoryPage({ params }) {
 
   // Get real verified portfolio projects for this category
   const verifiedProjects = getVerifiedProjectsForCategory(category.slug);
+
+  // Canonical service page for this capability (cloud-devops maps to cloud-infrastructure)
+  const service = getServiceForLocationCategory(category.slug);
 
   const breadcrumbs = [
     { label: 'Home', href: '/' },
@@ -160,6 +168,19 @@ export default async function LocationCategoryPage({ params }) {
                 </p>
               </div>
 
+              {service && (
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                  See the full scope, tech stack and FAQs on our{' '}
+                  <Link
+                    href={getServicePath(service.slug)}
+                    className="font-bold text-blue-600 dark:text-blue-400 hover:underline"
+                  >
+                    {service.name} service page
+                  </Link>
+                  .
+                </p>
+              )}
+
               <div className="pt-2 flex flex-col sm:flex-row gap-3">
                 <Link
                   href="/contact"
@@ -242,7 +263,9 @@ export default async function LocationCategoryPage({ params }) {
                     <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
                       {p.category}
                     </span>
-                    <h4 className="text-base font-bold text-slate-900 dark:text-white line-clamp-1">{p.title}</h4>
+                    <h4 className="text-base font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 line-clamp-1">
+                      <Link href={getProjectPath(p)}>{p.title}</Link>
+                    </h4>
                     <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
                       {p.description}
                     </p>
@@ -253,6 +276,7 @@ export default async function LocationCategoryPage({ params }) {
                       href={p.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={`${p.title} repository on GitHub`}
                       className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
                     >
                       <span>Repository</span>

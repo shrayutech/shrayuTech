@@ -1,9 +1,10 @@
 import { contentRegistry } from '../src/data/contentRegistry';
 import { getAllIndexablePseoRoutes } from '../src/utils/pseoEngine';
 import { getPublishedResearchReports } from '../src/data/researchData';
+import { SITE_URL } from '../src/config/site.config';
 
 export default function sitemap() {
-  const baseUrl = 'https://shrayutech.vercel.app';
+  const baseUrl = SITE_URL;
   const currentDate = new Date().toISOString();
   // Real per-page edit dates from the content registry (falls back to build time for unknown keys)
   const pageDate = (key) => contentRegistry[key]?.lastUpdated || currentDate;

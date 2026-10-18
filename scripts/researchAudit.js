@@ -13,6 +13,7 @@
  * - App Router static page generation & sitemap inclusion
  */
 
+import { SITE_URL } from '../src/config/site.config.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -163,7 +164,7 @@ console.log('\n6. Auditing Schema.org Structured Data Builders...');
 const techArticleSchema = buildTechArticleSchema({
   title: testReport.title,
   description: testReport.description,
-  url: `https://shrayutech.vercel.app/research/${testReport.slug}`,
+  url: `${SITE_URL}/research/${testReport.slug}`,
   datePublished: testReport.publishedAt,
   dateModified: testReport.updatedAt
 });
@@ -174,7 +175,7 @@ assert(techArticleSchema.publisher?.['@id']?.includes('#organization'), `TechArt
 const datasetSchema = buildDatasetSchema({
   name: testReport.title,
   description: testReport.description,
-  url: `https://shrayutech.vercel.app/research/${testReport.slug}`,
+  url: `${SITE_URL}/research/${testReport.slug}`,
   temporalCoverage: `${testReport.dateRange.startDate}/${testReport.dateRange.endDate}`
 });
 assert(datasetSchema['@type'] === 'Dataset', `buildDatasetSchema produces @type: "Dataset"`);

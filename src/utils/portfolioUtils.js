@@ -5,6 +5,7 @@
  */
 
 import { portfolioProjects } from '../data/portfolioProjects.js';
+import { SITE_URL } from '../config/site.config.js';
 
 /**
  * Normalizes a project or repository title into a clean, canonical URL slug.
@@ -55,21 +56,19 @@ export function getAllProjectSlugs() {
  */
 export function getRelatedProjects(currentProject, limit = 3) {
   if (!currentProject) return [];
-  return portfolioProjects
-    .filter(p => p.id !== currentProject.id)
-    .sort((a, b) => {
-      // Prioritize same category
-      if (a.category === currentProject.category && b.category !== currentProject.category) return -1;
-      if (b.category === currentProject.category && a.category !== currentProject.category) return 1;
-      return 0;
-    })
-    .slice(0, limit);
+  // Same-category projects that follow this one, wrapping around, so every case study is
+  // linked from its siblings rather than only the first few in each category
+  const siblings = portfolioProjects.filter(p => p.category === currentProject.category);
+  const start = siblings.findIndex(p => p.id === currentProject.id);
+  const ring = [...siblings.slice(start + 1), ...siblings.slice(0, Math.max(start, 0))];
+  const others = portfolioProjects.filter(p => p.category !== currentProject.category);
+  return [...ring, ...others].slice(0, limit);
 }
 
 /**
  * Generates JSON-LD schema for a portfolio project.
  */
-export function getProjectStructuredData(project, baseUrl = 'https://shrayutech.vercel.app') {
+export function getProjectStructuredData(project, baseUrl = SITE_URL) {
   if (!project) return null;
   const slug = normalizeProjectSlug(project.repo);
   const canonicalUrl = `${baseUrl}/portfolio/${slug}`;

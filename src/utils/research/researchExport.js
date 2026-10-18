@@ -6,6 +6,8 @@
  * for academic, developer, and business citation of original research reports.
  */
 
+import { SITE_URL } from '../../config/site.config.js';
+
 /**
  * Generates an auditable CSV representation of a research report's findings table.
  * 
@@ -26,7 +28,7 @@ export function generateResearchCsv(report) {
   lines.push(`# Data Collection Period: ${report.dateRange.startDate} to ${report.dateRange.endDate}`);
   lines.push(`# Sample Size: ${report.sampleSize} ${report.sampleUnit || 'units'}`);
   lines.push(`# License: Creative Commons Attribution 4.0 International (CC BY 4.0)`);
-  lines.push(`# Source URL: https://shrayutech.vercel.app/research/${report.slug}`);
+  lines.push(`# Source URL: ${SITE_URL}/research/${report.slug}`);
   lines.push(`# Generated At: ${new Date().toISOString()}`);
   lines.push('');
 
@@ -66,7 +68,7 @@ export function generateBibtexCitation(report) {
   institution  = {Shrayu Technologies},
   year         = {${report.publishedYear || 2026}},
   month        = {${report.publishedMonth || 'October'}},
-  url          = {https://shrayutech.vercel.app/research/${report.slug}},
+  url          = {${SITE_URL}/research/${report.slug}},
   note         = {Sample Size: ${report.sampleSize} ${report.sampleUnit || 'units'}. First-party verified dataset.}
 }`;
 }

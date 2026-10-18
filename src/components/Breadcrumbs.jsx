@@ -2,16 +2,19 @@
 
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
+import { SITE_URL } from '../config/site.config';
 
 /**
  * Reusable SEO Breadcrumbs Component
  * - Generates accessible semantic HTML with schema microdata
- * - Injects structured JSON-LD BreadcrumbList for Google Search
+ * - Optionally injects a JSON-LD BreadcrumbList (`withSchema`). Off by default: every page that
+ *   renders this already emits its BreadcrumbList in its own schema graph, and two lists on one
+ *   page give search engines conflicting trails.
  * - Supports dark/light mode with smooth hover transitions
  */
-const Breadcrumbs = ({ items = [] }) => {
+const Breadcrumbs = ({ items = [], withSchema = false }) => {
 
-  const baseUrl = 'https://shrayutech.vercel.app';
+  const baseUrl = SITE_URL;
 
   // Construct structured data for Google Rich Results
   const breadcrumbSchema = {
@@ -35,10 +38,12 @@ const Breadcrumbs = ({ items = [] }) => {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c') }}
-      />
+      {withSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c') }}
+        />
+      )}
       <nav aria-label="Breadcrumb" className="mb-6 inline-flex">
         <ol
           className={`flex flex-wrap items-center gap-1.5 px-4 py-2 rounded-full border text-xs font-semibold backdrop-blur-md transition-colors ${

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { ArrowRight, Github, ExternalLink, Code2 } from 'lucide-react';
 import { portfolioProjects } from '../data/portfolioProjects';
+import { getProjectPath } from '../utils/internalLinks';
 
 /**
  * Reusable SEO Related Projects / Case Studies Component
@@ -81,6 +82,7 @@ export default function RelatedProjects({
                       'light:bg-slate-100 light:border-slate-200 light:text-slate-600 light:hover:text-slate-900 dark:bg-white/5 dark:border-white/10 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/10'
                     }`}
                     title="View GitHub Repository"
+                    aria-label={`${project.title} source code on GitHub`}
                   >
                     <Github className="w-3.5 h-3.5" />
                   </a>
@@ -93,6 +95,7 @@ export default function RelatedProjects({
                         'light:bg-slate-100 light:border-slate-200 light:text-slate-600 light:hover:text-slate-900 dark:bg-white/5 dark:border-white/10 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/10'
                       }`}
                       title="View Live Demo"
+                      aria-label={`${project.title} live demo`}
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
@@ -103,10 +106,10 @@ export default function RelatedProjects({
               <div>
                 <h4
                   className={`text-base font-bold transition-colors ${
-                    'light:text-slate-900 dark:text-white'
+                    'light:text-slate-900 light:hover:text-blue-600 dark:text-white dark:hover:text-blue-400'
                   }`}
                 >
-                  {project.title.replace(/-/g, ' ')}
+                  <Link href={getProjectPath(project)}>{project.title.replace(/-/g, ' ')}</Link>
                 </h4>
                 <p className={`text-xs font-medium line-clamp-3 mt-1.5 leading-relaxed ${'light:text-slate-600 dark:text-slate-300'}`}>
                   {project.highlight}
@@ -130,10 +133,10 @@ export default function RelatedProjects({
 
             <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-bold">
               <Link
-                href={`/portfolio?category=${encodeURIComponent(project.category)}`}
+                href={getProjectPath(project)}
                 className="text-blue-500 hover:text-blue-400 inline-flex items-center space-x-1 group"
               >
-                <span>Explore {project.category} Systems</span>
+                <span>Read the Case Study</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

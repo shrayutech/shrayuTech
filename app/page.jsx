@@ -8,6 +8,7 @@ import {
   SCHEMA_BASE_URL
 } from '../src/utils/schema/schemaBuilders';
 import { portfolioProjects } from '../src/data/portfolioProjects';
+import { getPublishedResearchReports } from '../src/data/researchData';
 import { buildPageMetadata } from '../src/utils/seo/metadataBuilders';
 
 export const metadata = buildPageMetadata({
@@ -19,6 +20,14 @@ export const metadata = buildPageMetadata({
 
 
 export default function HomePage() {
+  // Only the fields the cards need, so the research calculators stay out of the client bundle
+  const featuredResearch = getPublishedResearchReports().slice(0, 3).map((r) => ({
+    slug: r.slug,
+    title: r.title,
+    topic: r.topic,
+    description: r.description,
+  }));
+
   const webPage = buildWebPageSchema({
     ...getPageDates('home'),
     title: 'Shrayu Technologies | Premium Software Development & AI Engineering',
@@ -46,7 +55,7 @@ export default function HomePage() {
   return (
     <>
       <SchemaMarkup schema={graph} />
-      <Home />
+      <Home featuredResearch={featuredResearch} />
     </>
   );
 }

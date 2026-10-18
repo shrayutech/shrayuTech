@@ -14,6 +14,7 @@
  * 9. Codebase architectural integrity (no client-side <Head> mutations)
  */
 
+import { SITE_URL } from '../src/config/site.config.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -78,24 +79,24 @@ console.log('================================================================\n'
 // 1. GLOBAL METADATA ENGINE & DEFAULTS
 // -----------------------------------------------------------------------------
 console.log('1. Auditing Global Metadata Configuration & Builders...');
-assert(SITE_METADATA_CONFIG.siteUrl === 'https://shrayutech.vercel.app', 'Canonical siteUrl is production domain without trailing slash');
+assert(/^https:\/\/[a-z0-9.-]+$/.test(SITE_METADATA_CONFIG.siteUrl), 'Canonical siteUrl is an HTTPS origin without trailing slash');
 assert(SITE_METADATA_CONFIG.brandName === 'Shrayu Technologies', 'Brand name is Shrayu Technologies');
 assert(SITE_METADATA_CONFIG.locale === 'en_US', 'Default OG locale is en_US');
 assert(SITE_METADATA_CONFIG.twitterHandle === '@ayushkhobragade', 'Twitter handle is configured');
-assert(SITE_METADATA_CONFIG.defaultImage.startsWith('https://shrayutech.vercel.app'), 'Default OG image uses absolute canonical domain');
+assert(SITE_METADATA_CONFIG.defaultImage.startsWith(SITE_URL), 'Default OG image uses absolute canonical domain');
 
 // Test canonical URL normalization
-assert(buildCanonicalUrl('/about') === 'https://shrayutech.vercel.app/about', 'Canonical URL builds cleanly without trailing slash');
-assert(buildCanonicalUrl('/about/') === 'https://shrayutech.vercel.app/about', 'Canonical URL strips accidental trailing slash');
-assert(buildCanonicalUrl('about') === 'https://shrayutech.vercel.app/about', 'Canonical URL handles paths missing leading slash');
-assert(buildCanonicalUrl('/') === 'https://shrayutech.vercel.app', 'Root canonical URL correctly formats as base domain');
+assert(buildCanonicalUrl('/about') === `${SITE_URL}/about`, 'Canonical URL builds cleanly without trailing slash');
+assert(buildCanonicalUrl('/about/') === `${SITE_URL}/about`, 'Canonical URL strips accidental trailing slash');
+assert(buildCanonicalUrl('about') === `${SITE_URL}/about`, 'Canonical URL handles paths missing leading slash');
+assert(buildCanonicalUrl('/') === SITE_URL, 'Root canonical URL correctly formats as base domain');
 
 // Test language alternates
 const alternates = buildLanguageAlternates('/portfolio');
-assert(alternates.canonical === 'https://shrayutech.vercel.app/portfolio', 'Alternates includes canonical URL');
-assert(alternates.languages['en'] === 'https://shrayutech.vercel.app/portfolio', 'English language alternate present');
+assert(alternates.canonical === `${SITE_URL}/portfolio`, 'Alternates includes canonical URL');
+assert(alternates.languages['en'] === `${SITE_URL}/portfolio`, 'English language alternate present');
 assert(!alternates.languages['hi'] && !alternates.languages['mr'], 'No hreflang alternates for untranslated languages');
-assert(alternates.languages['x-default'] === 'https://shrayutech.vercel.app/portfolio', 'x-default fallback alternate present');
+assert(alternates.languages['x-default'] === `${SITE_URL}/portfolio`, 'x-default fallback alternate present');
 
 // -----------------------------------------------------------------------------
 // 2. ROBOTS.TXT DYNAMIC ARCHITECTURE
@@ -106,7 +107,7 @@ assert(Array.isArray(generatedRobots.rules), 'Robots config contains rules array
 assert(generatedRobots.rules[0].userAgent === '*', 'Robots rule targets all user agents');
 assert(generatedRobots.rules[0].allow === '/', 'Robots allows public indexing on root');
 assert(Array.isArray(generatedRobots.rules[0].disallow) && generatedRobots.rules[0].disallow.includes('/admin'), 'Robots strictly disallows /admin');
-assert(generatedRobots.sitemap === 'https://shrayutech.vercel.app/sitemap.xml', 'Robots points to canonical sitemap.xml');
+assert(generatedRobots.sitemap === `${SITE_URL}/sitemap.xml`, 'Robots points to canonical sitemap.xml');
 
 const staticRobotsPath = path.join(ROOT_DIR, 'public', 'robots.txt');
 assert(!fs.existsSync(staticRobotsPath), 'Redundant static public/robots.txt was removed in favor of native app/robots.js');
@@ -186,7 +187,7 @@ staticPages.forEach((p) => {
   const titleStr = resolveTitleString(meta.title);
   assert(titleStr.length >= 15 && titleStr.length <= 75, `Static page [${p.path}] title length valid (${titleStr.length} chars)`);
   assert(meta.description.length >= 40 && meta.description.length <= 165, `Static page [${p.path}] description length valid (${meta.description.length} chars)`);
-  assert(meta.alternates.canonical === `https://shrayutech.vercel.app${p.path === '/' ? '' : p.path}`, `Static page [${p.path}] canonical URL accurate`);
+  assert(meta.alternates.canonical === `${SITE_URL}${p.path === '/' ? '' : p.path}`, `Static page [${p.path}] canonical URL accurate`);
   assert(meta.robots.index === true && meta.robots.follow === true, `Static page [${p.path}] robots is indexable`);
   assert(meta.openGraph.url === meta.alternates.canonical, `Static page [${p.path}] OG URL matches canonical`);
   assert(meta.openGraph.siteName === 'Shrayu Technologies', `Static page [${p.path}] OG siteName set`);
@@ -226,7 +227,7 @@ servicesData.forEach((s) => {
   const titleStr = resolveTitleString(meta.title);
   assert(titleStr.length >= 15 && titleStr.length <= 75, `Service [${s.slug}] title length valid (${titleStr.length} chars)`);
   assert(meta.description.length >= 50 && meta.description.length <= 165, `Service [${s.slug}] description length valid (${meta.description.length} chars)`);
-  assert(meta.alternates.canonical === `https://shrayutech.vercel.app/services/${s.slug}`, `Service [${s.slug}] canonical URL accurate`);
+  assert(meta.alternates.canonical === `${SITE_URL}/services/${s.slug}`, `Service [${s.slug}] canonical URL accurate`);
   assert(meta.robots.index === true, `Service [${s.slug}] indexable`);
   assert(!seenTitles.has(titleStr), `Service [${s.slug}] title is globally unique`);
   seenTitles.add(titleStr);
@@ -252,7 +253,7 @@ statesData.forEach((state) => {
   const titleStr = resolveTitleString(meta.title);
   assert(titleStr.length >= 15 && titleStr.length <= 75, `State [${state.slug}] title length valid (${titleStr.length} chars)`);
   assert(meta.description.length >= 50 && meta.description.length <= 165, `State [${state.slug}] description length valid (${meta.description.length} chars)`);
-  assert(meta.alternates.canonical === `https://shrayutech.vercel.app/locations/${state.slug}`, `State [${state.slug}] canonical URL accurate`);
+  assert(meta.alternates.canonical === `${SITE_URL}/locations/${state.slug}`, `State [${state.slug}] canonical URL accurate`);
   seenTitles.add(titleStr);
 });
 
@@ -264,7 +265,7 @@ statesData.forEach((state) => {
     const titleStr = resolveTitleString(meta.title);
     assert(titleStr.length >= 15 && titleStr.length <= 75, `City [${city.slug}] title length valid (${titleStr.length} chars)`);
     assert(meta.description.length >= 50 && meta.description.length <= 165, `City [${city.slug}] description length valid (${meta.description.length} chars)`);
-    assert(meta.alternates.canonical === `https://shrayutech.vercel.app/locations/${state.slug}/${city.slug}`, `City [${city.slug}] canonical URL accurate`);
+    assert(meta.alternates.canonical === `${SITE_URL}/locations/${state.slug}/${city.slug}`, `City [${city.slug}] canonical URL accurate`);
     seenTitles.add(titleStr);
   });
 });
@@ -279,7 +280,7 @@ statesData.forEach((state) => {
       const titleStr = resolveTitleString(meta.title);
       assert(titleStr.length >= 15 && titleStr.length <= 75, `Local Service [${city.slug}/${category.slug}] title length valid (${titleStr.length} chars)`);
       assert(meta.description.length >= 50 && meta.description.length <= 165, `Local Service [${city.slug}/${category.slug}] description length valid (${meta.description.length} chars)`);
-      assert(meta.alternates.canonical === `https://shrayutech.vercel.app/locations/${state.slug}/${city.slug}/${category.slug}`, `Local Service canonical URL accurate`);
+      assert(meta.alternates.canonical === `${SITE_URL}/locations/${state.slug}/${city.slug}/${category.slug}`, `Local Service canonical URL accurate`);
       categoryCombosTested++;
     });
   });
@@ -293,7 +294,7 @@ curatedComparisons.forEach((comp) => {
   const titleStr = resolveTitleString(meta.title);
   assert(titleStr.length >= 15 && titleStr.length <= 75, `Comparison [${comp.slug}] title length valid (${titleStr.length} chars)`);
   assert(meta.description.length >= 50 && meta.description.length <= 165, `Comparison [${comp.slug}] description length valid (${meta.description.length} chars)`);
-  assert(meta.alternates.canonical === `https://shrayutech.vercel.app/compare/${comp.type}/${comp.slug}`, `Comparison [${comp.slug}] canonical accurate`);
+  assert(meta.alternates.canonical === `${SITE_URL}/compare/${comp.type}/${comp.slug}`, `Comparison [${comp.slug}] canonical accurate`);
   assert(meta.robots.index === true, `Comparison [${comp.slug}] indexable`);
   assert(!seenTitles.has(titleStr), `Comparison [${comp.slug}] title is globally unique`);
   seenTitles.add(titleStr);
@@ -308,7 +309,7 @@ researchReports.forEach((report) => {
   assert(titleStr.length >= 15 && titleStr.length <= 75, `Research [${report.slug}] title length valid (${titleStr.length} chars)`);
   assert(meta.description.length >= 50 && meta.description.length <= 165, `Research [${report.slug}] description length valid (${meta.description.length} chars)`);
   assert(meta.openGraph.type === 'article', `Research [${report.slug}] OG type is article`);
-  assert(meta.alternates.canonical === `https://shrayutech.vercel.app/research/${report.slug}`, `Research [${report.slug}] canonical accurate`);
+  assert(meta.alternates.canonical === `${SITE_URL}/research/${report.slug}`, `Research [${report.slug}] canonical accurate`);
   assert(meta.robots.index === true, `Research [${report.slug}] indexable`);
   assert(!seenTitles.has(titleStr), `Research [${report.slug}] title is globally unique`);
   seenTitles.add(titleStr);

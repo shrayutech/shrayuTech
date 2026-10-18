@@ -5,53 +5,59 @@ import { ArrowRight, Code, Globe, Smartphone, Cpu, Cloud, Palette, Network, Laye
 
 const serviceCatalog = [
   {
+    slug: 'custom-software',
     title: 'Custom Software Development',
     category: 'Engineering',
     icon: Code,
     desc: 'Robust, secure business logic engines tailored to your organizational workflows.',
-    href: '/services'
+    href: '/services/custom-software'
   },
   {
+    slug: 'web-development',
     title: 'Web Application Engineering',
     category: 'Web',
     icon: Globe,
     desc: 'Responsive, fast frontend web portals and SaaS platforms built with Next.js & React.',
-    href: '/services'
+    href: '/services/web-development'
   },
   {
+    slug: 'mobile-apps',
     title: 'Mobile App Development',
     category: 'Mobile',
     icon: Smartphone,
     desc: 'Native iOS & Android mobile applications featuring offline sync and fluid UI.',
-    href: '/services'
+    href: '/services/mobile-apps'
   },
   {
+    slug: 'ai-solutions',
     title: 'AI & Machine Learning Solutions',
     category: 'AI',
     icon: Cpu,
     desc: 'LLM orchestration, neural models, predictive forecasting, and automated vision pipelines.',
-    href: '/services'
+    href: '/services/ai-solutions'
   },
   {
+    slug: 'cloud-infrastructure',
     title: 'Cloud Infrastructure & DevOps',
     category: 'Cloud',
     icon: Cloud,
     desc: 'Auto-scaling AWS clusters, Docker containerization, and zero-downtime CI/CD delivery.',
-    href: '/services'
+    href: '/services/cloud-infrastructure'
   },
   {
+    slug: 'ui-ux-design',
     title: 'UI/UX Product Design',
     category: 'Design',
     icon: Palette,
     desc: 'High-fidelity wireframes, interactive Figma prototypes, and scalable design token systems.',
-    href: '/services'
+    href: '/services/ui-ux-design'
   }
 ];
 
 /**
  * Reusable Related Services Component
  * - Displays contextually relevant service offerings across portfolio, about, and contact pages
- * - Guides visitors smoothly through the conversion funnel
+ * - Each card links to its /services/[slug] deep-dive; `currentService` takes a slug or title
  */
 export default function RelatedServices({
   currentService,
@@ -61,7 +67,7 @@ export default function RelatedServices({
 }) {
 
   const services = serviceCatalog
-    .filter((s) => !currentService || s.title.toLowerCase() !== currentService.toLowerCase())
+    .filter((s) => !currentService || (s.slug !== currentService && s.title.toLowerCase() !== currentService.toLowerCase()))
     .slice(0, limit);
 
   return (
@@ -116,7 +122,7 @@ export default function RelatedServices({
                   href={service.href}
                   className="text-xs font-bold text-blue-500 hover:text-blue-400 inline-flex items-center space-x-1 group"
                 >
-                  <span>Explore Service Details</span>
+                  <span>Explore {service.title}</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>

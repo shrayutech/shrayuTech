@@ -9,6 +9,7 @@ import { locationCategories } from '../data/locationsData.js';
 import { getAllCities } from './locationUtils.js';
 import { curatedComparisons } from '../data/comparisonsData.js';
 import { COMPARISON_CONFIG } from '../config/comparison.config.js';
+import { SITE_URL } from '../config/site.config.js';
 
 /**
  * Normalizes an attribute key to a canonical representation.
@@ -381,7 +382,7 @@ export function resolveComparisonEntities(type, slugOrIds) {
 /**
  * Builds sitemap entries for curated comparisons.
  */
-export function getComparisonsForSitemap(baseUrl = 'https://shrayutech.vercel.app') {
+export function getComparisonsForSitemap(baseUrl = SITE_URL) {
   const currentDate = new Date().toISOString();
   const entries = [
     {

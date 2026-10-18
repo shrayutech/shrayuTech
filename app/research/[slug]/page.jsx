@@ -29,6 +29,8 @@ import {
   getPublishedResearchReports
 } from '../../../src/data/researchData';
 import { portfolioProjects } from '../../../src/data/portfolioProjects';
+import { getServiceBySlug } from '../../../src/data/servicesData';
+import { getProjectPath, getServicePath } from '../../../src/utils/internalLinks';
 import ResearchExportActions from '../../../src/components/research/ResearchExportActions';
 
 export async function generateStaticParams() {
@@ -104,6 +106,8 @@ export default async function ResearchReportDetailPage({ params }) {
   const relatedProjects = Array.isArray(report.relatedPortfolioIds)
     ? portfolioProjects.filter((p) => report.relatedPortfolioIds.includes(p.id))
     : [];
+
+  const relatedService = getServiceBySlug(report.relatedServiceSlug);
 
   // Related Research Reports
   const allPublished = getPublishedResearchReports();
@@ -336,20 +340,20 @@ export default async function ResearchReportDetailPage({ params }) {
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {report.relatedServiceSlug && (
+              {relatedService && (
                 <div className="p-5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-2">
                   <div className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 text-xs font-semibold uppercase tracking-wider">
                     <Layers className="w-4 h-4" />
                     <span>Related Engineering Discipline</span>
                   </div>
-                  <div className="text-base font-bold text-slate-900 dark:text-white capitalize">
-                    {report.relatedServiceSlug.replace(/-/g, ' ')}
+                  <div className="text-base font-bold text-slate-900 dark:text-white">
+                    {relatedService.name}
                   </div>
                   <Link
-                    href={`/services/${report.relatedServiceSlug}`}
+                    href={getServicePath(relatedService.slug)}
                     className="inline-block text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 pt-1"
                   >
-                    View Service Deep-Dive &rarr;
+                    Explore our {relatedService.shortName} service &rarr;
                   </Link>
                 </div>
               )}
@@ -361,10 +365,10 @@ export default async function ResearchReportDetailPage({ params }) {
                     <span>Audited Systems in Study</span>
                   </div>
                   <div className="space-y-1">
-                    {relatedProjects.slice(0, 2).map((p) => (
+                    {relatedProjects.map((p) => (
                       <Link
                         key={p.id}
-                        href={`/portfolio/${p.repo.toLowerCase()}`}
+                        href={getProjectPath(p)}
                         className="block text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white truncate"
                       >
                         &bull; {p.title}

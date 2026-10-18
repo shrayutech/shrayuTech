@@ -32,6 +32,13 @@ import {
   getRelatedProjects
 } from '../../../src/utils/portfolioUtils';
 import { servicesData } from '../../../src/data/servicesData';
+import {
+  getServiceForProject,
+  getComparisonsForProject,
+  getComparisonPath,
+  getResearchForProject,
+  getResearchPath
+} from '../../../src/utils/internalLinks';
 
 export function generateStaticParams() {
   return getAllProjectSlugs().map((slug) => ({
@@ -64,15 +71,10 @@ export default async function PortfolioCaseStudyPage({ params }) {
   const projectSlug = normalizeProjectSlug(project.repo);
   const relatedProjects = getRelatedProjects(project, 3);
 
-  // Match related service
-  const matchedService = servicesData.find((s) => {
-    if (project.category === 'AI') return s.slug === 'ai-solutions';
-    if (project.category === 'Machine Learning') return s.slug === 'ai-solutions';
-    if (project.category === 'Data Science') return s.slug === 'ai-solutions' || s.slug === 'custom-software';
-    if (project.category === 'Full-Stack Development') return s.slug === 'web-development' || s.slug === 'saas-development';
-    if (project.category === 'Python') return s.slug === 'custom-software' || s.slug === 'api-development';
-    return false;
-  }) || servicesData[0];
+  // Service that delivers this kind of system, and a curated comparison featuring it (if any)
+  const matchedService = getServiceForProject(project) || servicesData[0];
+  const comparison = getComparisonsForProject(project)[0];
+  const citingResearch = getResearchForProject(project);
 
   const breadcrumbs = [
     { label: 'Home', href: '/' },
@@ -254,6 +256,28 @@ export default async function PortfolioCaseStudyPage({ params }) {
           </div>
         )}
 
+        {/* RESEARCH THAT INCLUDES THIS SYSTEM IN ITS DATASET */}
+        {citingResearch.length > 0 && (
+          <div className="p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl space-y-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-blue-500">
+              Cited in Original Research
+            </span>
+            <ul className="space-y-2">
+              {citingResearch.map((r) => (
+                <li key={r.slug}>
+                  <Link
+                    href={getResearchPath(r)}
+                    className="text-sm sm:text-base font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-flex items-start gap-2"
+                  >
+                    <ArrowRight className="w-4 h-4 shrink-0 mt-1 text-blue-500" />
+                    {r.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {/* RELATED CASE STUDIES (Cross-linking) */}
         {relatedProjects.length > 0 && (
           <div className="space-y-6">
@@ -321,18 +345,20 @@ export default async function PortfolioCaseStudyPage({ params }) {
               Interactive Comparison
             </span>
             <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
-              Compare This System Against Alternative Architectures
+              {comparison ? comparison.title : 'Compare This System Against Alternative Architectures'}
             </h3>
             <p className="text-sm text-slate-600 dark:text-slate-300 max-w-xl">
-              Use our technical comparison engine to benchmark {project.title} against other production systems in algorithmic complexity, throughput, and hardware requirements.
+              {comparison
+                ? comparison.overview
+                : `Use our technical comparison engine to benchmark ${project.title} against other production systems in algorithmic complexity, throughput, and hardware requirements.`}
             </p>
           </div>
           <Link
-            href="/compare"
+            href={comparison ? getComparisonPath(comparison) : '/compare'}
             className="inline-flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md shrink-0"
           >
             <ArrowRightLeft className="w-4 h-4" />
-            <span>Launch Comparison</span>
+            <span>{comparison ? 'Read the Full Comparison' : 'Launch Comparison'}</span>
           </Link>
         </div>
       </div>

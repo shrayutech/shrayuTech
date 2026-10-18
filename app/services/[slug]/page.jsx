@@ -11,7 +11,9 @@ import {
   Layers,
   Building2,
   HelpCircle,
-  ArrowRightLeft
+  ArrowRightLeft,
+  BookOpen,
+  FlaskConical
 } from 'lucide-react';
 import Breadcrumbs from '../../../src/components/Breadcrumbs';
 import SpotlightCard from '../../../src/components/SpotlightCard';
@@ -22,10 +24,19 @@ import {
   buildBreadcrumbSchema,
   composeSchemaGraph
 } from '../../../src/utils/schema/schemaBuilders';
-import { getServiceBySlug, getAllServiceSlugs, servicesData } from '../../../src/data/servicesData';
+import { getServiceBySlug, getAllServiceSlugs } from '../../../src/data/servicesData';
 import { portfolioProjects } from '../../../src/data/portfolioProjects';
 import { statesData } from '../../../src/data/locationsData';
 import { normalizeProjectSlug } from '../../../src/utils/portfolioUtils';
+import {
+  getRelatedServices,
+  getComparisonsForService,
+  getResearchForService,
+  getLocationCategorySlugForService,
+  getComparisonPath,
+  getResearchPath,
+  getServicePath
+} from '../../../src/utils/internalLinks';
 
 export function generateStaticParams() {
   return getAllServiceSlugs().map((slug) => ({
@@ -69,13 +80,13 @@ export default async function ServiceDetailPage({ params }) {
 
   // Find all regional hubs supporting this service
   const allCities = statesData.flatMap((state) => state.cities);
-  // Location hubs group cloud-infrastructure and devops-ci-cd under the 'cloud-devops' category
-  const locationCategorySlug =
-    service.slug === 'cloud-infrastructure' || service.slug === 'devops-ci-cd' ? 'cloud-devops' : service.slug;
+  const locationCategorySlug = getLocationCategorySlugForService(service.slug);
   const regionalHubs = allCities.filter((city) => city.supportedCategories.includes(locationCategorySlug));
 
-  // Other related services for cross-linking
-  const otherServices = servicesData.filter((s) => s.slug !== service.slug).slice(0, 3);
+  // Contextual cross-links: neighbouring services, the matching comparison and research citing this service
+  const relatedServices = getRelatedServices(service.slug, 3);
+  const comparison = getComparisonsForService(service.slug)[0];
+  const relatedResearch = getResearchForService(service.slug);
 
   const breadcrumbs = [
     { label: 'Home', href: '/' },
@@ -308,6 +319,7 @@ export default async function ServiceDetailPage({ params }) {
                             href={p.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
+                            aria-label={`${p.title} source code on GitHub`}
                             className="text-slate-400 hover:text-white transition-colors"
                           >
                             <ExternalLink className="w-4 h-4" />
@@ -366,6 +378,84 @@ export default async function ServiceDetailPage({ params }) {
           </div>
         )}
 
+        {/* RELATED SERVICES (curated neighbours from src/utils/internalLinks.js) */}
+        {relatedServices.length > 0 && (
+          <div className="space-y-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+              Services Often Paired With {service.shortName}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {relatedServices.map((rs) => (
+                <Link
+                  key={rs.slug}
+                  href={getServicePath(rs.slug)}
+                  className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-blue-500/50 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md transition-all group"
+                >
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-blue-500">
+                    {rs.category}
+                  </span>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors mt-1.5 flex items-center justify-between gap-2">
+                    {rs.name}
+                    <ArrowRight className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 line-clamp-2">
+                    {rs.tagline}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* RESEARCH & EXTERNAL STANDARDS */}
+        {(relatedResearch.length > 0 || service.references?.length > 0) && (
+          <div className={`grid grid-cols-1 gap-6 ${relatedResearch.length > 0 && service.references?.length > 0 ? 'md:grid-cols-2' : ''}`}>
+            {relatedResearch.length > 0 && (
+              <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md space-y-3">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <FlaskConical className="w-5 h-5 text-blue-500" />
+                  Related Original Research
+                </h2>
+                <ul className="space-y-2">
+                  {relatedResearch.map((r) => (
+                    <li key={r.slug}>
+                      <Link
+                        href={getResearchPath(r)}
+                        className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                      >
+                        {r.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {service.references?.length > 0 && (
+              <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md space-y-3">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-blue-500" />
+                  Standards &amp; References We Follow
+                </h2>
+                <ul className="space-y-2">
+                  {service.references.map((ref) => (
+                    <li key={ref.url}>
+                      <a
+                        href={ref.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1.5"
+                      >
+                        {ref.label}
+                        <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* RELATED COMPARISONS & CROSS-LINKING */}
         <div className="p-8 rounded-3xl border border-blue-500/20 bg-gradient-to-br from-blue-50 via-white to-slate-50 dark:from-blue-950/20 dark:via-slate-900/40 dark:to-slate-900/60 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-left">
@@ -373,18 +463,20 @@ export default async function ServiceDetailPage({ params }) {
               Architectural Tradeoffs
             </span>
             <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
-              Evaluating Between Different Delivery Models?
+              {comparison ? comparison.title : 'Evaluating Between Different Delivery Models?'}
             </h3>
             <p className="text-sm text-slate-600 dark:text-slate-300 max-w-xl">
-              Inspect our multi-vector comparison benchmark matrix analyzing maintenance, security, and TCO across custom software vs off-the-shelf platforms.
+              {comparison
+                ? comparison.overview
+                : 'Inspect our multi-vector comparison benchmark matrix analyzing maintenance, security, and TCO across custom software vs off-the-shelf platforms.'}
             </p>
           </div>
           <Link
-            href="/compare"
+            href={comparison ? getComparisonPath(comparison) : '/compare'}
             className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md shrink-0"
           >
             <ArrowRightLeft className="w-4 h-4" />
-            <span>Open Comparison Engine</span>
+            <span>{comparison ? 'Read the Full Comparison' : 'Open Comparison Engine'}</span>
           </Link>
         </div>
       </div>

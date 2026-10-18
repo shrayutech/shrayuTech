@@ -17,7 +17,6 @@ import {
 } from 'lucide-react';
 import Breadcrumbs from '../../src/components/Breadcrumbs';
 import ComparisonTable from '../../src/components/comparison/ComparisonTable';
-import ComparisonSchema from '../../src/components/comparison/ComparisonSchema';
 import SpotlightCard from '../../src/components/SpotlightCard';
 import { useComparison } from '../../src/context/ComparisonContext.jsx';
 import { COMPARISON_CONFIG } from '../../src/config/comparison.config.js';
@@ -104,18 +103,9 @@ export default function CompareHubView() {
 
   const rows = formatComparisonRows(activeType, comparedItems);
 
-  const breadcrumbs = [
-    { label: 'Home', href: '/' },
-    { label: 'Technical Comparison Engine' }
-  ];
-
   return (
     <div className="relative min-h-screen pt-36 pb-32 px-6 sm:px-8 overflow-hidden transition-colors duration-300">
-      <ComparisonSchema
-        title={`Comparison: ${comparedItems.map(i => i.name || i.title).join(' vs ')}`}
-        items={comparedItems}
-        breadcrumbs={breadcrumbs}
-      />
+      {/* Structured data for /compare is emitted server-side in app/compare/page.jsx */}
 
       {/* Multi-layered atmosphere background */}
       <div className="absolute inset-0 bg-hero-atmosphere pointer-events-none" />

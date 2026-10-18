@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect } from 'react';
+import { SITE_URL } from '../config/site.config';
 
 const SEO = ({
   title,
   description,
   keywords,
   image = '/logo.png',
-  url = 'https://shrayutech.vercel.app',
+  url = SITE_URL,
   type = 'website'
 }) => {
   const siteName = 'Shrayu Technologies';

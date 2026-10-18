@@ -239,7 +239,7 @@ export default function ResearchIndexPage() {
               <a
                 href="https://creativecommons.org/licenses/by/4.0/"
                 target="_blank"
-                rel="noreferrer"
+                rel="license noopener noreferrer"
                 className="text-blue-600 dark:text-blue-400 underline hover:text-blue-700 dark:hover:text-blue-300"
               >
                 Creative Commons Attribution 4.0 International (CC BY 4.0)

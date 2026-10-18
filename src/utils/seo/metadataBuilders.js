@@ -13,13 +13,15 @@
  * - Consistent title branding without double-suffix truncation
  */
 
+import { SITE_URL } from '../../config/site.config.js';
+
 export const SITE_METADATA_CONFIG = {
-  siteUrl: (process.env.NEXT_PUBLIC_SITE_URL || 'https://shrayutech.vercel.app').replace(/\/+$/, ''),
+  siteUrl: SITE_URL,
   brandName: 'Shrayu Technologies',
   defaultTitle: 'Shrayu Technologies | Premium Software Development & Custom Web Design',
   titleTemplate: '%s | Shrayu Technologies',
   defaultDescription: 'Premier software engineering company specializing in bespoke backend microservices, Next.js web applications, artificial intelligence, and cloud architectures.',
-  defaultImage: 'https://shrayutech.vercel.app/logo.png',
+  defaultImage: `${SITE_URL}/logo.png`,
   locale: 'en_US',
   twitterHandle: '@ayushkhobragade',
   supportedLanguages: ['en']

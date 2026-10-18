@@ -29,7 +29,7 @@ import SkeletonWrapper from '../components/skeleton/SkeletonWrapper';
 import PortfolioSkeleton from '../components/skeleton/PortfolioSkeleton';
 import SpotlightCard from '../components/SpotlightCard';
 import { portfolioProjects, portfolioCategories } from '../data/portfolioProjects';
-import { normalizeProjectSlug } from '../utils/portfolioUtils';
+import { getProjectPath, getServiceForProject, getServicePath } from '../utils/internalLinks';
 
 const categoryConfig = {
   AI: {
@@ -348,6 +348,7 @@ const Products = () => {
                   categoryConfig[project.category] || categoryConfig.AI;
                 const IconComponent = config.icon;
                 const isExpanded = expandedId === project.id;
+                const service = getServiceForProject(project);
 
                 return (
                   <motion.div
@@ -412,10 +413,11 @@ const Products = () => {
                         <div>
                           <h2
                             className={`text-lg sm:text-xl font-extrabold tracking-tight leading-snug break-words transition-colors ${
-                              'light:text-slate-900 light:group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-300'
+                              'light:text-slate-900 light:hover:text-blue-600 dark:text-white dark:hover:text-blue-300'
                             }`}
                           >
-                            {project.title}
+                            {/* Always-rendered link so every case study is reachable (and crawlable) from the listing */}
+                            <Link href={getProjectPath(project)}>{project.title}</Link>
                           </h2>
                         </div>
 
@@ -545,17 +547,17 @@ const Products = () => {
 
                               <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-sans not-italic">
                                 <Link
-                                  href={`/portfolio/${normalizeProjectSlug(project.repo)}`}
+                                  href={getProjectPath(project)}
                                   className="text-[11px] font-bold text-blue-400 hover:text-blue-300 inline-flex items-center space-x-1"
                                 >
                                   <span>View Architecture Spec & Case Study</span>
                                   <ArrowRight className="w-3 h-3 ml-0.5" />
                                 </Link>
                                 <Link
-                                  href="/services"
+                                  href={service ? getServicePath(service.slug) : '/services'}
                                   className="text-[11px] font-semibold text-slate-400 hover:text-slate-200 inline-flex items-center space-x-1"
                                 >
-                                  <span>Services</span>
+                                  <span>{service ? `${service.shortName} Services` : 'Services'}</span>
                                   <ArrowRight className="w-3 h-3 ml-0.5" />
                                 </Link>
                               </div>
