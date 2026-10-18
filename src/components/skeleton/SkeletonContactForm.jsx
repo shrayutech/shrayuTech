@@ -104,11 +104,6 @@ const SkeletonContactForm = ({ className = '' }) => {
 
           {/* Submit button — full width */}
           <SkeletonBase variant="button" width="100%" height="3.5rem" radius="1rem" />
-
-          {/* reCAPTCHA notice */}
-          <div className="flex justify-center">
-            <SkeletonBase variant="text" width="230px" height="0.625rem" radius="3px" />
-          </div>
         </div>
       </div>
 

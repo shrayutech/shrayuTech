@@ -3,13 +3,11 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  Menu,
-  X,
   ArrowRight,
   ChevronDown,
   GitCompare,
   FlaskConical,
-  MapPin
+  MapPin,
 } from 'lucide-react';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
@@ -39,21 +37,25 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hoveredKey, setHoveredKey] = useState(null);
+  const [pendingKey, setPendingKey] = useState(null);
+
   const pathname = usePathname();
   const resourcesRef = useRef(null);
   const closeTimer = useRef(null);
-
-  // Active pill sliding indicator state & refs
-  const navContainerRef = useRef(null);
-  const itemRefs = useRef({});
-  const [pendingKey, setPendingKey] = useState(null);
-  const [pillBounds, setPillBounds] = useState({ left: 0, top: 0, width: 0, height: 0, opacity: 0 });
-  const [isInitial, setIsInitial] = useState(true);
-  const [isResizing, setIsResizing] = useState(false);
-  const resizeTimer = useRef(null);
-  const wasHidden = useRef(true);
   const shouldReduceMotion = useReducedMotion();
 
+  // Scroll detection with smooth threshold
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 15);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Compute active key based on pathname
   const getActiveKey = useCallback((currentPath) => {
     if (!currentPath) return null;
     if (resourceLinks.some((link) => isPathActive(currentPath, link.path))) {
@@ -70,59 +72,15 @@ const Navbar = () => {
   const activeKey = pendingKey ?? getActiveKey(pathname);
   const resourcesActive = activeKey === 'resources';
 
-  const setItemRef = (key) => (el) => {
-    if (el) {
-      itemRefs.current[key] = el;
-    } else {
-      delete itemRefs.current[key];
-    }
-  };
-
-  const updatePill = useCallback(() => {
-    const container = navContainerRef.current;
-    const currentKey = pendingKey ?? getActiveKey(pathname);
-    const targetEl = currentKey ? itemRefs.current[currentKey] : null;
-
-    if (!container || !targetEl) {
-      wasHidden.current = true;
-      setPillBounds((prev) => (prev.opacity === 0 ? prev : { ...prev, opacity: 0 }));
-      return;
-    }
-
-    const containerRect = container.getBoundingClientRect();
-    if (containerRect.width === 0) return;
-
-    const targetRect = targetEl.getBoundingClientRect();
-    const left = targetRect.left - containerRect.left;
-    const top = targetRect.top - containerRect.top;
-    const width = targetRect.width;
-    const height = targetRect.height;
-
-    setPillBounds({
-      left,
-      top,
-      width,
-      height,
-      opacity: 1,
-    });
-    wasHidden.current = false;
-  }, [pathname, pendingKey, getActiveKey]);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Close any open menu after navigating and reset pending key
+  // Close menus and clear pending key on navigation
   useEffect(() => {
     setIsOpen(false);
     setResourcesOpen(false);
     setPendingKey(null);
+    setHoveredKey(null);
   }, [pathname]);
 
-  // Escape closes menus; clicking outside closes the Resources dropdown
+  // Escape key and click-outside listeners
   useEffect(() => {
     const handleKey = (e) => {
       if (e.key === 'Escape') {
@@ -143,56 +101,13 @@ const Navbar = () => {
     };
   }, []);
 
-  // Collapse the mobile menu if the viewport grows into desktop layout
+  // Close mobile menu on desktop resize
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)');
     const handleChange = (e) => e.matches && setIsOpen(false);
     mq.addEventListener('change', handleChange);
     return () => mq.removeEventListener('change', handleChange);
   }, []);
-
-  // Recalculate active indicator on pathname / state change
-  useEffect(() => {
-    updatePill();
-    const frame = requestAnimationFrame(() => {
-      setIsInitial(false);
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [updatePill]);
-
-  // Recalculate on viewport changes, font load, or container resize
-  useEffect(() => {
-    const handleResize = () => {
-      setIsResizing(true);
-      updatePill();
-      clearTimeout(resizeTimer.current);
-      resizeTimer.current = setTimeout(() => {
-        setIsResizing(false);
-      }, 150);
-    };
-
-    window.addEventListener('resize', handleResize, { passive: true });
-    window.addEventListener('orientationchange', handleResize, { passive: true });
-
-    if (typeof document !== 'undefined' && document.fonts) {
-      document.fonts.ready.then(updatePill);
-    }
-
-    let observer;
-    if (navContainerRef.current && typeof ResizeObserver !== 'undefined') {
-      observer = new ResizeObserver(() => {
-        updatePill();
-      });
-      observer.observe(navContainerRef.current);
-    }
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('orientationchange', handleResize);
-      clearTimeout(resizeTimer.current);
-      if (observer) observer.disconnect();
-    };
-  }, [updatePill]);
 
   const openResources = () => {
     clearTimeout(closeTimer.current);
@@ -201,159 +116,191 @@ const Navbar = () => {
 
   const scheduleCloseResources = () => {
     clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => setResourcesOpen(false), 120);
+    closeTimer.current = setTimeout(() => setResourcesOpen(false), 220);
   };
 
-  const linkClass = (active) =>
-    `relative inline-flex items-center h-9 px-3 xl:px-4 rounded-full text-sm font-semibold leading-none whitespace-nowrap transition-colors duration-300 ${
-      active
-        ? 'light:text-blue-600 dark:text-white'
-        : 'light:text-slate-600 light:hover:text-slate-900 light:hover:bg-slate-200/70 dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/10'
-    }`;
-
-  const pillTransition = shouldReduceMotion || isInitial || isResizing
-    ? { duration: 0 }
-    : {
-        type: 'tween',
-        ease: [0.22, 1, 0.36, 1],
-        duration: 0.38,
-      };
+  // Fluid spring animation preset
+  const springTransition = shouldReduceMotion
+    ? { duration: 0.15 }
+    : { type: 'spring', stiffness: 420, damping: 30, mass: 0.8 };
 
   return (
     <nav
       aria-label="Main navigation"
-      className={`fixed top-0 left-0 right-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
         scrolled
-          ? 'backdrop-blur-xl light:bg-white/85 light:border-slate-200/80 light:shadow-md dark:bg-[#030712]/85 dark:border-white/10 dark:shadow-2xl'
-          : 'backdrop-blur-lg light:bg-white/70 light:border-slate-200/50 dark:bg-[#030712]/60 dark:border-white/5'
+          ? 'py-2 sm:py-2.5 backdrop-blur-2xl backdrop-saturate-150 light:bg-white/80 light:border-b light:border-slate-200/80 light:shadow-md light:shadow-slate-200/50 dark:bg-[#030712]/80 dark:border-b dark:border-white/10 dark:shadow-2xl dark:shadow-black/60'
+          : 'py-3.5 sm:py-4 backdrop-blur-xl backdrop-saturate-150 light:bg-white/50 light:border-b light:border-slate-200/40 dark:bg-[#030712]/40 dark:border-b dark:border-white/5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          className={`flex items-center justify-between gap-4 transition-[height] duration-300 ${
-            scrolled ? 'h-16' : 'h-[72px]'
+          className={`flex items-center justify-between gap-4 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            scrolled ? 'h-14 sm:h-16' : 'h-16 sm:h-[72px]'
           }`}
         >
-          {/* Logo */}
+          {/* Brand Logo */}
           <Link
             href="/"
             className="flex items-center gap-3 shrink-0 group rounded-xl focus-visible:outline-2 focus-visible:outline-blue-500"
             aria-label="Shrayu Technologies home"
           >
             <span
-              className={`w-10 h-10 flex items-center justify-center rounded-xl overflow-hidden transition-all duration-300 shadow-md group-hover:scale-105 ${
-                'light:bg-slate-900 light:border light:border-slate-800 light:group-hover:border-blue-500/40 light:shadow-slate-300/50 dark:bg-white/5 dark:border dark:border-white/10 dark:group-hover:border-blue-500/40 dark:shadow-blue-500/10'
-              }`}
+              // No tile background: the logo PNG is transparent, so the navbar's own color shows through in both themes
+              className="w-10 h-10 flex items-center justify-center bg-transparent transition-transform duration-300 group-hover:scale-105"
             >
               <img
                 src="/logo.png"
                 alt="Shrayu Technologies Logo"
                 width="40"
                 height="40"
-                className="w-full h-full object-cover drop-shadow-md"
+                className="w-full h-full object-contain drop-shadow-md transition-transform duration-300 group-hover:scale-110"
               />
             </span>
             <span className="flex flex-col justify-center">
               <span
-                className={`font-extrabold text-xl tracking-tight leading-none transition-colors group-hover:text-blue-500 ${
-                  'light:text-slate-900 dark:text-white'
-                }`}
+                className="font-extrabold text-xl tracking-tight leading-none transition-colors duration-300 group-hover:text-blue-500 light:text-slate-900 dark:text-white"
               >
                 Shrayu
               </span>
-              <span className="text-[10px] leading-none text-blue-600 dark:text-blue-500 font-bold tracking-[0.2em] uppercase mt-1.5">
+              <span className="text-[10px] leading-none text-blue-600 dark:text-blue-500 font-bold tracking-[0.2em] uppercase mt-1.5 transition-opacity duration-300 group-hover:opacity-80">
                 Technologies
               </span>
             </span>
           </Link>
 
-          {/* Desktop links (centered) */}
+          {/* Desktop Navigation Links with Smooth Magnetic Pill */}
           <div className="hidden lg:flex flex-1 justify-center min-w-0">
             <ul
-              ref={navContainerRef}
-              className={`relative flex items-center gap-0.5 p-1 rounded-full border backdrop-blur-md ${
-                'light:bg-slate-100/80 light:border-slate-200 dark:bg-white/[0.04] dark:border-white/10'
-              }`}
+              onMouseLeave={() => setHoveredKey(null)}
+              className="relative flex items-center gap-1 p-1 rounded-full border backdrop-blur-md transition-all duration-300 light:bg-slate-100/80 light:border-slate-200/90 dark:bg-white/[0.04] dark:border-white/10"
             >
-              {/* Smooth sliding active indicator pill */}
-              {pillBounds.width > 0 && (
-                <motion.span
-                  aria-hidden="true"
-                  className={`absolute top-0 left-0 rounded-full pointer-events-none border ${
-                    'light:bg-white light:border-slate-200 light:shadow-sm dark:bg-blue-600/30 dark:border-blue-500/50 dark:shadow-inner dark:shadow-blue-500/20'
-                  }`}
-                  initial={false}
-                  animate={{
-                    x: pillBounds.left,
-                    y: pillBounds.top,
-                    width: pillBounds.width,
-                    height: pillBounds.height,
-                    opacity: pillBounds.opacity,
-                  }}
-                  transition={pillTransition}
-                />
-              )}
-
               {primaryLinks.map((link) => {
-                const active = activeKey === link.path;
+                const isActive = activeKey === link.path;
+                const isHovered = hoveredKey === link.path;
                 return (
-                  <li key={link.path}>
+                  <li
+                    key={link.path}
+                    className="relative"
+                    onMouseEnter={() => setHoveredKey(link.path)}
+                  >
+                    {/* Active Pill Indicator */}
+                    {isActive && (
+                      <motion.span
+                        layoutId="navbar-active-pill"
+                        className="absolute inset-0 rounded-full light:bg-white light:shadow-sm light:border light:border-slate-200/90 dark:bg-gradient-to-r dark:from-blue-600/30 dark:to-indigo-600/30 dark:border dark:border-blue-500/40 dark:shadow-[0_0_12px_rgba(59,130,246,0.25)] pointer-events-none"
+                        transition={springTransition}
+                      />
+                    )}
+
+                    {/* Smooth Sliding Hover Pill */}
+                    <AnimatePresence>
+                      {isHovered && !isActive && (
+                        <motion.span
+                          layoutId="navbar-hover-pill"
+                          className="absolute inset-0 rounded-full light:bg-slate-200/70 dark:bg-white/10 pointer-events-none"
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={springTransition}
+                        />
+                      )}
+                    </AnimatePresence>
+
                     <Link
-                      ref={setItemRef(link.path)}
                       href={link.path}
                       onClick={() => setPendingKey(link.path)}
-                      className={linkClass(active)}
-                      aria-current={active ? 'page' : undefined}
+                      aria-current={isActive ? 'page' : undefined}
+                      className={`relative z-10 inline-flex items-center h-9 px-3.5 xl:px-4 rounded-full text-sm font-semibold leading-none whitespace-nowrap transition-colors duration-200 ${
+                        isActive
+                          ? 'light:text-blue-600 dark:text-white'
+                          : 'light:text-slate-600 light:hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
+                      }`}
                     >
-                      <span className="relative z-10">{link.name}</span>
+                      <span>{link.name}</span>
                     </Link>
                   </li>
                 );
               })}
 
-              {/* Resources dropdown */}
+              {/* Resources Dropdown Item */}
               <li
                 ref={resourcesRef}
                 className="relative"
-                onMouseEnter={openResources}
+                onMouseEnter={() => {
+                  setHoveredKey('resources');
+                  openResources();
+                }}
                 onMouseLeave={scheduleCloseResources}
               >
+                {/* Active Pill for Resources */}
+                {resourcesActive && (
+                  <motion.span
+                    layoutId="navbar-active-pill"
+                    className="absolute inset-0 rounded-full light:bg-white light:shadow-sm light:border light:border-slate-200/90 dark:bg-gradient-to-r dark:from-blue-600/30 dark:to-indigo-600/30 dark:border dark:border-blue-500/40 dark:shadow-[0_0_12px_rgba(59,130,246,0.25)] pointer-events-none"
+                    transition={springTransition}
+                  />
+                )}
+
+                {/* Hover Pill for Resources */}
+                <AnimatePresence>
+                  {hoveredKey === 'resources' && !resourcesActive && (
+                    <motion.span
+                      layoutId="navbar-hover-pill"
+                      className="absolute inset-0 rounded-full light:bg-slate-200/70 dark:bg-white/10 pointer-events-none"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={springTransition}
+                    />
+                  )}
+                </AnimatePresence>
+
                 <button
-                  ref={setItemRef('resources')}
                   type="button"
-                  className={`${linkClass(resourcesActive)} gap-1`}
+                  className={`relative z-10 inline-flex items-center gap-1.5 h-9 px-3.5 xl:px-4 rounded-full text-sm font-semibold leading-none whitespace-nowrap transition-colors duration-200 cursor-pointer ${
+                    resourcesActive
+                      ? 'light:text-blue-600 dark:text-white'
+                      : 'light:text-slate-600 light:hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
+                  }`}
                   aria-haspopup="true"
                   aria-expanded={resourcesOpen}
                   onClick={() => setResourcesOpen((v) => !v)}
                 >
-                  <span className="relative z-10">Resources</span>
+                  <span>Resources</span>
                   <ChevronDown
-                    className={`relative z-10 h-4 w-4 transition-transform duration-200 ${
-                      resourcesOpen ? 'rotate-180' : ''
+                    className={`h-3.5 w-3.5 transition-transform duration-300 ease-out ${
+                      resourcesOpen ? 'rotate-180 text-blue-500' : ''
                     }`}
                   />
                 </button>
 
-                {/* Positioning lives on a static wrapper so framer's transform can't override the centering */}
-                <div className="absolute left-1/2 -translate-x-1/2 top-full w-80">
+                {/* Dropdown Menu with Safe Hover Bridge & Spring Physics */}
+                <div
+                  className="absolute left-1/2 -translate-x-1/2 top-full w-84 pt-2.5 z-50 pointer-events-auto"
+                  onMouseEnter={openResources}
+                  onMouseLeave={scheduleCloseResources}
+                >
                   <AnimatePresence>
                     {resourcesOpen && (
                       <motion.div
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 6 }}
-                        transition={{ duration: 0.18, ease: 'easeOut' }}
-                        className="pt-3"
+                        initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                        transition={springTransition}
                       >
                         <ul
-                          className={`p-2 rounded-2xl border shadow-2xl backdrop-blur-xl ${
-                            'light:bg-white/95 light:border-slate-200 light:shadow-slate-300/40 dark:bg-[#0B1021]/95 dark:border-white/10 dark:shadow-black/40'
-                          }`}
+                          className="p-2 rounded-2xl border shadow-2xl backdrop-blur-2xl transition-colors light:bg-white/95 light:border-slate-200/90 light:shadow-slate-300/40 dark:bg-[#0B1021]/95 dark:border-white/10 dark:shadow-black/60"
                         >
-                          {resourceLinks.map(({ name, path, description, icon: Icon }) => {
+                          {resourceLinks.map(({ name, path, description, icon: Icon }, index) => {
                             const active = isPathActive(pathname, path);
                             return (
-                              <li key={path}>
+                              <motion.li
+                                key={path}
+                                initial={{ opacity: 0, x: -6 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.03, duration: 0.2 }}
+                              >
                                 <Link
                                   href={path}
                                   onClick={() => {
@@ -361,37 +308,38 @@ const Navbar = () => {
                                     setResourcesOpen(false);
                                   }}
                                   aria-current={active ? 'page' : undefined}
-                                  className={`flex items-start gap-3 p-3 rounded-xl transition-colors ${
+                                  className={`group flex items-start gap-3.5 p-3 rounded-xl transition-all duration-200 ${
                                     active
-                                      ? 'light:bg-blue-50 dark:bg-blue-600/20'
-                                      : 'light:hover:bg-slate-100 dark:hover:bg-white/5'
+                                      ? 'light:bg-blue-50 light:text-blue-600 dark:bg-blue-600/20 dark:text-white'
+                                      : 'light:hover:bg-slate-100/80 dark:hover:bg-white/[0.06]'
                                   }`}
                                 >
                                   <span
-                                    className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
-                                      'light:bg-blue-50 light:border-blue-100 light:text-blue-600 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400'
+                                    className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-all duration-200 group-hover:scale-105 ${
+                                      active
+                                        ? 'light:bg-blue-600 light:border-blue-600 light:text-white dark:bg-blue-500 dark:border-blue-400 dark:text-white shadow-sm shadow-blue-500/20'
+                                        : 'light:bg-blue-50 light:border-blue-100 light:text-blue-600 group-hover:bg-blue-600 group-hover:text-white dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400 dark:group-hover:bg-blue-500 dark:group-hover:text-white'
                                     }`}
                                   >
                                     <Icon className="h-4 w-4" />
                                   </span>
-                                  <span className="flex flex-col gap-1">
-                                    <span
-                                      className={`text-sm font-bold leading-none ${
-                                        'light:text-slate-900 dark:text-white'
-                                      }`}
-                                    >
-                                      {name}
+                                  <span className="flex-1 flex flex-col gap-1 min-w-0">
+                                    <span className="flex items-center justify-between">
+                                      <span
+                                        className="text-sm font-bold leading-none transition-colors duration-200 group-hover:text-blue-500 light:text-slate-900 dark:text-white"
+                                      >
+                                        {name}
+                                      </span>
+                                      <ArrowRight className="h-3.5 w-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-blue-500" />
                                     </span>
                                     <span
-                                      className={`text-xs leading-snug ${
-                                        'light:text-slate-500 dark:text-slate-400'
-                                      }`}
+                                      className="text-xs leading-snug line-clamp-2 light:text-slate-500 dark:text-slate-400"
                                     >
                                       {description}
                                     </span>
                                   </span>
                                 </Link>
-                              </li>
+                              </motion.li>
                             );
                           })}
                         </ul>
@@ -403,113 +351,140 @@ const Navbar = () => {
             </ul>
           </div>
 
-          {/* Desktop actions */}
+          {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
             <ThemeToggle compact />
             <Link
               href="/contact"
-              className="btn-primary group inline-flex items-center gap-2 h-10 px-5 rounded-full text-white font-bold text-sm leading-none whitespace-nowrap shadow-md shadow-blue-500/20 border border-blue-400/30 active:scale-95"
+              className="relative group inline-flex items-center gap-2 h-10 px-5 rounded-full font-bold text-sm leading-none whitespace-nowrap overflow-hidden transition-all duration-300 shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/35 hover:scale-[1.03] active:scale-[0.97] border border-blue-400/30 text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:via-indigo-500 hover:to-cyan-500"
             >
-              <span>Get In Touch</span>
-              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+              <span className="relative z-10">Get In Touch</span>
+              <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1" />
+              <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
             </Link>
           </div>
 
-          {/* Mobile / tablet actions */}
+          {/* Mobile Actions with Animated Morphing Hamburger Icon */}
           <div className="lg:hidden flex items-center gap-2">
             <ThemeToggle compact />
             <button
               type="button"
               onClick={() => setIsOpen((v) => !v)}
-              className={`p-2.5 rounded-xl border transition-colors ${
-                'light:text-slate-700 light:hover:text-slate-900 light:bg-slate-100 light:border-slate-200 dark:text-slate-300 dark:hover:text-white dark:bg-white/5 dark:border-white/10'
+              className={`relative w-10 h-10 rounded-xl border flex flex-col items-center justify-center gap-1.5 transition-all duration-300 active:scale-95 ${
+                isOpen
+                  ? 'light:bg-blue-50 light:border-blue-200 light:text-blue-600 dark:bg-blue-600/20 dark:border-blue-500/40 dark:text-blue-400'
+                  : 'light:bg-slate-100 light:border-slate-200 light:text-slate-700 light:hover:text-slate-900 dark:bg-white/5 dark:border-white/10 dark:text-slate-300 dark:hover:text-white'
               }`}
               aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={isOpen}
               aria-controls="mobile-menu"
             >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              <span
+                className={`w-5 h-0.5 rounded-full transition-all duration-300 transform origin-center ${
+                  isOpen ? 'rotate-45 translate-y-2 bg-current' : 'bg-current'
+                }`}
+              />
+              <span
+                className={`w-5 h-0.5 rounded-full transition-all duration-200 ${
+                  isOpen ? 'opacity-0 scale-x-0' : 'bg-current'
+                }`}
+              />
+              <span
+                className={`w-5 h-0.5 rounded-full transition-all duration-300 transform origin-center ${
+                  isOpen ? '-rotate-45 -translate-y-2 bg-current' : 'bg-current'
+                }`}
+              />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile / tablet menu */}
+      {/* Mobile Drawer with Smooth Animation & Staggered Items */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             id="mobile-menu"
             data-lenis-prevent
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className={`lg:hidden border-t overflow-hidden ${
-              'light:bg-white/95 light:border-slate-200 dark:bg-[#030712]/95 dark:border-white/10'
-            }`}
+            initial={{ opacity: 0, height: 0, y: -8 }}
+            animate={{ opacity: 1, height: 'auto', y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -8 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:hidden border-t overflow-hidden backdrop-blur-2xl transition-colors light:bg-white/95 light:border-slate-200/90 light:shadow-2xl light:shadow-slate-300/40 dark:bg-[#030712]/95 dark:border-white/10 dark:shadow-2xl dark:shadow-black/60"
           >
             <div className="max-h-[calc(100dvh-72px)] overflow-y-auto px-4 sm:px-6 py-5">
               <p
-                className={`px-3 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] ${
-                  'light:text-slate-400 dark:text-slate-500'
-                }`}
+                className="px-3 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] light:text-slate-400 dark:text-slate-500"
               >
                 Company
               </p>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1">
-                {primaryLinks.map((link) => {
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                {primaryLinks.map((link, idx) => {
                   const active = isPathActive(pathname, link.path);
                   return (
-                    <li key={link.path}>
+                    <motion.li
+                      key={link.path}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.03, duration: 0.2 }}
+                    >
                       <Link
                         href={link.path}
                         aria-current={active ? 'page' : undefined}
-                        className={`flex items-center h-12 px-3 rounded-xl text-base font-semibold border transition-colors duration-300 ${
+                        className={`flex items-center justify-between h-12 px-3.5 rounded-xl text-base font-semibold border transition-all duration-200 active:scale-[0.98] ${
                           active
-                            ? 'light:text-blue-600 light:bg-blue-50 light:border-blue-200 dark:text-white dark:bg-blue-600/20 dark:border-blue-500/40'
-                            : 'light:text-slate-700 light:border-transparent light:hover:text-slate-900 light:hover:bg-slate-100 dark:text-slate-300 dark:border-transparent dark:hover:text-white dark:hover:bg-white/5'
+                            ? 'light:text-blue-600 light:bg-blue-50 light:border-blue-200 dark:text-white dark:bg-blue-600/20 dark:border-blue-500/40 font-bold'
+                            : 'light:text-slate-700 light:border-transparent light:hover:text-slate-900 light:hover:bg-slate-100/80 dark:text-slate-300 dark:border-transparent dark:hover:text-white dark:hover:bg-white/5'
                         }`}
                       >
-                        {link.name}
+                        <span>{link.name}</span>
+                        {active && (
+                          <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400 shadow-sm shadow-blue-500/50" />
+                        )}
                       </Link>
-                    </li>
+                    </motion.li>
                   );
                 })}
               </ul>
 
               <p
-                className={`px-3 pt-5 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] ${
-                  'light:text-slate-400 dark:text-slate-500'
-                }`}
+                className="px-3 pt-5 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] light:text-slate-400 dark:text-slate-500"
               >
                 Resources
               </p>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1">
-                {resourceLinks.map(({ name, path, icon: Icon }) => {
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                {resourceLinks.map(({ name, path, icon: Icon }, idx) => {
                   const active = isPathActive(pathname, path);
                   return (
-                    <li key={path}>
+                    <motion.li
+                      key={path}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: (primaryLinks.length + idx) * 0.03, duration: 0.2 }}
+                    >
                       <Link
                         href={path}
                         aria-current={active ? 'page' : undefined}
-                        className={`flex items-center gap-3 h-12 px-3 rounded-xl text-base font-semibold border transition-colors duration-300 ${
+                        className={`flex items-center gap-3 h-12 px-3.5 rounded-xl text-base font-semibold border transition-all duration-200 active:scale-[0.98] ${
                           active
-                            ? 'light:text-blue-600 light:bg-blue-50 light:border-blue-200 dark:text-white dark:bg-blue-600/20 dark:border-blue-500/40'
-                            : 'light:text-slate-700 light:border-transparent light:hover:text-slate-900 light:hover:bg-slate-100 dark:text-slate-300 dark:border-transparent dark:hover:text-white dark:hover:bg-white/5'
+                            ? 'light:text-blue-600 light:bg-blue-50 light:border-blue-200 dark:text-white dark:bg-blue-600/20 dark:border-blue-500/40 font-bold'
+                            : 'light:text-slate-700 light:border-transparent light:hover:text-slate-900 light:hover:bg-slate-100/80 dark:text-slate-300 dark:border-transparent dark:hover:text-white dark:hover:bg-white/5'
                         }`}
                       >
-                        <Icon className={`h-4 w-4 shrink-0 ${'light:text-blue-600 dark:text-blue-400'}`} />
-                        <span>{name}</span>
+                        <Icon className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                        <span className="flex-1">{name}</span>
+                        {active && (
+                          <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400 shadow-sm shadow-blue-500/50" />
+                        )}
                       </Link>
-                    </li>
+                    </motion.li>
                   );
                 })}
               </ul>
 
-              <div className={`mt-5 pt-5 border-t ${'light:border-slate-200 dark:border-white/10'}`}>
+              <div className="mt-5 pt-5 border-t light:border-slate-200 dark:border-white/10">
                 <Link
                   href="/contact"
-                  className="w-full btn-primary text-white rounded-xl h-12 font-bold text-base flex items-center justify-center gap-2 border border-blue-400/30"
+                  className="w-full h-12 rounded-xl font-bold text-base flex items-center justify-center gap-2 text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 shadow-md shadow-blue-500/20 active:scale-[0.98] transition-all"
                 >
                   <span>Get In Touch</span>
                   <ArrowRight className="h-5 w-5" />

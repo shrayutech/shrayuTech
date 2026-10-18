@@ -102,7 +102,6 @@ Two env files, both git-ignored (copy the keys from `.env.example`):
 ```env
 NEXT_PUBLIC_SITE_URL=https://shrayutech.vercel.app
 NEXT_PUBLIC_API_URL=https://shrayutechbackend.onrender.com
-NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your-site-key-here
 ```
 
 ### Development Server

@@ -258,11 +258,11 @@ const SAMonogramShowcase = () => {
 
               <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-cyan-500/30">
                 <Image
-                  src="/images/about/sa-monogram.jpg"
+                  src="/images/about/sa-monogram.png"
                   alt="Shrayu Technologies SA Monogram Logo"
                   fill
                   priority
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 640px) 280px, 320px"
                 />
               </div>

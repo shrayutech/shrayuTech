@@ -11,14 +11,14 @@ const SkeletonNavbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 py-5 transition-all duration-300 ${
-        'light:bg-white/85 light:backdrop-blur-xl light:border-b light:border-slate-200/80 dark:bg-[#030712]/80 dark:backdrop-blur-xl dark:border-b dark:border-white/8'
+      className={`fixed top-0 left-0 right-0 z-50 py-3.5 sm:py-4 transition-all duration-300 ${
+        'light:bg-white/60 light:backdrop-blur-xl light:border-b light:border-slate-200/50 dark:bg-[#030712]/50 dark:backdrop-blur-xl dark:border-b dark:border-white/5'
       }`}
       aria-label="Navigation loading"
       aria-busy="true"
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
-        <div className="flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 sm:h-[72px]">
 
           {/* LEFT: Logo + Brand Name */}
           <div className="flex items-center space-x-3">

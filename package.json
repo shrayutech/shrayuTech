@@ -24,7 +24,6 @@
     "next": "^15.2.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-google-recaptcha-v3": "^1.11.0",
     "react-toastify": "^11.0.5",
     "yup": "^1.7.1"
   },

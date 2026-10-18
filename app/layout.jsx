@@ -20,8 +20,11 @@ export const metadata = {
   alternates: buildLanguageAlternates('/'),
   robots: buildRobotsMetadata({ index: true, follow: true }),
   icons: {
-    icon: '/logo.png',
-    apple: '/logo.png'
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.png', type: 'image/png', sizes: '64x64' }
+    ],
+    apple: '/apple-touch-icon.png'
   },
   openGraph: {
     type: 'website',

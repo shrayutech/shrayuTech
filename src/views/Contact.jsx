@@ -4,10 +4,6 @@ import { revealOnScroll } from '../utils/motionPresets';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { motion } from 'framer-motion';
-import {
-  GoogleReCaptchaProvider,
-  useGoogleReCaptcha
-} from 'react-google-recaptcha-v3';
 import { toast } from 'react-toastify';
 import {
   Mail,
@@ -123,7 +119,6 @@ const FormField = ({ formik, name, label, required = false, as = 'input', hint, 
 };
 
 const ContactForm = () => {
-  const { executeRecaptcha } = useGoogleReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formik = useFormik({
@@ -138,11 +133,6 @@ const ContactForm = () => {
     onSubmit: async (values, { resetForm }) => {
       setIsSubmitting(true);
       try {
-        let token = 'mock_recaptcha_token';
-        if (executeRecaptcha) {
-          token = await executeRecaptcha('contact_form');
-        }
-
         const endpoint = `${API_BASE_URL}/api/contact`;
         const response = await fetch(endpoint, {
           method: 'POST',
@@ -150,7 +140,7 @@ const ContactForm = () => {
             'Content-Type': 'application/json'
           },
           // Send the trimmed values the schema validated
-          body: JSON.stringify({ ...contactValidationSchema.cast(values), captchaToken: token })
+          body: JSON.stringify(contactValidationSchema.cast(values))
         });
 
         const data = await response.json();
@@ -256,10 +246,6 @@ const ContactForm = () => {
           </>
         )}
       </button>
-
-      <p className={`text-[10px] text-center leading-relaxed ${'light:text-slate-500 dark:text-slate-400'}`}>
-        Protected by Google reCAPTCHA and edge security layer.
-      </p>
     </form>
   );
 };
@@ -448,17 +434,7 @@ const Contact = () => {
                   <p className={`text-xs font-medium pt-1 ${'light:text-slate-600 dark:text-slate-400'}`}>Fill out the details below to receive a technical scoping response.</p>
                 </div>
 
-                <GoogleReCaptchaProvider
-                  reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'}
-                  useRecaptchaNet={false}
-                  scriptProps={{
-                    async: true,
-                    defer: true,
-                    appendTo: 'head',
-                  }}
-                >
-                  <ContactForm />
-                </GoogleReCaptchaProvider>
+                <ContactForm />
               </SpotlightCard>
             </div>
           </motion.div>
