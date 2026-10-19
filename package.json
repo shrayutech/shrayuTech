@@ -1,0 +1,35 @@
+{
+  "name": "shrayutech-next",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "seo:audit": "node scripts/pseoAudit.js",
+    "schema:audit": "node scripts/schemaAudit.js",
+    "audit:research": "node scripts/researchAudit.js",
+    "research:audit": "node scripts/researchAudit.js",
+    "audit:ai-content": "node scripts/aiContentAudit.js",
+    "ai:audit": "node scripts/aiContentAudit.js",
+    "audit:metadata": "node scripts/metadataAudit.js",
+    "metadata:audit": "node scripts/metadataAudit.js"
+  },
+  "dependencies": {
+    "formik": "^2.4.9",
+    "framer-motion": "^13.0.0",
+    "lenis": "1.3.19",
+    "lucide-react": "^0.577.0",
+    "next": "^15.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-toastify": "^11.0.5",
+    "yup": "^1.7.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.1"
+  }
+}
