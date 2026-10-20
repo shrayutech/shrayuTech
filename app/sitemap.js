@@ -1,9 +1,12 @@
 import { contentRegistry } from '../src/data/contentRegistry';
 import { getAllIndexablePseoRoutes } from '../src/utils/pseoEngine';
 import { getPublishedResearchReports } from '../src/data/researchData';
+import { SITE_METADATA_CONFIG } from '../src/utils/seo/metadataBuilders';
 
 export default function sitemap() {
-  const baseUrl = 'https://shrayutech.vercel.app';
+  // Same origin as robots.txt and the canonical URLs (NEXT_PUBLIC_SITE_URL); search engines reject
+  // sitemap entries on a different host from the sitemap itself
+  const baseUrl = SITE_METADATA_CONFIG.siteUrl;
   const currentDate = new Date().toISOString();
   // Real per-page edit dates from the content registry (falls back to build time for unknown keys)
   const pageDate = (key) => contentRegistry[key]?.lastUpdated || currentDate;
@@ -51,6 +54,7 @@ export default function sitemap() {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    // /careers is left out while app/careers/page.jsx calls notFound(); add it back when the page goes live
     {
       url: `${baseUrl}/privacy`,
       lastModified: pageDate('privacy'),
