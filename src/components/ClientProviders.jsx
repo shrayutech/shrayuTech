@@ -9,6 +9,7 @@ import { SkeletonProvider } from '../context/SkeletonContext';
 import { ComparisonProvider } from '../context/ComparisonContext.jsx';
 import ComparisonBar from './comparison/ComparisonBar.jsx';
 import RedditReferralBanner from './analytics/RedditReferralBanner.jsx';
+import FirebaseAnalytics from './analytics/FirebaseAnalytics.jsx';
 import MainLayout from '../layouts/MainLayout';
 import SmoothScroll from './SmoothScroll';
 
@@ -17,6 +18,7 @@ export default function ClientProviders({ children }) {
     // reducedMotion="user" tones down every framer-motion animation for users who prefer less motion
     <MotionConfig reducedMotion="user">
       <SmoothScroll />
+      <FirebaseAnalytics />
       <ThemeProvider>
         <SkeletonProvider>
           <ComparisonProvider>
