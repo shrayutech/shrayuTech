@@ -280,7 +280,8 @@ const Navbar = () => {
               className="w-10 h-10 flex items-center justify-center bg-transparent transition-transform duration-300 group-hover:scale-105"
             >
               <img
-                src="/logo.png"
+                src="/logo-40.webp"
+                srcSet="/logo-40.webp 1x, /logo-80.webp 2x, /logo-120.webp 3x"
                 alt="Shrayu Technologies Logo"
                 width="40"
                 height="40"

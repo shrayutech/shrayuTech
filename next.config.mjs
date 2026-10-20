@@ -17,12 +17,12 @@ const PUBLIC_API_ORIGIN = (() => {
 
 // 'unsafe-inline' scripts are required by Next.js hydration and the theme bootstrap script in
 // app/layout.jsx unless the site moves to per-request nonces (which disables static rendering).
-// Google hosts are for Google Fonts (app/globals.css) and the Maps embeds.
+// Fonts are self-hosted by next/font (app/layout.jsx); the Google host is for the Maps embeds.
 const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDevelopment ? " 'unsafe-eval'" : ''}`,
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' data: https://fonts.gstatic.com",
+  "style-src 'self' 'unsafe-inline'",
+  "font-src 'self' data:",
   "img-src 'self' data: blob: https:",
   `connect-src 'self' ${PUBLIC_API_ORIGIN}${isDevelopment ? ' ws: wss:' : ''}`,
   'frame-src https://www.google.com',

@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 /* `dark:` / `light:` utilities follow the site's theme toggle (class on <html>, set before first
@@ -9,8 +8,9 @@
 @custom-variant light (&:where(.light, .light *));
 
 @theme {
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  /* --font-inter / --font-jetbrains-mono are set on <html> by next/font in app/layout.jsx */
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
   --color-obsidian: #030712;
   --color-[#0B1021]: #0B1021;
   --color-slate-deep: #0F172A;
@@ -161,7 +161,7 @@ html {
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-sans);
   background-color: var(--bg-app);
   color: var(--text-app-primary);
   overflow-x: hidden;

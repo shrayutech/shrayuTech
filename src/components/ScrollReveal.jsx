@@ -27,12 +27,19 @@ const ScrollReveal = () => {
     );
 
     const scan = () => {
+      const found = [];
       document.querySelectorAll(SELECTOR).forEach((el) => {
         if (el.dataset.reveal) return;
         // Only animate outermost sections; nested ones move along with their parent
         if (el.parentElement?.closest('[data-reveal]')) return;
         el.dataset.reveal = 'true';
-        if (el.getBoundingClientRect().top < window.innerHeight) return;
+        found.push(el);
+      });
+      // Measure everything before adding any class: interleaving reads and writes forces a
+      // synchronous layout per section
+      const viewport = window.innerHeight;
+      const below = found.filter((el) => el.getBoundingClientRect().top >= viewport);
+      below.forEach((el) => {
         el.classList.add('reveal');
         io.observe(el);
       });

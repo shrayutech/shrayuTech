@@ -1,3 +1,4 @@
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import ClientProviders from '../src/components/ClientProviders';
 import {
@@ -5,6 +6,16 @@ import {
   buildRobotsMetadata,
   buildLanguageAlternates
 } from '../src/utils/seo/metadataBuilders';
+
+// Self-hosted and preloaded by next/font, so text no longer waits on a fonts.googleapis.com
+// stylesheet chain. Both are variable fonts, which covers every weight the site uses.
+const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-jetbrains-mono',
+  preload: false, // only used for small code/label text, keep it off the critical path
+});
 
 export const metadata = {
   metadataBase: new URL(SITE_METADATA_CONFIG.siteUrl),
@@ -100,7 +111,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script
