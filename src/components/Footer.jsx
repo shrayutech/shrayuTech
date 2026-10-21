@@ -2,14 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Github, Twitter, Linkedin, Instagram, Mail, Phone, MapPin, ArrowUp, ArrowRight } from 'lucide-react';
+import { Github, Linkedin, Instagram, Mail, Phone, MapPin, ArrowUp, ArrowRight } from 'lucide-react';
 import { scrollToTop } from './SmoothScroll';
 
 const SOCIAL_LINKS = [
   { label: 'GitHub', href: 'https://github.com/shrayutech', icon: Github },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/company/shrayu-techolologies/', icon: Linkedin },
-  { label: 'Instagram', href: 'https://www.instagram.com/shrayutechonologies?vrfl=MWJyZWgzemZ1OGRoZg==', icon: Instagram },
-  { label: 'X (Twitter)', href: 'https://x.com/ayushkhobragade', icon: Twitter }
+  { label: 'Instagram', href: 'https://www.instagram.com/shrayutechonologies?vrfl=MWJyZWgzemZ1OGRoZg==', icon: Instagram }
 ];
 
 const LINK_COLUMNS = [
