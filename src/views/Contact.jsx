@@ -15,7 +15,8 @@ import {
   Sparkles,
   AlertCircle,
   Github,
-  Linkedin
+  Linkedin,
+  Instagram
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -386,7 +387,7 @@ const Contact = () => {
                     <Github className="w-4 h-4" />
                   </a>
                   <a
-                    href="https://www.linkedin.com/in/ayushkhobragade"
+                    href="https://www.linkedin.com/company/shrayu-techolologies/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 active:scale-95 ${
@@ -395,6 +396,17 @@ const Contact = () => {
                     aria-label="LinkedIn"
                   >
                     <Linkedin className="w-4 h-4" />
+                  </a>
+                  <a
+                    href="https://www.instagram.com/shrayutechonologies?vrfl=MWJyZWgzemZ1OGRoZg=="
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 active:scale-95 ${
+                      'light:bg-slate-100 light:border light:border-slate-200 light:text-slate-700 light:hover:text-blue-600 light:hover:bg-blue-50 light:hover:border-blue-300 light:hover:shadow-md light:hover:shadow-blue-500/10 dark:bg-white/5 dark:border dark:border-white/10 dark:text-slate-300 dark:hover:text-white dark:hover:bg-blue-600/20 dark:hover:border-blue-500/40 dark:hover:shadow-md dark:hover:shadow-blue-500/20'
+                    }`}
+                    aria-label="Instagram"
+                  >
+                    <Instagram className="w-4 h-4" />
                   </a>
                 </div>
               </SpotlightCard>

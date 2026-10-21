@@ -43,6 +43,7 @@ const SkeletonFooter = () => {
               <SkeletonBase variant="icon" width="2.5rem" height="2.5rem" radius="0.75rem" />
               <SkeletonBase variant="icon" width="2.5rem" height="2.5rem" radius="0.75rem" />
               <SkeletonBase variant="icon" width="2.5rem" height="2.5rem" radius="0.75rem" />
+              <SkeletonBase variant="icon" width="2.5rem" height="2.5rem" radius="0.75rem" />
             </div>
           </div>
 

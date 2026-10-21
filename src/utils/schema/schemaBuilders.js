@@ -55,7 +55,9 @@ export function buildOrganizationSchema(baseUrl = SCHEMA_BASE_URL) {
       addressCountry: 'IN'
     },
     sameAs: [
-      'https://github.com/Saru2248'
+      'https://www.linkedin.com/company/shrayu-techolologies/',
+      'https://www.instagram.com/shrayutechonologies?vrfl=MWJyZWgzemZ1OGRoZg==',
+      'https://github.com/shrayutech'
     ],
     contactPoint: [
       {
