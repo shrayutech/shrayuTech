@@ -6,6 +6,7 @@
  * XSS escaping, deduplication, and coverage across all pages and pSEO templates.
  */
 
+import { SITE_URL } from '../src/config/site.config.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -55,6 +56,7 @@ console.log('====================================================\n');
 
 // 1. Audit Organization Schema
 console.log('1. Auditing Organization Schema...');
+assert(SCHEMA_BASE_URL === SITE_URL, 'Structured data uses the central site URL');
 const org = buildOrganizationSchema(SCHEMA_BASE_URL);
 assert(org['@type'] === 'Organization', 'Organization has correct @type');
 assert(org['@id'] === `${SCHEMA_BASE_URL}/#organization`, 'Organization has stable @id');
@@ -82,7 +84,7 @@ portfolioProjects.forEach(p => {
   assert(schema.name === p.title, `Software name matches "${p.title}"`);
   assert(schema.offers?.price === '0', `Software offer price is explicit`);
   assert(schema.codeRepository && schema.codeRepository.startsWith('https://github.com/'), `Verified GitHub code repository linked`);
-  assert(schema.author?.['@id'] === `${SCHEMA_BASE_URL}/#organization`, `Software author links to Organization`);
+  assert(schema.author === undefined, 'Software has no author claim until repository ownership is verified');
   validSoftwareSchemas++;
 });
 assert(validSoftwareSchemas === 25, 'All 25 production systems verified with SoftwareApplication schema');
@@ -113,7 +115,7 @@ allCities.forEach(city => {
   assert(schema.parentOrganization?.['@id'] === `${SCHEMA_BASE_URL}/#organization`, `Hub links to parent Organization`);
   validHubSchemas++;
 });
-assert(validHubSchemas === 6, 'All 6 delivery hubs verified with LocalBusiness schema');
+assert(allCities.length > 0 && validHubSchemas === allCities.length, `All ${allCities.length} delivery hub(s) verified with LocalBusiness schema`);
 
 // 6. Audit BreadcrumbList Schema
 console.log('\n6. Auditing BreadcrumbList Schema...');
@@ -236,7 +238,7 @@ Schema Types Implemented:
 - SoftwareApplication / Product (25 open-source repositories)
 - Offer (Open-source price: 0 USD, InStock)
 - Brand (Shrayu Technologies)
-- ProfessionalService / LocalBusiness (6 delivery hubs)
+- ProfessionalService / LocalBusiness (${statesData.flatMap(s => s.cities).length} delivery hub(s))
 - Service (9 engineering disciplines)
 - BreadcrumbList (Dynamic navigation hierarchy on all pages)
 - ItemList (Catalog & comparison item lists)

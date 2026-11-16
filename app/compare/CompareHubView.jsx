@@ -138,7 +138,7 @@ export default function CompareHubView() {
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto text-slate-600 dark:text-slate-300">
-            Objectively evaluate verified software systems, engineering capabilities, and delivery hubs using real production metrics without artificial scores.
+            Compare public software development projects showcasing our technical capabilities, along with our services and locations, without artificial scores.
           </p>
 
           {/* TYPE SELECTOR TABS */}
@@ -212,7 +212,7 @@ export default function CompareHubView() {
             {comparedItems.length >= 2 && (
               <span className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4" />
-                <span>Verified Technical Attributes</span>
+                <span>Technical Attributes</span>
               </span>
             )}
           </div>

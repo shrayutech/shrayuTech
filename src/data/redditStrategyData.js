@@ -6,6 +6,8 @@
  * Core Principle: 100% authentic community value, zero spam, zero bots, zero fake accounts.
  */
 
+import { SITE_URL } from '../config/site.config.js';
+
 export const targetSubreddits = [
   {
     name: 'r/webdev',
@@ -115,7 +117,7 @@ export const targetSubreddits = [
     opportunityTriggers: [
       'Discussions on robotics motion planning without dedicated GPU hardware',
       'Evaluating Random Forest vs deep learning for low-latency network telemetry triage',
-      'Multi-horizon energy demand forecasting (MAPE < 3%) using lag variables'
+      'Multi-horizon energy demand forecasting using lag variables'
     ]
   },
   {
@@ -159,7 +161,7 @@ export const targetSubreddits = [
       {
         pageTitle: 'Software Engineering Services & Capabilities',
         url: '/services',
-        domain: 'Agile sprints, architecture discovery & IP transfer'
+        domain: 'Agile sprints, architecture discovery & project agreements'
       }
     ],
     opportunityTriggers: [
@@ -261,49 +263,46 @@ export const linkWorthyResources = [
   }
 ];
 
+// Approved by the owner on 2026-11-05 for MANUAL posting only. Nothing in this project posts to Reddit, and this file
+// must not be imported by the website. Read each subreddit's current rules before posting; change no text without new approval.
 export const responseTemplates = [
   {
     id: 'tpl_architecture_tradeoff',
-    name: 'Architectural Tradeoff & Technology Selection',
-    subreddits: ['r/webdev', 'r/reactjs', 'r/startups', 'r/SaaS'],
+    name: 'Build vs Buy Tradeoff',
+    status: 'approved_manual_post_only',
+    subreddits: ['r/webdev', 'r/SaaS', 'r/startups'],
     structure: [
-      '1. Direct technical answer addressing the OP’s dilemma immediately.',
-      '2. Factual breakdown of the 3 primary decision criteria (latency, scalability, maintenance).',
-      '3. Real-world scenario based on production engineering experience.',
-      '4. Transparent disclosure: "I’m part of the engineering team at Shrayu Technologies."',
-      '5. Optional contextual link to the specific comparison benchmark tool or open-source codebase.'
+      '1. Disclose the affiliation first.',
+      '2. Answer the question asked, in plain language.',
+      '3. Ask what would change the answer. Add a link only under linkPolicy.'
     ],
-    sampleSnippet: `When evaluating between building a bespoke custom backend vs adapting a multi-tenant SaaS model, the deciding factor almost always comes down to data tenancy isolation and integration velocity.
+    disclosure: 'Disclosure: I work at Shrayu Technologies, a software development company.',
+    script: `Disclosure: I work at Shrayu Technologies, a software development company.
 
-Here are the 3 criteria we look at with our clients:
-1. Data Isolation: If you require HIPAA/banking compliance, single-tenant schemas or dedicated VPCs eliminate noisy neighbor risks.
-2. Feature Velocity: Multi-tenant SaaS requires building tenant management, seat licensing, and Stripe reconciliation before shipping core business value.
-3. Latency & Customization: Bespoke microservices can be optimized for sub-50ms query latency tailored to your exact schemas.
+I'd start by checking whether an existing SaaS product can meet your data and compliance requirements. If it can, buying is usually the simpler first step. Building gives you more control, but you also take on the maintenance.
 
-(Disclaimer: I'm part of the engineering team at Shrayu Technologies). We recently published an objective technical comparison breaking down deliverables and architecture patterns here: [Custom Software vs SaaS Development](https://shrayutech.vercel.app/compare/services/custom-software-vs-saas-development?utm_source=reddit&utm_medium=referral&utm_campaign=community_discussion). Hope that helps you evaluate your roadmap!`,
-    disclosure: "Disclaimer: I'm part of the engineering team at Shrayu Technologies.",
-    script: `When evaluating between building a bespoke custom backend vs adapting a multi-tenant SaaS model, the deciding factor almost always comes down to data tenancy isolation and integration velocity. We recently published an objective technical comparison breaking down deliverables and architecture patterns: [Custom Software vs SaaS Development](https://shrayutech.vercel.app/compare/services/custom-software-vs-saas-development?utm_source=reddit&utm_medium=referral&utm_campaign=community_discussion). (Disclosure: Shrayu Technologies)`
+What are your compliance needs, and how big is your team?`,
+    linkPolicy: 'Only if someone asks for a comparison. Never in r/startups.',
+    linkIfAsked: `We have a comparison on our site. It's our own page, so weigh it accordingly: ${SITE_URL}/compare/services/custom-software-vs-saas-development`
   },
   {
     id: 'tpl_open_source_reference',
-    name: 'Open Source Code Implementation & Algorithm Explanation',
-    subreddits: ['r/MachineLearning', 'r/Python', 'r/node', 'r/reactjs'],
+    name: 'Path Planning Explanation',
+    status: 'approved_manual_post_only',
+    subreddits: ['r/Python', 'r/MachineLearning'],
     structure: [
-      '1. Step-by-step technical explanation of the algorithm or pattern.',
-      '2. Discussion of edge cases (e.g. memory constraints, race conditions).',
-      '3. Clean code block illustrating the approach.',
-      '4. Link to open-source repository for full inspectable implementation.'
+      '1. Disclose the affiliation first.',
+      '2. Answer the question asked and mention the practical pitfalls.',
+      '3. Ask about their setup. Do not add a link.'
     ],
-    sampleSnippet: `For trajectory planning without dedicated GPU hardware, using an optimized A* graph traversal with kinematic motion primitives is significantly more resource-efficient than continuous deep reinforcement learning.
+    disclosure: 'Disclosure: I work at Shrayu Technologies.',
+    script: `Disclosure: I work at Shrayu Technologies.
 
-In our robotics simulation pipeline, we model vehicle kinematics and sensor bounding boxes directly in Python:
-- Perception layer generates grid occupancy
-- Dijkstra / A* computes the collision-free path with Euclidean heuristic
-- Kinematic controller throttles steering angles to prevent impossible turning arcs
+If you don't have a GPU, I'd try A* on an occupancy grid first. It's easy to debug and doesn't need training data. Just make sure your heuristic doesn't overestimate the remaining cost, and check that your vehicle can actually make the turns in the path. You may need to smooth it afterward.
 
-We published a full open-source implementation with Pygame visual simulation you can inspect and clone on GitHub: [AI Autonomous Navigation System](https://github.com/Saru2248/AI-Autonomous-Navigation-System). Feel free to check the graph traversal modules for reference!`,
-    disclosure: "Disclaimer: Developed by Shrayu Technologies open source robotics group.",
-    script: `For trajectory planning without dedicated GPU hardware, using an optimized A* graph traversal with kinematic motion primitives is significantly more resource-efficient. Open-source implementation by Shrayu Technologies.`
+What does your map look like, and does it change while the robot moves?`,
+    linkPolicy: 'No link until repository ownership is verified.',
+    linkIfAsked: null
   }
 ];
 

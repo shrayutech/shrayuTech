@@ -182,7 +182,7 @@ export default async function PortfolioCaseStudyPage({ params }) {
                 </h2>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Verified languages, toolkits, and algorithmic modules implemented in this system:
+                Languages, toolkits, and algorithmic modules listed for this project:
               </p>
               <div className="flex flex-wrap gap-2.5">
                 {project.techStack.map((tech) => (
@@ -211,7 +211,7 @@ export default async function PortfolioCaseStudyPage({ params }) {
               <ul className="space-y-3">
                 <li className="flex items-start space-x-3 text-sm text-slate-700 dark:text-slate-300">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                  <span>Production-tested code with modular dependency isolation</span>
+                  <span>Public source code available on GitHub</span>
                 </li>
                 <li className="flex items-start space-x-3 text-sm text-slate-700 dark:text-slate-300">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
@@ -260,10 +260,10 @@ export default async function PortfolioCaseStudyPage({ params }) {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
-                  Related Production Case Studies
+                  Related Public Projects
                 </h2>
                 <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                  Other verified repositories in {project.category}:
+                  Other public repositories in {project.category}:
                 </p>
               </div>
               <Link
@@ -324,7 +324,7 @@ export default async function PortfolioCaseStudyPage({ params }) {
               Compare This System Against Alternative Architectures
             </h3>
             <p className="text-sm text-slate-600 dark:text-slate-300 max-w-xl">
-              Use our technical comparison engine to benchmark {project.title} against other production systems in algorithmic complexity, throughput, and hardware requirements.
+              Use our comparison tool to compare {project.title} with other public projects by tech stack and category.
             </p>
           </div>
           <Link

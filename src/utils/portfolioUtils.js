@@ -4,6 +4,7 @@
  * architectural relationship linking, and JSON-LD schema generation.
  */
 
+import { SITE_URL } from '../config/site.config.js';
 import { portfolioProjects } from '../data/portfolioProjects.js';
 
 /**
@@ -69,7 +70,7 @@ export function getRelatedProjects(currentProject, limit = 3) {
 /**
  * Generates JSON-LD schema for a portfolio project.
  */
-export function getProjectStructuredData(project, baseUrl = 'https://shrayutech.vercel.app') {
+export function getProjectStructuredData(project, baseUrl = SITE_URL) {
   if (!project) return null;
   const slug = normalizeProjectSlug(project.repo);
   const canonicalUrl = `${baseUrl}/portfolio/${slug}`;
@@ -90,11 +91,6 @@ export function getProjectStructuredData(project, baseUrl = 'https://shrayutech.
           priceCurrency: 'USD'
         },
         softwareRequirements: project.techStack?.join(', '),
-        author: {
-          '@type': 'Organization',
-          name: 'Shrayu Technologies',
-          url: baseUrl
-        },
         codeRepository: project.githubUrl,
         keywords: [project.category, ...(project.techStack || [])].join(', ')
       },

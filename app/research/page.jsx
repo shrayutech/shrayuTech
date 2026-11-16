@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, BookOpen, Database, ShieldCheck, CheckCircle2, AlertTriangle, FileSpreadsheet, Layers, Cpu, MapPin } from 'lucide-react';
+import { ArrowRight, BookOpen, Database, ShieldCheck, CheckCircle2, FileSpreadsheet, Layers, Cpu, MapPin } from 'lucide-react';
 import SchemaMarkup from '../../src/components/seo/schema/SchemaMarkup';
 import {
   buildWebPageSchema,
@@ -8,25 +8,24 @@ import {
   composeSchemaGraph,
   SCHEMA_BASE_URL
 } from '../../src/utils/schema/schemaBuilders';
-import { getPublishedResearchReports, researchReports } from '../../src/data/researchData';
+import { getPublishedResearchReports } from '../../src/data/researchData';
 
 import { buildPageMetadata } from '../../src/utils/seo/metadataBuilders';
 
 export const metadata = buildPageMetadata({
-  title: 'Original Research & Engineering Benchmarks',
-  description: 'First-party empirical research, machine learning benchmarks, and software architecture distributions derived directly from verified production codebases.',
+  title: 'Original Research: Portfolio Tech Stack Data',
+  description: 'Research built from data we can show: tech stack counts across the 25 public repositories in the Shrayu Technologies portfolio.',
   path: '/research',
-  keywords: ['software engineering research', 'first-party data', 'tech stack distribution', 'AI performance benchmarks', 'reproducible software research']
+  keywords: ['software engineering research', 'first-party data', 'tech stack distribution', 'reproducible software research']
 });
 
 export default function ResearchIndexPage() {
   const publishedReports = getPublishedResearchReports();
-  const blockedReport = researchReports.find((r) => r.status === 'insufficient_data');
   const canonicalUrl = `${SCHEMA_BASE_URL}/research`;
 
   const webPage = buildWebPageSchema({
-    title: 'Original Research & Engineering Benchmarks | Shrayu Technologies',
-    description: 'First-party empirical research, machine learning benchmarks, and software architecture distributions derived directly from 25 production codebases.',
+    title: 'Original Research: Portfolio Tech Stack Data | Shrayu Technologies',
+    description: 'Research built from data we can show: tech stack counts across the 25 public repositories in the Shrayu Technologies portfolio.',
     url: canonicalUrl
   });
 
@@ -37,7 +36,7 @@ export default function ResearchIndexPage() {
 
   const itemList = buildItemListSchema({
     name: 'Shrayu Technologies First-Party Research Studies',
-    description: 'Peer-verifiable empirical software engineering reports and benchmark studies',
+    description: 'Research reports calculated from public Shrayu Technologies portfolio data',
     items: publishedReports.map((r) => ({
       name: r.title,
       description: r.description,
@@ -71,15 +70,15 @@ export default function ResearchIndexPage() {
           <header className="space-y-6 max-w-4xl">
             <div className="inline-flex items-center space-x-2 bg-blue-500/10 border border-blue-500/30 px-3.5 py-1.5 rounded-full text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wider">
               <Database className="w-3.5 h-3.5" />
-              <span>First-Party Empirical Data</span>
+              <span>First-Party Data</span>
             </div>
             
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
-              Original Research &amp; Engineering Benchmarks
+              Original Research
             </h1>
 
             <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg lg:text-xl leading-relaxed">
-              We publish reproducible, first-party data and insights computed directly from our 25 production codebases and continuous integration test suites. Zero fabricated claims, zero sponsored bias.
+              We publish data we can show the working for. Today that means tech stack counts from the 25 public repositories listed in our portfolio, and we will add reports when we have real data to support them.
             </p>
           </header>
 
@@ -99,7 +98,7 @@ export default function ResearchIndexPage() {
                   <span>Zero Fabrication</span>
                 </div>
                 <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
-                  We never generate fake surveys, artificial customer reviews, or synthetic pricing trends. Every metric is computed from real code and infrastructure.
+                  We do not publish fake surveys, invented reviews or synthetic trends. Every figure is calculated from data published on this site.
                 </p>
               </div>
 
@@ -109,7 +108,7 @@ export default function ResearchIndexPage() {
                   <span>Transparent Methodology</span>
                 </div>
                 <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
-                  Every published report discloses its sample size, input manifests, testbed hardware, time period, mathematical formulas, and operational limitations.
+                  Every published report states its sample size, data source, method and limitations.
                 </p>
               </div>
 
@@ -119,7 +118,7 @@ export default function ResearchIndexPage() {
                   <span>Privacy by Design</span>
                 </div>
                 <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
-                  All platform analytics are aggregated and anonymized. No customer-level PII, private keys, or confidential client records are ever exposed.
+                  Reports use public project data only. No customer details, private keys or confidential client records are included.
                 </p>
               </div>
 
@@ -193,7 +192,7 @@ export default function ResearchIndexPage() {
 
                   <div className="pt-6 mt-6 border-t border-slate-200 dark:border-white/10 flex items-center justify-between">
                     <div className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                      Source: First-Party Platform Data
+                      Source: First-Party Data
                     </div>
                     <Link
                       href={`/research/${report.slug}`}
@@ -207,27 +206,6 @@ export default function ResearchIndexPage() {
               ))}
             </div>
           </section>
-
-          {/* Statistical Quality Safeguard Demonstration */}
-          {blockedReport && (
-            <section className="p-8 rounded-3xl bg-amber-500/5 border border-amber-500/20 shadow-xl space-y-4">
-              <div className="flex items-start space-x-3 text-amber-700 dark:text-amber-400">
-                <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                    Sample Size Safeguard in Action: Non-Published Study
-                  </h3>
-                  <p className="text-xs text-amber-800 dark:text-amber-200/80 mt-1">
-                    Study: <span className="font-semibold">{blockedReport.title}</span>
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                In strict adherence to our Research Quality Code, this pilot inquiry currently has an observed sample of only <strong className="text-slate-900 dark:text-white">{blockedReport.sampleSize} {blockedReport.sampleUnit}</strong>, which is below our required significance threshold of 500 respondents. Therefore, this study is marked with <code className="px-1.5 py-0.5 bg-slate-100 dark:bg-black/40 rounded text-amber-700 dark:text-amber-300 font-mono">status: "insufficient_data"</code>, blocked from search engine indexation, and withheld from general publication until sufficient empirical data is gathered.
-              </p>
-            </section>
-          )}
 
           {/* Academic & Open Data Attribution */}
           <footer className="p-8 rounded-3xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-center space-y-4">

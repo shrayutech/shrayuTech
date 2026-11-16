@@ -90,7 +90,7 @@ export default function TermsPage() {
                 <Link href="/contact" className="text-blue-500 hover:underline font-semibold">
                   official contact channel
                 </Link>{' '}
-                or email us directly at <span className="font-mono text-blue-400">shrayutech@gmail.com</span>.
+                or email us directly at <span className="font-mono text-blue-400">contact@shrayutech.com</span>.
               </p>
             </div>
           </div>

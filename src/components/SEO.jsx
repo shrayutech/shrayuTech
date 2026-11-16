@@ -1,5 +1,6 @@
 "use client";
 
+import { SITE_URL } from '../config/site.config.js';
 import { useEffect } from 'react';
 
 const SEO = ({
@@ -7,11 +8,11 @@ const SEO = ({
   description,
   keywords,
   image = '/logo.png',
-  url = 'https://shrayutech.vercel.app',
+  url = SITE_URL,
   type = 'website'
 }) => {
   const siteName = 'Shrayu Technologies';
-  const fullTitle = title && title !== 'Home' ? `${title} | ${siteName}` : 'Shrayu Technologies | Premium Software Development & Custom Web Design';
+  const fullTitle = title && title !== 'Home' ? `${title} | ${siteName}` : 'Shrayu Technologies | Software Development & Custom Web Design';
 
   useEffect(() => {
     if (typeof document !== 'undefined') {

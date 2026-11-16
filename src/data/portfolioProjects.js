@@ -23,9 +23,9 @@ export const portfolioProjects = [
     githubUrl: 'https://github.com/Saru2248/AI-Powered-Energy-Consumption-Forecasting-System',
     demoUrl: null,
     description:
-      'An industrial machine learning pipeline for multi-horizon energy consumption forecasting. The system generates 7-day hourly energy demand forecasts with under 3% Mean Absolute Percentage Error (MAPE) using lag variables, rolling window statistics, and ensemble regression models including Random Forest and XGBoost. It models industrial tariff structures and load scheduling to help utility operators mitigate peak energy costs and prevent over-generation waste.',
+      'An industrial machine learning pipeline for multi-horizon energy consumption forecasting. The system generates hourly energy demand forecasts using lag variables, rolling window statistics, and ensemble regression models including Random Forest and XGBoost. It models industrial tariff structures and load scheduling to help utility operators mitigate peak energy costs and prevent over-generation waste.',
     techStack: ['Python', 'XGBoost', 'Random Forest', 'Scikit-learn', 'Pandas', 'NumPy'],
-    highlight: '7-day hourly energy demand forecasting with <3% MAPE accuracy',
+    highlight: 'Hourly energy demand forecasting with Random Forest and XGBoost',
     visualType: 'chart'
   },
   {
@@ -148,7 +148,7 @@ export const portfolioProjects = [
     githubUrl: 'https://github.com/Saru2248/Credit-Card-Fraud-Detection-System',
     demoUrl: null,
     description:
-      'An enterprise machine learning pipeline specialized in identifying fraudulent credit card transactions in heavily imbalanced financial datasets. The project uses SMOTE (Synthetic Minority Over-sampling Technique) to handle class imbalances and trains Random Forest and Logistic Regression models evaluated on Precision-Recall curves and ROC-AUC. It includes a live transaction simulation engine that flags suspicious purchases with sub-second inference.',
+      'An enterprise machine learning pipeline specialized in identifying fraudulent credit card transactions in heavily imbalanced financial datasets. The project uses SMOTE (Synthetic Minority Over-sampling Technique) to handle class imbalances and trains Random Forest and Logistic Regression models evaluated on Precision-Recall curves and ROC-AUC. It includes a live transaction simulation engine that flags suspicious purchases.',
     techStack: ['Python', 'Scikit-learn', 'SMOTE', 'Random Forest', 'Pandas', 'NumPy'],
     highlight: 'Imbalanced dataset handling using SMOTE with high ROC-AUC precision',
     visualType: 'pipeline'

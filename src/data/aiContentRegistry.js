@@ -23,9 +23,9 @@ export const initialAiContentRecords = [
     summary: 'Kinematic trajectory planner using A* and Dijkstra graph traversal algorithms for obstacle avoidance with zero GPU requirement.',
     content: {
       highlights: [
-        'Kinematic graph traversal with sub-50ms collision-free path planning',
+        'Kinematic graph traversal for collision-free path planning',
         'Lightweight Python 3.10 + Pygame simulation modeling robotics pipelines',
-        'Verified open-source repository on GitHub'
+        'Open-source repository on GitHub'
       ],
       faqs: [
         {
@@ -38,7 +38,7 @@ export const initialAiContentRecords = [
         }
       ],
       seoTitle: 'AI Autonomous Navigation System | Architecture & Python Code',
-      metaDescription: 'Inspect collision-free autonomous path planning algorithms modeled in Python. Verified open-source code and zero GPU requirement.'
+      metaDescription: 'Inspect collision-free autonomous path planning algorithms modeled in Python. Open-source code and zero GPU requirement.'
     },
     status: 'published',
     sourceDataHash: 'hash-nav-sys-101',
@@ -71,13 +71,13 @@ export const initialAiContentRecords = [
     content: {
       highlights: [
         'Single-tenant data isolation conforming to regulatory compliance',
-        'Sub-50ms query latency through Redis caching and PostgreSQL partitioning',
-        '100% intellectual property ownership transfer upon sign-off'
+        'Redis caching and PostgreSQL partitioning for query performance',
+        'Intellectual property ownership is defined in the project agreement.'
       ],
       faqs: [
         {
           question: 'What is the intellectual property policy for custom software engagements?',
-          answer: 'You retain 100% intellectual property ownership from day one. All code and deployment scripts are transferred directly to your private git repositories.'
+          answer: 'Intellectual property ownership is defined in the project agreement.'
         }
       ],
       seoTitle: 'Custom Software Development Services | Shrayu Technologies',

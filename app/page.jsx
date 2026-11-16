@@ -11,8 +11,8 @@ import { portfolioProjects } from '../src/data/portfolioProjects';
 import { buildPageMetadata } from '../src/utils/seo/metadataBuilders';
 
 export const metadata = buildPageMetadata({
-  title: 'Shrayu Technologies | Premium Software Development & AI Engineering',
-  description: 'Premier software engineering company specializing in bespoke backend microservices, Next.js web applications, artificial intelligence, and cloud architectures.',
+  title: 'Software Development & AI Engineering | Shrayu Technologies',
+  description: 'Shrayu Technologies builds web applications, full-stack software solutions, and AI-powered systems tailored to business needs.',
   path: '/',
   keywords: ['software development', 'custom web design', 'mobile apps', 'enterprise solutions', 'AI engineering', 'cloud computing', 'Shrayu Technologies']
 });
@@ -21,14 +21,14 @@ export const metadata = buildPageMetadata({
 export default function HomePage() {
   const webPage = buildWebPageSchema({
     ...getPageDates('home'),
-    title: 'Shrayu Technologies | Premium Software Development & AI Engineering',
-    description: 'Premier software engineering company specializing in bespoke backend microservices, Next.js web applications, artificial intelligence, and cloud architectures.',
+    title: 'Software Development & AI Engineering | Shrayu Technologies',
+    description: 'Shrayu Technologies builds web applications, full-stack software solutions, and AI-powered systems tailored to business needs.',
     url: SCHEMA_BASE_URL
   });
 
   const featuredItemList = buildItemListSchema({
-    name: 'Featured Production Software Systems',
-    description: 'Verified production architectures and open-source systems developed by Shrayu Technologies',
+    name: 'Featured Public Software Projects',
+    description: 'Public software development projects showcasing our technical capabilities',
     items: portfolioProjects.slice(0, 5).map((p) => ({
       name: p.title,
       description: p.highlight,

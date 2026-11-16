@@ -13,13 +13,15 @@
  * - Consistent title branding without double-suffix truncation
  */
 
+import { SITE_URL } from '../../config/site.config.js';
+
 export const SITE_METADATA_CONFIG = {
-  siteUrl: (process.env.NEXT_PUBLIC_SITE_URL || 'https://shrayutech.vercel.app').replace(/\/+$/, ''),
+  siteUrl: SITE_URL,
   brandName: 'Shrayu Technologies',
-  defaultTitle: 'Shrayu Technologies | Premium Software Development & Custom Web Design',
+  defaultTitle: 'Shrayu Technologies | Software Development & Custom Web Design',
   titleTemplate: '%s | Shrayu Technologies',
-  defaultDescription: 'Premier software engineering company specializing in bespoke backend microservices, Next.js web applications, artificial intelligence, and cloud architectures.',
-  defaultImage: 'https://shrayutech.vercel.app/logo.png',
+  defaultDescription: 'Shrayu Technologies builds web applications, full-stack software solutions, and AI-powered systems tailored to business needs.',
+  defaultImage: `${SITE_URL}/logo.png`,
   locale: 'en_US',
   twitterHandle: '@ayushkhobragade',
   supportedLanguages: ['en']
@@ -212,7 +214,7 @@ export function buildProductMetadata(project) {
   const title = `${shortTitle} | Architecture & Code`;
   const baseDesc = project.highlight || project.description || '';
   const descSnippet = baseDesc.length > 85 ? `${baseDesc.slice(0, 82)}...` : baseDesc;
-  const description = `${descSnippet} Architecture specs, production codebase, and benchmarks by ${SITE_METADATA_CONFIG.brandName}.`.slice(0, 160);
+  const description = `${descSnippet} Public software development project.`.slice(0, 160);
 
   const keywords = [
     project.category,
@@ -239,7 +241,7 @@ export function buildServiceMetadata(service) {
   const title = `${service.name} | Technical Services`;
   const baseOverview = service.tagline || service.overview || '';
   const snippet = baseOverview.length > 80 ? `${baseOverview.slice(0, 77)}...` : baseOverview;
-  const description = `${snippet} Dedicated agile engineering pods with 100% IP ownership transfer by ${SITE_METADATA_CONFIG.brandName}.`.slice(0, 160);
+  const description = `${snippet} Dedicated agile engineering pods by ${SITE_METADATA_CONFIG.brandName}.`.slice(0, 160);
 
   const keywords = [
     service.name,
@@ -264,7 +266,7 @@ export function buildLocationMetadata({ state, city, category } = {}) {
   // Case 1: Location + Category (e.g. Custom Software in Pune)
   if (state && city && category) {
     const title = `${category.name} in ${city.name}, ${state.name}`;
-    const description = `Deploy dedicated engineering squads for ${category.name.toLowerCase()} in ${city.name}, ${state.name}. 100% IP ownership transfer by Shrayu Technologies.`.slice(0, 160);
+    const description = `Deploy dedicated engineering squads for ${category.name.toLowerCase()} in ${city.name}, ${state.name} by Shrayu Technologies.`.slice(0, 160);
     return buildPageMetadata({
       title,
       description,
@@ -332,7 +334,7 @@ export function buildComparisonMetadata(comparison) {
 export function buildResearchMetadata(report) {
   if (!report) return buildNotFoundMetadata('Research Study');
 
-  const title = `${report.shortTitle || report.title} | Empirical Study`;
+  const title = `${report.shortTitle || report.title} | Research Study`;
   const description = report.metaDescription || (report.description && report.description.length > 160 ? `${report.description.slice(0, 157)}...` : report.description) || SITE_METADATA_CONFIG.defaultDescription;
 
   return buildPageMetadata({

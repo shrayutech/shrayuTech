@@ -164,7 +164,7 @@ const Products = () => {
       <div className="relative min-h-screen bg-portfolio-atmosphere pt-36 pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden transition-colors duration-300">
         <SEO
           title="Portfolio & Engineering Projects — Shrayu Technologies"
-          description="Explore 25 verified systems across AI, Data Science, Machine Learning, Python automation, and Full-Stack development from Shrayu Technologies."
+          description="Explore 25 public software development projects showcasing our technical capabilities across AI, Data Science, Machine Learning, Python automation, and Full-Stack development."
           keywords="AI systems, machine learning portfolio, data science projects, Python automation, Full Stack MERN, Shrayu Technologies, open source"
         />
 
@@ -194,7 +194,7 @@ const Products = () => {
           >
             <div className="inline-flex items-center space-x-2 bg-blue-500/10 border border-blue-500/30 px-4 py-1.5 rounded-full text-blue-500 text-xs font-bold uppercase tracking-widest backdrop-blur-md shadow-lg shadow-blue-500/10">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Engineering Showcase & Verified Work</span>
+              <span>Engineering Showcase</span>
             </div>
 
             <h1
@@ -213,7 +213,7 @@ const Products = () => {
                 'light:text-slate-600 dark:text-slate-300'
               }`}
             >
-              Explore 25 verified production-grade systems across AI, Data Science,
+              Explore 25 public software development projects showcasing our technical capabilities across AI, Data Science,
               Machine Learning, Python automation, and Full-Stack engineering,
               architected with clean modular code and published open-source.
             </p>
@@ -593,7 +593,7 @@ const Products = () => {
                 'light:text-slate-900 dark:text-white'
               }`}
             >
-              Need a Production System Built to These Standards?
+              Need a Software System Built for Your Business?
             </h2>
             <p
               className={`text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed ${

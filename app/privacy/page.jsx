@@ -60,7 +60,7 @@ export default function PrivacyPage() {
           <div className="space-y-6 text-sm text-app-secondary">
             <div>
               <h2 className="text-lg font-bold text-app-primary mb-1">1. Information Collection</h2>
-              <p>We only collect contact information voluntarily submitted through our inquiry forms or correspondence (such as name, email address, company name, and project briefs).</p>
+              <p>We only collect contact information voluntarily submitted through our inquiry forms or correspondence (such as name, email address, company name, and project briefs). Our contact form uses Google reCAPTCHA v3 to block automated spam, which sends information about your device and browser to Google under its own privacy policy and terms.</p>
             </div>
 
             <div>

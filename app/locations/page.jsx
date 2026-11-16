@@ -49,7 +49,7 @@ export default function LocationsLandingPage() {
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto text-slate-600 dark:text-slate-300">
-            Shrayu Technologies operates from our global headquarters in Maharashtra, partnering with venture-backed startups and enterprises across India's premier tech corridors.
+            Shrayu Technologies is headquartered in Maharashtra and works with businesses on software development, AI, and cloud projects.
           </p>
 
           {/* Interactive Search Bar */}
@@ -65,7 +65,7 @@ export default function LocationsLandingPage() {
             <div className="space-y-3 max-w-2xl">
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-500/30">
-                  Global Headquarters &amp; Central Lab
+                  Headquarters
                 </span>
                 <span className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
                   Active
@@ -80,7 +80,7 @@ export default function LocationsLandingPage() {
               <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-600 dark:text-slate-300 pt-1">
                 <span>📍 PIN: 431001</span>
                 <span>📞 +91 70200 41614</span>
-                <span>✉️ shrayutech@gmail.com</span>
+                <span>✉️ contact@shrayutech.com</span>
               </div>
             </div>
 
@@ -185,10 +185,10 @@ export default function LocationsLandingPage() {
               All Delivery Hubs
             </span>
             <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
-              Verified Technical Delivery Hubs
+              Technical Delivery Hubs
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-              Explore localized software capabilities, key tech corridors, and verified case studies per city.
+              Explore localized software capabilities, key tech corridors, and related public projects per city.
             </p>
           </div>
 

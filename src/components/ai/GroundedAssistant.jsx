@@ -37,20 +37,20 @@ export default function GroundedAssistant() {
       if (q.includes('energy') || q.includes('forecasting') || q.includes('mape')) {
         const p = portfolioProjects.find(x => x.id === 2);
         if (p) matchedSystems.push(p);
-        answerText = 'Our AI-Powered Energy Consumption Forecasting System achieves a verified Mean Absolute Percentage Error (MAPE) of under 3% across 7-day multi-horizon projections. It runs on Random Forest and XGBoost ensemble algorithms without requiring dedicated GPU acceleration.';
+        answerText = 'Our AI-Powered Energy Consumption Forecasting System produces hourly energy demand forecasts. It runs on Random Forest and XGBoost ensemble algorithms without requiring dedicated GPU acceleration.';
       } else if (q.includes('python') || q.includes('ai') || q.includes('machine learning')) {
         matchedSystems = portfolioProjects.filter(p =>
           Array.isArray(p.techStack) && p.techStack.some(t => t.toLowerCase().includes('python'))
         ).slice(0, 3);
-        answerText = `We maintain multiple production Python AI systems, including autonomous navigation simulations, real-time intrusion detection, and medical radiography classifiers. All codebases are verified in our open-source repositories.`;
+        answerText = `Our portfolio lists public Python AI projects, including autonomous navigation simulations, intrusion detection, and medical radiography classifiers.`;
       } else if (q.includes('hub') || q.includes('maharashtra') || q.includes('city') || q.includes('office') || q.includes('location')) {
         const mh = statesData.find(s => s.slug === 'maharashtra');
         matchedLocations = mh ? mh.cities.slice(0, 4) : [];
-        answerText = `In Maharashtra, Shrayu Technologies operates its Global Headquarters and Core R&D Lab in Chhatrapati Sambhajinagar (CIDCO), delivering software to clients across India remotely and on-site.`;
+        answerText = `In Maharashtra, Shrayu Technologies is headquartered in Chhatrapati Sambhajinagar (CIDCO).`;
       } else if (q.includes('web') || q.includes('next.js') || q.includes('react') || q.includes('service')) {
         const s = servicesData.find(x => x.slug === 'web-development');
         if (s) matchedServices.push(s);
-        answerText = `We specialize in Next.js 15, React 19, and Tailwind CSS web application platforms engineered for sub-second Core Web Vitals and full server-side rendering (SSR). Every engagement includes complete source code ownership.`;
+        answerText = `We specialize in Next.js 15, React 19, and Tailwind CSS web application platforms with server-side rendering (SSR). We optimize website performance for fast loading and a better user experience. Intellectual property ownership is defined in the project agreement.`;
       } else {
         // Fallback grounded answer
         matchedSystems = portfolioProjects.slice(0, 2);
@@ -83,7 +83,7 @@ export default function GroundedAssistant() {
               </span>
             </h3>
             <p className="text-xs text-slate-400">
-              Answers generated strictly from real repository telemetry and verified hub records.
+              Answers are based on the project and location information published on this site.
             </p>
           </div>
         </div>
@@ -107,7 +107,7 @@ export default function GroundedAssistant() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ask about our production architectures, AI models, or delivery hubs..."
+            placeholder="Ask about our public projects, AI models, or delivery hubs..."
             className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500 transition-colors"
           />
         </div>
@@ -140,7 +140,7 @@ export default function GroundedAssistant() {
       {loading && (
         <div className="p-4 rounded-xl bg-black/40 border border-white/5 text-xs text-slate-400 flex items-center space-x-2">
           <div className="w-3 h-3 rounded-full border-2 border-blue-400 border-t-transparent animate-spin" />
-          <span>Retrieving verified data from repository models...</span>
+          <span>Retrieving project information...</span>
         </div>
       )}
 
@@ -159,7 +159,7 @@ export default function GroundedAssistant() {
           {(response.matchedSystems.length > 0 || response.matchedLocations.length > 0 || response.matchedServices.length > 0) && (
             <div className="pt-3 border-t border-white/10 space-y-2">
               <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                Verified Citations &amp; Code Links:
+                Citations &amp; Code Links:
               </span>
               <div className="flex flex-wrap gap-2">
                 {response.matchedSystems.map((sys) => (

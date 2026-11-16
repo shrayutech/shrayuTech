@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { revealOnScroll } from '../utils/motionPresets';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -18,6 +18,7 @@ import {
   Linkedin
 } from 'lucide-react';
 import SEO from '../components/SEO';
+import { getRecaptchaToken, loadRecaptcha, setRecaptchaBadgeVisible } from '../utils/recaptcha';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { API_BASE_URL } from '../config/api.config';
 import { useSkeleton } from '../context/SkeletonContext';
@@ -121,6 +122,11 @@ const FormField = ({ formik, name, label, required = false, as = 'input', hint, 
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    loadRecaptcha().then(() => setRecaptchaBadgeVisible(true)).catch(() => {}); // submit retries and reports failures
+    return () => setRecaptchaBadgeVisible(false);
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -133,6 +139,16 @@ const ContactForm = () => {
     onSubmit: async (values, { resetForm }) => {
       setIsSubmitting(true);
       try {
+        let captchaToken;
+        try {
+          // The action name must match RECAPTCHA_ACTION in backend/src/controllers/contact.controller.js
+          captchaToken = await getRecaptchaToken('contact_form');
+        } catch (err) {
+          console.error('reCAPTCHA Error:', err);
+          toast.error('The security check could not load. Please disable any blocker and try again, or email us directly.');
+          return;
+        }
+
         const endpoint = `${API_BASE_URL}/api/contact`;
         const response = await fetch(endpoint, {
           method: 'POST',
@@ -140,7 +156,7 @@ const ContactForm = () => {
             'Content-Type': 'application/json'
           },
           // Send the trimmed values the schema validated
-          body: JSON.stringify(contactValidationSchema.cast(values))
+          body: JSON.stringify({ ...contactValidationSchema.cast(values), captchaToken })
         });
 
         const data = await response.json();
@@ -246,6 +262,12 @@ const ContactForm = () => {
           </>
         )}
       </button>
+
+      <p className={`text-[10px] text-center leading-relaxed ${'light:text-slate-500 dark:text-slate-400'}`}>
+        This form is protected by reCAPTCHA. The Google{' '}
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" className="underline">Privacy Policy</a> and{' '}
+        <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer" className="underline">Terms of Service</a> apply.
+      </p>
     </form>
   );
 };
@@ -310,12 +332,12 @@ const Contact = () => {
                     <div>
                       <span className={`uppercase tracking-wider text-[9px] block ${'light:text-slate-500 dark:text-slate-400'}`}>Business Email</span>
                       <a
-                        href="https://mail.google.com/mail/?view=cm&fs=1&to=shrayutech@gmail.com"
+                        href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@shrayutech.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`text-sm font-bold cursor-pointer hover:underline transition-colors ${'light:text-slate-900 light:hover:text-blue-600 dark:text-white dark:hover:text-blue-400'}`}
                       >
-                        shrayutech@gmail.com
+                        contact@shrayutech.com
                       </a>
                     </div>
                   </div>
@@ -367,7 +389,7 @@ const Contact = () => {
                     <div>
                       <span className={`uppercase tracking-wider text-[9px] block ${'light:text-slate-500 dark:text-slate-400'}`}>Business Hours</span>
                       <span className={`block font-bold ${'light:text-slate-900 dark:text-white'}`}>Monday - Friday: 09:00 - 18:00 (IST)</span>
-                      <span className={`block text-[10px] pt-0.5 ${'light:text-slate-500 dark:text-slate-400'}`}>Emergency infrastructure support: 24/7</span>
+                      <span className={`block text-[10px] pt-0.5 ${'light:text-slate-500 dark:text-slate-400'}`}>We provide technical support based on agreed support arrangements.</span>
                     </div>
                   </div>
                 </div>

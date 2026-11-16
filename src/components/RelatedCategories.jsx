@@ -44,7 +44,7 @@ const categories = ['AI', 'Data Science', 'Machine Learning', 'Python', 'Full-St
  * - Provides crawlable internal links to category-filtered portfolio views
  * - Displays project counts and visual icons
  */
-export default function RelatedCategories({ title = 'Browse Engineering by Category', subtitle = 'Explore 25 verified systems organized by technical domain' }) {
+export default function RelatedCategories({ title = 'Browse Engineering by Category', subtitle = 'Explore 25 public projects organized by technical domain' }) {
 
   return (
     <div className="space-y-6">

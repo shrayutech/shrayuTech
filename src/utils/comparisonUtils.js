@@ -4,6 +4,7 @@
  * differences highlighting, and comparison formatting across systems, services, and hubs.
  */
 
+import { SITE_URL } from '../config/site.config.js';
 import { portfolioProjects } from '../data/portfolioProjects.js';
 import { locationCategories } from '../data/locationsData.js';
 import { getAllCities } from './locationUtils.js';
@@ -153,9 +154,9 @@ export function getComparableAttributes(type, items = []) {
       },
       {
         key: 'githubUrl',
-        label: 'Production Repository',
+        label: 'Public Repository',
         format: 'link',
-        getValue: (p) => p.githubUrl ? { label: 'Verified GitHub Repository', url: p.githubUrl } : null
+        getValue: (p) => p.githubUrl ? { label: 'GitHub Repository', url: p.githubUrl } : null
       },
       {
         key: 'demoUrl',
@@ -194,9 +195,9 @@ export function getComparableAttributes(type, items = []) {
       },
       {
         key: 'portfolioLink',
-        label: 'Verified Implementations',
+        label: 'Related Projects',
         format: 'internal-link',
-        getValue: (s) => ({ label: 'Browse Verified Projects', url: `/portfolio?category=${encodeURIComponent(s.portfolioCategory)}` })
+        getValue: (s) => ({ label: 'Browse Public Projects', url: `/portfolio?category=${encodeURIComponent(s.portfolioCategory)}` })
       }
     ];
   }
@@ -219,7 +220,7 @@ export function getComparableAttributes(type, items = []) {
         key: 'isHeadquarters',
         label: 'Headquarters Status',
         format: 'boolean',
-        getValue: (l) => l.isHeadquarters ? 'Global Headquarters & Core Lab' : 'Regional Delivery Hub'
+        getValue: (l) => l.isHeadquarters ? 'Headquarters' : 'Regional Delivery Hub'
       },
       {
         key: 'postalCode',
@@ -381,7 +382,7 @@ export function resolveComparisonEntities(type, slugOrIds) {
 /**
  * Builds sitemap entries for curated comparisons.
  */
-export function getComparisonsForSitemap(baseUrl = 'https://shrayutech.vercel.app') {
+export function getComparisonsForSitemap(baseUrl = SITE_URL) {
   const currentDate = new Date().toISOString();
   const entries = [
     {

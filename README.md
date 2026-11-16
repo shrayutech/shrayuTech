@@ -100,7 +100,7 @@ Two env files, both git-ignored (copy the keys from `.env.example`):
 | `.env.production` | `next build` / `next start` | Production (on Vercel, set the same keys in the dashboard) |
 
 ```env
-NEXT_PUBLIC_SITE_URL=https://shrayutech.vercel.app
+NEXT_PUBLIC_SITE_URL=https://www.shrayutech.com
 NEXT_PUBLIC_API_URL=https://shrayutechbackend.onrender.com
 ```
 

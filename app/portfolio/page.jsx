@@ -17,7 +17,7 @@ import { buildPageMetadata } from '../../src/utils/seo/metadataBuilders';
 
 export const metadata = buildPageMetadata({
   title: 'Products & Portfolio | Software Showcase',
-  description: 'Explore enterprise products, open-source repositories, and software engineering case studies created by Shrayu Technologies.',
+  description: 'Explore public software development projects showcasing our technical capabilities across AI, data science, Python, and full-stack development.',
   path: '/portfolio',
   keywords: ['software portfolio', 'open source projects', 'full-stack apps', 'AI case studies', 'machine learning models']
 });
@@ -28,7 +28,7 @@ export default function PortfolioPage() {
   const webPage = buildWebPageSchema({
     ...getPageDates('portfolio'),
     title: 'Products & Engineering Showcase | Shrayu Technologies',
-    description: 'Explore enterprise products, open-source repositories, and software engineering case studies created by Shrayu Technologies.',
+    description: 'Explore public software development projects showcasing our technical capabilities across AI, data science, Python, and full-stack development.',
     url
   });
 
@@ -38,8 +38,8 @@ export default function PortfolioPage() {
   ]);
 
   const projectsItemList = buildItemListSchema({
-    name: 'Verified Open Source Production Systems & Repositories',
-    description: '25 production software applications, AI models, and algorithmic pipelines created by Shrayu Technologies',
+    name: 'Public Software Development Projects',
+    description: '25 public software development projects showcasing our technical capabilities',
     items: portfolioProjects.map(p => ({
       name: p.title,
       description: p.highlight,

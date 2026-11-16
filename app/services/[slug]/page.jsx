@@ -166,7 +166,7 @@ export default async function ServiceDetailPage({ params }) {
                 </h2>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Core languages, frameworks, and datastores utilized in production for this discipline:
+                Core languages, frameworks, and datastores used for this discipline:
               </p>
               <div className="flex flex-wrap gap-2.5">
                 {service.techStack.map((tech) => (
@@ -275,10 +275,10 @@ export default async function ServiceDetailPage({ params }) {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
-                  Verified Production Systems & Repositories
+                  Related Public Projects
                 </h2>
                 <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                  Open-source production systems and algorithmic blueprints illustrating this capability:
+                  Public software development projects showcasing our technical capabilities in this area:
                 </p>
               </div>
               <Link

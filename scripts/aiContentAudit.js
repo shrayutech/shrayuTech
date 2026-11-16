@@ -84,8 +84,10 @@ console.log('\n2. Auditing Grounded Source Entity Resolution...');
 const resolvedProd = resolveSourceEntity('product', 'ai-autonomous-navigation-system');
 assert(Boolean(resolvedProd && resolvedProd.id === 1), 'Resolves product from portfolioProjects');
 
-const resolvedLoc = resolveSourceEntity('location', 'maharashtra/pune');
-assert(Boolean(resolvedLoc && resolvedLoc.name === 'Pune'), 'Resolves location from statesData');
+const auditState = statesData[0];
+const auditCity = auditState.cities[0];
+const resolvedLoc = resolveSourceEntity('location', `${auditState.slug}/${auditCity.slug}`);
+assert(Boolean(resolvedLoc && resolvedLoc.name === auditCity.name), 'Resolves location from statesData');
 
 const resolvedServ = resolveSourceEntity('service', 'custom-software');
 assert(Boolean(resolvedServ && resolvedServ.slug === 'custom-software'), 'Resolves service from servicesData');
@@ -128,7 +130,7 @@ assert(fakeRatingRes.isValid === false, 'Detects and rejects hallucinated fake r
 // 4. Audit Internal Link & Canonical Route Validation
 console.log('\n4. Auditing Canonical Internal Route Validation...');
 assert(isCanonicalInternalRoute('/services/custom-software') === true, 'Validates canonical service URL');
-assert(isCanonicalInternalRoute('/locations/maharashtra/pune') === true, 'Validates canonical city hub URL');
+assert(isCanonicalInternalRoute(`/locations/${auditState.slug}/${auditCity.slug}`) === true, 'Validates canonical city hub URL');
 assert(isCanonicalInternalRoute('/portfolio/ai-autonomous-navigation-system') === true, 'Validates canonical portfolio URL');
 assert(isCanonicalInternalRoute('/fake-url/non-existent-path') === false, 'Correctly rejects non-existent internal route');
 

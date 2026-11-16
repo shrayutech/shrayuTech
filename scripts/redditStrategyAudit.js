@@ -39,7 +39,8 @@ console.log('====================================================\n');
 
 // 1. Audit Target Subreddits
 console.log('1. Auditing Target Subreddits...');
-assert(Array.isArray(targetSubreddits) && targetSubreddits.length >= 10, `Found ${targetSubreddits?.length} target subreddits (min 10 required)`);
+// Minimums match the current strategy data, so an accidentally dropped entry fails the audit.
+assert(Array.isArray(targetSubreddits) && targetSubreddits.length >= 8, `Found ${targetSubreddits?.length} target subreddits (min 8 required)`);
 
 targetSubreddits.forEach(sub => {
   const hasFields = sub.name && sub.subscribers && sub.topic && sub.audience && sub.postingRestrictions && sub.selfPromotionRules && Array.isArray(sub.opportunityTriggers);
@@ -57,13 +58,26 @@ linkWorthyResources.forEach(res => {
 
 // 3. Audit Response Templates
 console.log('\n3. Auditing Response Templates & Transparency...');
-assert(Array.isArray(responseTemplates) && responseTemplates.length >= 3, `Found ${responseTemplates?.length} response templates (min 3 required)`);
+assert(Array.isArray(responseTemplates) && responseTemplates.length >= 2, `Found ${responseTemplates?.length} response templates (min 2 required)`);
 
 responseTemplates.forEach(tmpl => {
   const hasDisclosure = tmpl.disclosure && tmpl.disclosure.includes('Shrayu Technologies');
   assert(hasDisclosure, `Template "${tmpl.name}" enforces mandatory transparent disclosure`);
   assert(tmpl.script && tmpl.script.length > 50, `Template "${tmpl.name}" contains substantive technical response script`);
+  assert(tmpl.script.includes(tmpl.disclosure), `Template "${tmpl.name}" includes its disclosure in the reply itself`);
+  assert(!/https?:\/\//.test(tmpl.script), `Template "${tmpl.name}" has no link in the default reply`);
+  assert(tmpl.status === 'approved_manual_post_only', `Template "${tmpl.name}" is approved for manual posting only`);
 });
+
+const pathPlanning = responseTemplates.find((t) => t.id === 'tpl_open_source_reference');
+assert(pathPlanning?.linkIfAsked === null && !JSON.stringify(pathPlanning).includes('github.com'), 'Path planning reply has no GitHub link until ownership is verified');
+const buildVsBuy = responseTemplates.find((t) => t.id === 'tpl_architecture_tradeoff');
+assert(/Never in r\/startups/.test(buildVsBuy?.linkPolicy || ''), 'Build vs buy comparison link stays out of r/startups');
+
+// Reddit content stays out of the website
+const walkSource = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walkSource(path.join(dir, e.name)) : [path.join(dir, e.name)]));
+const importers = ['app', 'src'].flatMap((d) => walkSource(d)).filter((f) => /\.(js|jsx)$/.test(f) && !f.endsWith('redditStrategyData.js') && fs.readFileSync(f, 'utf8').includes('redditStrategyData'));
+assert(importers.length === 0, `No website file imports the Reddit data (${importers.join(', ') || 'none'})`);
 
 // 4. Audit 4-Week Calendar
 console.log('\n4. Auditing 4-Week Engagement Calendar...');

@@ -87,7 +87,7 @@ Generate an accurate engineering discipline overview for the service above.
 Output must reflect:
 - Declared technology stack and frameworks
 - Concrete deliverables (OpenAPI specs, Docker recipes, source code)
-- 2-week sprint pod delivery and 100% IP ownership transfer terms
+- 2-week sprint pod delivery; intellectual property ownership is defined in the project agreement (state no other terms)
 - Factual FAQs matching the visible service questions
         `
       };

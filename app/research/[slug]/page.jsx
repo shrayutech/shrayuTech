@@ -86,7 +86,7 @@ export default async function ResearchReportDetailPage({ params }) {
 
   const dataset = buildDatasetSchema({
     name: `${report.title} - Raw Metrics Dataset`,
-    description: `Sanitized empirical metrics and observation logs for ${report.title}`,
+    description: `Metrics table for ${report.title}`,
     url: canonicalUrl,
     temporalCoverage: `${report.dateRange.startDate}/${report.dateRange.endDate}`,
     spatialCoverage: report.location
@@ -147,7 +147,7 @@ export default async function ResearchReportDetailPage({ params }) {
                 {report.topic}
               </span>
               <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400">
-                First-Party Data Verified
+                First-Party Data
               </span>
               <span className="text-xs font-medium px-3 py-1 rounded-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300">
                 Sample: {report.sampleSize} {report.sampleUnit}
@@ -192,7 +192,7 @@ export default async function ResearchReportDetailPage({ params }) {
 
           {/* Summary Metrics Cards */}
           <section className="space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Key Empirical Metrics</h2>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Key Figures</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {report.summaryMetrics.map((m, idx) => (
                 <div key={idx} className="p-5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-1">
@@ -314,7 +314,7 @@ export default async function ResearchReportDetailPage({ params }) {
               {report.editorialAnalysis}
             </p>
             <div className="p-4 rounded-xl bg-slate-100 dark:bg-black/40 border border-slate-200 dark:border-white/5 text-xs text-slate-600 dark:text-slate-400">
-              <strong className="text-slate-700 dark:text-slate-200">Standard Disclosure:</strong> Observed metrics in the data table above represent direct physical measurements. The analytical commentary represents the architectural evaluation of the Shrayu Technologies engineering group.
+              <strong className="text-slate-700 dark:text-slate-200">Standard Disclosure:</strong> Figures in the data table above are calculated from the listed data sources. The analysis is the view of the Shrayu Technologies team.
             </div>
           </section>
 
@@ -358,7 +358,7 @@ export default async function ResearchReportDetailPage({ params }) {
                 <div className="p-5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-2">
                   <div className="flex items-center space-x-2 text-emerald-700 dark:text-emerald-400 text-xs font-semibold uppercase tracking-wider">
                     <FolderGit2 className="w-4 h-4" />
-                    <span>Audited Systems in Study</span>
+                    <span>Systems in Study</span>
                   </div>
                   <div className="space-y-1">
                     {relatedProjects.slice(0, 2).map((p) => (

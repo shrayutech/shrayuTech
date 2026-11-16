@@ -53,15 +53,15 @@ export class GroundedDeterministicProvider extends BaseAIProvider {
         const title = entity.title || entity.name || 'System Architecture';
         const techStack = Array.isArray(entity.techStack) ? entity.techStack.join(', ') : 'Standard Stack';
         const highlight = entity.highlight || 'High-performance architecture';
-        const description = entity.description || 'Production verified codebase.';
+        const description = entity.description || 'Public software development project.';
 
         structuredResult = {
-          title: `${title} - Production Architecture`,
-          summary: `${title} is a verified ${entity.category || 'software'} system engineered with ${techStack}. Highlight: ${highlight}.`,
+          title: `${title} - Public Project`,
+          summary: `${title} is a public ${entity.category || 'software'} project using ${techStack}. Highlight: ${highlight}.`,
           description: description,
           highlights: [
             highlight,
-            `Built with verified dependencies: ${techStack}`,
+            `Tech stack: ${techStack}`,
             `Repository: ${entity.githubUrl || 'Internal Version Control'}`
           ],
           faqs: [
@@ -72,12 +72,12 @@ export class GroundedDeterministicProvider extends BaseAIProvider {
             {
               question: `Is the source code for ${title} accessible?`,
               answer: entity.githubUrl
-                ? `Yes, the verified source code is hosted at ${entity.githubUrl}.`
+                ? `Yes, the source code is hosted at ${entity.githubUrl}.`
                 : 'The source code is managed under company version control.'
             }
           ],
           seoTitle: `${title} | Specifications & Architecture`,
-          metaDescription: `Review production specifications, ${techStack} dependencies, and verified architecture for ${title}.`
+          metaDescription: `Review the ${techStack} tech stack and project details for ${title}.`
         };
         break;
       }
@@ -94,14 +94,14 @@ export class GroundedDeterministicProvider extends BaseAIProvider {
           summary: `Our ${cityName} delivery hub in ${stateName} serves as a ${hubRole}, providing localized technical leadership and direct client collaboration.`,
           description: `Operating from ${address}, our ${cityName} team supports agile sprint delivery, technical workshops, and enterprise deployments across Western and Southern India. Contact: ${phone}.`,
           highlights: [
-            `Verified physical presence at ${address}`,
+            `Office address: ${address}`,
             `Regional role: ${hubRole}`,
             `Direct client support contact: ${phone}`
           ],
           faqs: [
             {
               question: `Where is the Shrayu Technologies delivery hub located in ${cityName}?`,
-              answer: `Our verified physical office is located at ${address}.`
+              answer: `Our office is located at ${address}.`
             },
             {
               question: `What services are supported from the ${cityName} hub?`,
@@ -122,9 +122,9 @@ export class GroundedDeterministicProvider extends BaseAIProvider {
 
         structuredResult = {
           title: `${name} - Engineering Practice`,
-          summary: `${name}: ${tagline}. Built with ${techStack} for high-availability production workloads.`,
-          description: entity.overview || `${name} delivers bespoke software architectures engineered for strict data tenancy and zero downtime.`,
-          highlights: deliverables.length > 0 ? deliverables : [`Engineered with ${techStack}`, 'Sub-second performance'],
+          summary: `${name}: ${tagline}. Built with ${techStack}.`,
+          description: entity.overview || `${name} delivers bespoke software architectures built around data tenancy and project requirements.`,
+          highlights: deliverables.length > 0 ? deliverables : [`Engineered with ${techStack}`, 'Performance optimization'],
           faqs: Array.isArray(entity.faqs) && entity.faqs.length > 0
             ? entity.faqs.map(f => ({ question: f.question, answer: f.answer }))
             : [
@@ -134,7 +134,7 @@ export class GroundedDeterministicProvider extends BaseAIProvider {
                 }
               ],
           seoTitle: `${name} | Shrayu Technologies`,
-          metaDescription: `${tagline}. Delivered with ${techStack} through 2-week agile sprint pods with 100% IP ownership.`
+          metaDescription: `${tagline}. Delivered with ${techStack} through 2-week agile sprint pods.`
         };
         break;
       }
@@ -146,7 +146,7 @@ export class GroundedDeterministicProvider extends BaseAIProvider {
         structuredResult = {
           title: `Technical Analysis: ${title}`,
           summary: `${overview} Evaluated across computational overhead, latency boundaries, and maintainability.`,
-          description: `${overview} Both architectures were evaluated using first-party codebases to provide objective decision trade-offs without unsupported claims.`,
+          description: `${overview} This comparison lists the attributes recorded on this site.`,
           highlights: [
             'Objective trade-off matrix grounded in real codebase telemetry',
             'Zero unsupported claims or arbitrary winner bias',
@@ -155,7 +155,7 @@ export class GroundedDeterministicProvider extends BaseAIProvider {
           faqs: [
             {
               question: `How was this comparison between ${title} evaluated?`,
-              answer: 'Evaluation was conducted by analyzing runtime latency, memory footprints, and data isolation models from verified production repositories.'
+              answer: 'The comparison uses the tech stack and project attributes recorded on this site. It does not include measured performance.'
             }
           ],
           seoTitle: `${title} | Architectural Benchmark`,
@@ -167,9 +167,9 @@ export class GroundedDeterministicProvider extends BaseAIProvider {
       default: {
         structuredResult = {
           title: entity.title || 'Enterprise Content',
-          summary: entity.description || 'Verified enterprise engineering documentation.',
-          description: entity.description || 'Detailed technical information verified against company data models.',
-          highlights: ['First-party verified', 'Zero ungrounded speculation'],
+          summary: entity.description || 'Engineering documentation.',
+          description: entity.description || 'Technical information from the data published on this site.',
+          highlights: ['Based on published site data'],
           faqs: [],
           seoTitle: entity.title || 'Shrayu Technologies',
           metaDescription: entity.description || 'Enterprise software engineering solutions.'

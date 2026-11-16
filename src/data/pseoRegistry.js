@@ -6,7 +6,9 @@
  * crawl budget directives, and indexing policies across all programmatic routes.
  */
 
-export const PSEO_BASE_URL = 'https://shrayutech.vercel.app';
+import { SITE_URL } from '../config/site.config.js';
+
+export const PSEO_BASE_URL = SITE_URL;
 
 export const pseoOpportunityMatrix = [
   {
@@ -83,7 +85,7 @@ export const pseoOpportunityMatrix = [
     validPages: 25,
     indexable: true,
     searchIntent: 'Software system specifications, open-source code repositories, and algorithmic benchmarks',
-    uniqueDataFields: ['Direct GitHub repository', 'Tech stack tags', 'Benchmark metrics (<3% MAPE, 270k records)', 'Architecture overview', 'Visual indicator', 'Related service and comparisons'],
+    uniqueDataFields: ['Direct GitHub repository', 'Tech stack tags', 'Project data details (270k records)', 'Architecture overview', 'Visual indicator', 'Related service and comparisons'],
     priority: 0.8,
     changeFrequency: 'weekly'
   },

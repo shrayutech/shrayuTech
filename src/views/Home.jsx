@@ -121,7 +121,7 @@ const Home = () => {
     {
       title: 'Cloud Solutions & DevOps',
       icon: <Cloud className="w-8 h-8 text-sky-500" />,
-      desc: 'Multi-region cloud infrastructure, container orchestration, and zero-downtime CI/CD pipelines.',
+      desc: 'Multi-region cloud infrastructure, container orchestration, and CI/CD pipelines designed to minimize service interruptions.',
       techs: ['AWS', 'Docker', 'Kubernetes', 'Terraform'],
       link: '/services',
       actionText: 'Explore Cloud & DevOps'
@@ -133,7 +133,7 @@ const Home = () => {
     { title: 'Scalable Solutions', icon: <Layers className="w-6 h-6 text-cyan-500" />, desc: 'Engineered from day one to handle traffic spikes and multi-region expansion.' },
     { title: 'Agile Development', icon: <Activity className="w-6 h-6 text-indigo-500" />, desc: 'Rapid sprint cycles, continuous integration, and transparent roadmap updates.' },
     { title: 'Security First', icon: <Lock className="w-6 h-6 text-purple-500" />, desc: 'Encrypted payloads, JWT authentication, and strict vulnerability audits.' },
-    { title: 'Performance Optimization', icon: <Zap className="w-6 h-6 text-emerald-500" />, desc: 'Edge caching, SSR optimization, and sub-100ms API response latency.' },
+    { title: 'Performance Optimization', icon: <Zap className="w-6 h-6 text-emerald-500" />, desc: 'Edge caching, SSR optimization, and API response tuning.' },
     { title: 'Long-Term Support', icon: <ShieldCheck className="w-6 h-6 text-amber-500" />, desc: 'Continuous cloud monitoring, security patches, and ongoing performance tuning.' },
     { title: 'Transparent Communication', icon: <MessageSquare className="w-6 h-6 text-rose-500" />, desc: 'Direct access to founding tech leads with zero middle management noise.' }
   ];
@@ -145,7 +145,7 @@ const Home = () => {
     { name: 'Design', icon: <Palette className="w-5 h-5 text-purple-500" />, desc: 'High-fidelity UI/UX design tokens.' },
     { name: 'Development', icon: <Code className="w-5 h-5 text-pink-500" />, desc: 'Clean, modular, test-driven coding.' },
     { name: 'Testing', icon: <ShieldCheck className="w-5 h-5 text-emerald-500" />, desc: 'Security audits & QA stress testing.' },
-    { name: 'Deployment', icon: <Globe className="w-5 h-5 text-sky-500" />, desc: 'Zero-downtime production release.' },
+    { name: 'Deployment', icon: <Globe className="w-5 h-5 text-sky-500" />, desc: 'Deployment practices designed to minimize service interruptions.' },
     { name: 'Support', icon: <MessageSquare className="w-5 h-5 text-amber-500" />, desc: 'Real-time telemetry & system updates.' }
   ];
 
@@ -432,8 +432,8 @@ const Home = () => {
             {/* Related Categories Navigation */}
             <div className="pt-8">
               <RelatedCategories
-                title="Browse Verified Case Studies by Category"
-                subtitle="Explore our 25 production-grade GitHub systems organized by technical domain"
+                title="Browse Public Projects by Category"
+                subtitle="Explore 25 public software development projects showcasing our technical capabilities, organized by technical domain"
               />
             </div>
 
@@ -450,7 +450,7 @@ const Home = () => {
                 href="/portfolio"
                 className="btn-secondary px-6 py-3 rounded-full flex items-center space-x-2 active:scale-95 transition-all"
               >
-                <span>Browse 25+ Completed Case Studies</span>
+                <span>Browse 25 Public Projects</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -535,7 +535,7 @@ const Home = () => {
 
             <div className="pt-2 text-center">
               <p className={`text-xs sm:text-sm font-medium max-w-xl mx-auto ${'light:text-slate-600 dark:text-slate-400'}`}>
-                Every sprint is executed with high visibility and test coverage.{' '}
+                Every sprint is executed with high visibility. We follow appropriate testing practices to maintain software quality.{' '}
                 <Link href="/about" className="text-blue-500 hover:underline font-bold inline-flex items-center space-x-1">
                   <span>Learn more about our core values on the About page</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -629,7 +629,7 @@ const Home = () => {
                   Ready to Build Your Platform?
                 </h2>
                 <p className="text-slate-200 text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
-                  Connect directly with our software leads. We will map out your requirements, system architecture, and development timeline within 2 hours.
+                  Connect directly with our software leads. We aim to respond to inquiries as quickly as possible.
                 </p>
                 <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row justify-center items-center gap-3.5 sm:gap-4">
                   <Link href="/contact"

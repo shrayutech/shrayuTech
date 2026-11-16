@@ -25,7 +25,7 @@ export const curatedComparisons = [
     itemIds: [2, 5],
     title: 'AI Energy Forecasting vs Predictive Maintenance',
     metaTitle: 'AI Energy Demand Forecasting vs Predictive Maintenance | Technical Comparison',
-    metaDescription: 'Compare multi-horizon energy demand forecasting (MAPE < 3%) with IoT sensor predictive failure classification in industrial environments.',
+    metaDescription: 'Compare multi-horizon energy demand forecasting with IoT sensor predictive failure classification in industrial environments.',
     categoryContext: 'Industrial AI',
     overview: 'Comparing machine learning models designed for grid load scheduling against telemetry classification for factory equipment maintenance.'
   },

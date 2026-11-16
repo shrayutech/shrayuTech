@@ -33,12 +33,12 @@ export const locationCategories = [
     name: 'Web Application Development',
     shortName: 'Web Development',
     tagline: 'Modern Responsive Web Portals & Enterprise Platforms',
-    description: 'Next.js, React, and modern TypeScript web platforms optimized for sub-second load times and SEO.',
+    description: 'Next.js, React, and modern TypeScript web platforms optimized for fast loading and SEO.',
     portfolioCategory: 'Full-Stack Development',
     iconName: 'Globe',
     keyFeatures: [
       'Server-Side Rendering (SSR)',
-      'Sub-Second Core Web Vitals',
+      'Core Web Vitals Optimization',
       'Enterprise CMS & Portals',
       'Progressive Web Apps (PWAs)'
     ]
@@ -78,14 +78,14 @@ export const locationCategories = [
     name: 'Cloud Infrastructure & DevOps',
     shortName: 'Cloud & DevOps',
     tagline: 'Auto-Scaling Clusters, CI/CD & Multi-Region Cloud',
-    description: 'Resilient AWS, Azure, and GCP architectures with automated container pipelines and zero-downtime releases.',
+    description: 'Resilient AWS, Azure, and GCP architectures with automated container pipelines and deployment practices designed to minimize service interruptions.',
     portfolioCategory: 'Python',
     iconName: 'Cloud',
     keyFeatures: [
       'Infrastructure as Code (Terraform)',
       'Docker & Kubernetes Clusters',
-      'Zero-Downtime CI/CD Pipelines',
-      'Geo-Redundant Disaster Recovery'
+      'Low-Interruption CI/CD Pipelines',
+      'Backup & Recovery Planning'
     ]
   },
   {
@@ -116,9 +116,9 @@ export const statesData = [
     region: 'Western India',
     metaTitle: 'Software Engineering & IT Delivery Hubs in Maharashtra | Shrayu Technologies',
     metaDescription: 'Explore Shrayu Technologies software development hubs across Maharashtra, anchored by our Chhatrapati Sambhajinagar headquarters.',
-    overview: 'Maharashtra is India’s foremost industrial, financial, and technological powerhouse. Shrayu Technologies is proudly headquartered in Maharashtra, delivering enterprise custom software, AI integration, and cloud architectures to startups and established institutions throughout the state and globally.',
+    overview: 'Shrayu Technologies is headquartered in Maharashtra and provides custom software, AI integration, and cloud architecture services.',
     highlights: [
-      'Global Headquarters & Core R&D Lab in Chhatrapati Sambhajinagar',
+      'Headquarters in Chhatrapati Sambhajinagar',
       'Distributed engineering delivery covering Western and Central Maharashtra',
       'Full-stack engineering teams available for hybrid and on-site technical workshops'
     ],
@@ -133,7 +133,7 @@ export const statesData = [
         country: 'India',
         postalCode: '431001',
         isHeadquarters: true,
-        hubRole: 'Global Headquarters & Core R&D Engineering Lab',
+        hubRole: 'Headquarters',
         coordinates: {
           lat: 19.8762,
           lng: 75.3433
@@ -141,7 +141,7 @@ export const statesData = [
         address: 'Chhatrapati Sambhajinagar, Maharashtra 431001, India',
         phone: '+91 70200 41614',
         secondaryPhone: '+91 93595 14760',
-        email: 'shrayutech@gmail.com',
+        email: 'contact@shrayutech.com',
         businessHours: 'Mon - Fri: 9:00 AM - 7:00 PM IST',
         mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120074.65487779774!2d75.24430485908954!3d19.865964893706013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdb9815a369bc7f%3A0x7104e3f63300445d!2sChhatrapati%20Sambhajinagar%20(Aurangabad)%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin',
         keyLocalities: [
@@ -151,7 +151,7 @@ export const statesData = [
           'Chikalthana Industrial Area',
           'Kranti Chowk Business District'
         ],
-        overview: 'Chhatrapati Sambhajinagar houses the primary headquarters, founding leadership, and foundational software engineering laboratory of Shrayu Technologies. From this central engineering hub, our team architects custom software systems, develops autonomous AI algorithms, and manages cloud operations for international and domestic clients.',
+        overview: 'Chhatrapati Sambhajinagar houses the primary headquarters, founding leadership, and foundational software engineering laboratory of Shrayu Technologies. From this hub, our team builds custom software systems, develops AI projects, and works on cloud infrastructure.',
         localEcosystem: 'As an emerging smart city under the Delhi-Mumbai Industrial Corridor (AURIC), Chhatrapati Sambhajinagar is transforming into an engineering and advanced technology anchor for Maharashtra.',
         supportedCategories: [
           'custom-software',

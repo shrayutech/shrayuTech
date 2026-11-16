@@ -13,6 +13,7 @@
  * - App Router static page generation & sitemap inclusion
  */
 
+import { SITE_URL } from '../src/config/site.config.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -25,8 +26,6 @@ import {
 import {
   calculateTechStackDistribution,
   calculateRegionalHubDensity,
-  calculatePerformanceBenchmarks,
-  calculateDeliveryMetrics,
   calculatePeriodVariance,
   calculateSampleSignificance
 } from '../src/utils/research/researchCalculators.js';
@@ -72,7 +71,7 @@ console.log('====================================================\n');
 
 // 1. Audit Research Registry & Data Models
 console.log('1. Auditing Research Data Registry & Field Completeness...');
-assert(Array.isArray(researchReports) && researchReports.length >= 5, `Registered research studies (${researchReports.length}) include empirical and safeguard reports`);
+assert(Array.isArray(researchReports) && researchReports.length >= 2, `Registered research studies (${researchReports.length}) include published and gated reports`);
 
 const seenSlugs = new Set();
 researchReports.forEach((report) => {
@@ -90,7 +89,14 @@ researchReports.forEach((report) => {
 // 2. Audit Minimum Sample Safeguards & Quality Gate Enforcement
 console.log('\n2. Auditing Minimum Sample Size Safeguards & Quality Gates...');
 const published = getPublishedResearchReports();
-assert(published.length === 4, `Found exactly 4 published studies meeting all significance thresholds`);
+// Explicit list: publishing or withdrawing a study must be a deliberate change here too.
+const EXPECTED_PUBLISHED_SLUGS = [
+  'tech-stack-distribution-portfolio-repositories',
+];
+assert(
+  published.length === EXPECTED_PUBLISHED_SLUGS.length && EXPECTED_PUBLISHED_SLUGS.every((slug) => published.some((r) => r.slug === slug)),
+  `Found exactly the ${EXPECTED_PUBLISHED_SLUGS.length} expected published studies meeting all significance thresholds`
+);
 
 published.forEach((report) => {
   const validation = validateResearchReport(report);
@@ -100,14 +106,15 @@ published.forEach((report) => {
   assert(report.sampleSize >= minRequired, `Study "${report.slug}" sample size (${report.sampleSize}) meets minimum threshold (${minRequired})`);
 });
 
-// Check Safeguard / Blocked Study
-const blockedStudy = researchReports.find((r) => r.status === 'insufficient_data');
-assert(Boolean(blockedStudy), `Quality safeguard study exists in registry`);
-if (blockedStudy) {
-  const blockedValidation = validateResearchReport(blockedStudy);
-  assert(!blockedValidation.isIndexable, `Sub-threshold study "${blockedStudy.slug}" is strictly non-indexable`);
-  assert(blockedStudy.sampleSize < 500, `Safeguard correctly blocks study with ${blockedStudy.sampleSize} samples (< 500 required)`);
-}
+// Check the sample-size gate with a sub-threshold report (no such report is kept in the registry)
+const gateBase = { ...published[0], slug: 'gate-test', researchType: 'survey_respondents', sampleSize: 42 };
+assert(!validateResearchReport({ ...gateBase, status: 'draft', isIndexable: false }).isIndexable, `Sample gate keeps a sub-threshold draft non-indexable`);
+assert(!validateResearchReport({ ...gateBase, status: 'published', isIndexable: true }).isValid, `Sample gate rejects publishing a sub-threshold report`);
+
+// Figures found to be unmeasured must not return without real results behind them
+const publishedText = JSON.stringify(published);
+const UNMEASURED = /2\.84|12\.4 ?ms|42\.0 ?ms|94\.2|27\.2|sub-50 ?ms|sub-100 ?ms|< ?3% ?MAPE/i;
+assert(!UNMEASURED.test(publishedText), `Published reports contain none of the previously unmeasured figures`);
 
 // 3. Audit Privacy & Zero PII Exposure
 console.log('\n3. Auditing Privacy Safeguards & PII Sanitization...');
@@ -127,12 +134,10 @@ assert(techStats.languageBreakdown.length > 0, `Calculated language distribution
 assert(techStats.frameworkBreakdown.length > 0, `Calculated framework adoption rates without errors`);
 
 const hubStats = calculateRegionalHubDensity(statesData, locationCategories);
-assert(hubStats.totalCities === 6, `Hub density calculator evaluated all 6 delivery cities`);
+const expectedCityCount = statesData.flatMap((s) => s.cities).length;
+assert(expectedCityCount > 0 && hubStats.totalCities === expectedCityCount, `Hub density calculator evaluated all ${expectedCityCount} delivery cities`);
 assert(hubStats.availabilityRate > 0 && hubStats.availabilityRate <= 100, `Hub capability rate is valid percentage (${hubStats.availabilityRate}%)`);
 
-const perfStats = calculatePerformanceBenchmarks(portfolioProjects);
-assert(perfStats.benchmarks.length >= 4, `Performance benchmarks calculated for ${perfStats.benchmarks.length} models`);
-assert(typeof perfStats.averageLatencyMs === 'number' && !isNaN(perfStats.averageLatencyMs), `Average latency calculation is a valid number`);
 
 const variancePos = calculatePeriodVariance(120, 100);
 assert(variancePos.isValid && variancePos.percentageChange === 20.0 && variancePos.trend === 'increase', `Variance calculator handles positive change (+20%)`);
@@ -163,7 +168,7 @@ console.log('\n6. Auditing Schema.org Structured Data Builders...');
 const techArticleSchema = buildTechArticleSchema({
   title: testReport.title,
   description: testReport.description,
-  url: `https://shrayutech.vercel.app/research/${testReport.slug}`,
+  url: `${SITE_URL}/research/${testReport.slug}`,
   datePublished: testReport.publishedAt,
   dateModified: testReport.updatedAt
 });
@@ -174,7 +179,7 @@ assert(techArticleSchema.publisher?.['@id']?.includes('#organization'), `TechArt
 const datasetSchema = buildDatasetSchema({
   name: testReport.title,
   description: testReport.description,
-  url: `https://shrayutech.vercel.app/research/${testReport.slug}`,
+  url: `${SITE_URL}/research/${testReport.slug}`,
   temporalCoverage: `${testReport.dateRange.startDate}/${testReport.dateRange.endDate}`
 });
 assert(datasetSchema['@type'] === 'Dataset', `buildDatasetSchema produces @type: "Dataset"`);
@@ -197,10 +202,18 @@ const navbarContent = fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', '
 assert(navbarContent.includes("path: '/research'"), `Navbar.jsx includes link to /research`);
 
 const footerContent = fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', 'Footer.jsx'), 'utf-8');
-assert(footerContent.includes('href="/research"'), `Footer.jsx includes link to /research`);
+assert(/href(=|:\s*)["']\/research["']/.test(footerContent), `Footer.jsx includes link to /research`);
 
 const sitemapContent = fs.readFileSync(path.join(ROOT_DIR, 'app', 'sitemap.js'), 'utf-8');
 assert(sitemapContent.includes('/research'), `app/sitemap.js includes research hub and dynamic report paths`);
+
+const nextConfigContent = fs.readFileSync(path.join(ROOT_DIR, 'next.config.mjs'), 'utf-8');
+assert(
+  nextConfigContent.includes("source: '/research/tech-stack-distribution-production-systems'") &&
+    nextConfigContent.includes("destination: '/research/tech-stack-distribution-portfolio-repositories'") &&
+    getPublishedResearchReports().every((r) => r.slug !== 'tech-stack-distribution-production-systems'),
+  `Renamed study: old URL redirects to the new slug and is no longer published`
+);
 
 // FINAL SUMMARY REPORT
 console.log('\n====================================================');
@@ -217,7 +230,7 @@ Audit Checks Passed:          ${passedChecks}
 Audit Checks Failed:          ${failedChecks}
 PII Leaks Found:              0
 Fabricated Statistics Found:  0
-Calculators Validated:        6 / 6
+Calculators Validated:        4 / 4
 Schema Types Integrated:      TechArticle, Dataset, WebPage, ItemList, BreadcrumbList
 Data Formats Exportable:      CSV, BibTeX
 ====================================================

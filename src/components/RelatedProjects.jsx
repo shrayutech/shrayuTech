@@ -14,8 +14,8 @@ export default function RelatedProjects({
   currentCategory,
   currentProjectId,
   limit = 3,
-  title = 'Verified Engineering Case Studies',
-  subtitle = 'Production-grade implementations demonstrating technical execution'
+  title = 'Public Project Examples',
+  subtitle = 'Public software development projects showcasing our technical capabilities'
 }) {
 
   // Filter projects

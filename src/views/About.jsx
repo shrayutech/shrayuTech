@@ -68,7 +68,7 @@ const About = () => {
   ];
 
   const roadmap = [
-    { phase: 'Q1-Q2 2026 (Delivered)', title: 'Open-Source Systems Release', desc: 'Published 25 verified production-grade architectures across AI, Data Science, Python, and Full-Stack development.' },
+    { phase: 'Q1-Q2 2026 (Delivered)', title: 'Open-Source Systems Release', desc: 'Listed 25 public software development projects showcasing our technical capabilities across AI, Data Science, Python, and Full-Stack development.' },
     { phase: 'Q3 2026 (Delivered)', title: 'AI & Vector Connectors', desc: 'Rolled out lightweight RAG orchestration modules and edge vision pipelines.' },
     { phase: 'Q4 2026 (Active)', title: 'Distributed Microservices Hub', desc: 'Launching automated Docker deployment cluster blueprints and multi-region failover templates.' },
     { phase: '2027 (Upcoming)', title: 'Enterprise Cloud Orchestration', desc: 'Standardizing zero-trust architecture frameworks and multi-tenant database synchronization pipelines.' }
@@ -140,7 +140,7 @@ const About = () => {
                 <div className={`p-4 rounded-2xl border-l-4 border-indigo-500 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 ${'light:bg-white light:border-r light:border-t light:border-b light:border-slate-200 dark:bg-white/5 dark:border-r dark:border-t dark:border-b dark:border-white/10'}`}>
                   <span className="text-[10px] text-indigo-500 font-extrabold uppercase tracking-wider block mb-1">Our Mission</span>
                   <span className={`text-xs font-semibold leading-relaxed block ${'light:text-slate-700 dark:text-slate-300'}`}>
-                    Delivering clean, secure, and fully documented codebases on time.
+                    We aim to deliver clean, secure, and well-documented code on schedule.
                   </span>
                 </div>
               </div>
@@ -323,7 +323,7 @@ const About = () => {
                     href="/portfolio"
                     className="btn-secondary px-6 py-3.5 rounded-full flex items-center space-x-2 active:scale-95 transition-all !text-white !bg-white/10 hover:!bg-white/20 !border-white/20"
                   >
-                    <span>View 25+ Case Studies</span>
+                    <span>View 25 Public Projects</span>
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link

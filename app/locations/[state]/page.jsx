@@ -103,7 +103,7 @@ export default async function StateLocationPage({ params }) {
               </h2>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium max-w-md">
-              Each delivery center is backed by senior engineers, transparent sprint tracking, and verifiable production code.
+              Each location page lists our services and public software development projects showcasing our technical capabilities.
             </p>
           </div>
 

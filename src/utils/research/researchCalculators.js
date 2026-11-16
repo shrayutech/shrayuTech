@@ -3,7 +3,7 @@
  * Centralized Reproducible First-Party Research Calculators.
  * 
  * All metrics, frequencies, percentages, and aggregations are computed directly
- * from real project telemetry and data models. ZERO fabricated statistics.
+ * from the data models passed in. ZERO fabricated statistics.
  */
 
 /**
@@ -155,85 +155,6 @@ export function calculateRegionalHubDensity(states = [], categories = []) {
     availabilityRate,
     stateDistribution,
     hubSpecialization
-  };
-}
-
-/**
- * Calculates empirical algorithm and model benchmarks from verified repository logs.
- * 
- * @param {Array} projects - Raw portfolio projects array
- * @returns {object} Benchmark metrics
- */
-export function calculatePerformanceBenchmarks(projects = []) {
-  // Real benchmarks recorded from production repositories in portfolioProjects
-  const benchmarks = [
-    {
-      system: 'AI-Energy-Forecasting-System',
-      algorithm: 'Random Forest + XGBoost Ensemble',
-      primaryMetric: 'Mean Absolute Percentage Error (MAPE)',
-      measuredValue: 2.84,
-      unit: '%',
-      baselineTarget: '< 5.0%',
-      samplePeriod: '7-Day Multi-Horizon',
-      hardwareSpecification: '8-Core vCPU, Zero GPU requirement'
-    },
-    {
-      system: 'AI-Powered Cybersecurity Threat Detection',
-      algorithm: 'Supervised Random Forest Classifier',
-      primaryMetric: 'Flow Telemetry Triage Latency',
-      measuredValue: 12.4,
-      unit: 'ms',
-      baselineTarget: '< 50.0 ms',
-      samplePeriod: 'Real-Time Streaming Telemetry',
-      hardwareSpecification: 'Containerized Linux Host'
-    },
-    {
-      system: 'AI-Autonomous-Navigation-System',
-      algorithm: 'Kinematic A* Graph Search',
-      primaryMetric: 'Collision-Free Trajectory Calculation Time',
-      measuredValue: 42.0,
-      unit: 'ms',
-      baselineTarget: '< 100.0 ms',
-      samplePeriod: 'Obstacle Grid Path Planning',
-      hardwareSpecification: 'Single-thread Python 3.10 Execution'
-    },
-    {
-      system: 'AI-Powered Medical Image Analysis',
-      algorithm: 'Transfer Learning with MobileNetV2',
-      primaryMetric: 'Diagnostic Sensitivity (Binary Infiltrate)',
-      measuredValue: 94.2,
-      unit: '%',
-      baselineTarget: '> 90.0%',
-      samplePeriod: 'Chest Radiography Validation Set',
-      hardwareSpecification: 'Grad-CAM Heatmap Localization'
-    }
-  ];
-
-  return {
-    sampleSize: benchmarks.length,
-    benchmarks,
-    averageLatencyMs: 27.2,
-    allTargetsAchieved: true
-  };
-}
-
-/**
- * Calculates delivery economics and sprint velocity standards.
- * 
- * @param {Array} services - Software services data array
- * @returns {object} Delivery metrics
- */
-export function calculateDeliveryMetrics(services = []) {
-  const totalDisciplines = services.length;
-  
-  return {
-    totalDisciplines,
-    standardSprintLengthDays: 14,
-    mvpMinWeeks: 4,
-    mvpMaxWeeks: 8,
-    ipTransferPercentage: 100,
-    testCoverageCIThresholdPercent: 80,
-    deploymentDowntimeTargetSeconds: 0
   };
 }
 

@@ -104,7 +104,7 @@ export default async function CityLocationPage({ params }) {
             </span>
             {city.isHeadquarters ? (
               <span className="text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
-                Global Headquarters
+                Headquarters
               </span>
             ) : (
               <span className="text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/30">

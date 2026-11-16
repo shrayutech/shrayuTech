@@ -15,7 +15,7 @@ import { buildPageMetadata } from '../../src/utils/seo/metadataBuilders';
 
 export const metadata = buildPageMetadata({
   title: 'Compare Software Architectures & Delivery Hubs',
-  description: 'Objectively compare verified open-source software architectures and engineering services. Evaluate tech stacks and benchmarks.',
+  description: 'Compare public software development projects showcasing our technical capabilities, and our engineering services.',
   path: '/compare',
   keywords: ['software comparison', 'architecture comparison', 'tech stack benchmarks', 'delivery hubs']
 });
@@ -26,7 +26,7 @@ export default function ComparePage() {
   const webPage = buildWebPageSchema({
     ...getPageDates('compare'),
     title: 'Technical Comparison Engine | Shrayu Technologies',
-    description: 'Objectively compare verified open-source software architectures and engineering services.',
+    description: 'Compare public software development projects showcasing our technical capabilities, and our engineering services.',
     url
   });
 

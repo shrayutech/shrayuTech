@@ -1,5 +1,6 @@
 "use client";
 
+import { SITE_URL } from '../config/site.config.js';
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
 
@@ -11,7 +12,7 @@ import { ChevronRight, Home } from 'lucide-react';
  */
 const Breadcrumbs = ({ items = [] }) => {
 
-  const baseUrl = 'https://shrayutech.vercel.app';
+  const baseUrl = SITE_URL;
 
   // Construct structured data for Google Rich Results
   const breadcrumbSchema = {

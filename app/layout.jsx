@@ -1,3 +1,4 @@
+import { SITE_URL } from '../src/config/site.config.js';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import ClientProviders from '../src/components/ClientProviders';
@@ -87,9 +88,9 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Shrayu Technologies",
-  "url": "https://shrayutech.vercel.app/",
-  "logo": "https://shrayutech.vercel.app/logo.png",
-  "description": "Leading software development company providing premium web design, mobile apps, and enterprise solutions.",
+  "url": `${SITE_URL}/`,
+  "logo": `${SITE_URL}/logo.png`,
+  "description": "Software development company providing web design, mobile apps, enterprise software, and cloud services.",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Chhatrapati Sambhajinagar",
@@ -101,7 +102,7 @@ const jsonLd = {
     "@type": "ContactPoint",
     "telephone": "+91-7020041614",
     "contactType": "customer service",
-    "email": "shrayutech@gmail.com",
+    "email": "contact@shrayutech.com",
     "availableLanguage": ["English", "Hindi"]
   },
   "sameAs": [
@@ -137,8 +138,8 @@ export default function RootLayout({ children }) {
                 <li><a href="/contact">Contact Us</a></li>
               </ul>
             </nav>
-            <h1>Shrayu Technologies | Premium Software Development & Custom Web Design Services</h1>
-            <p>Leading software development company providing premium web design, mobile apps, enterprise software, and cloud computing solutions.</p>
+            <h1>Shrayu Technologies | Software Development & Custom Web Design Services</h1>
+            <p>Software development company providing web design, mobile apps, enterprise software, and cloud services.</p>
           </header>
           <main>
             <section>
@@ -150,7 +151,7 @@ export default function RootLayout({ children }) {
             <section>
               <h2>Our Core Expertise</h2>
               <p>
-                We leverage industry-leading practices and technologies to build scalable platforms. Our developers design solutions aligned with web standards outlined by the <a href="https://www.w3.org" target="_blank" rel="noopener noreferrer">World Wide Web Consortium (W3C)</a> and deploy enterprise-grade infrastructure on cloud platforms like <a href="https://aws.amazon.com" target="_blank" rel="noopener noreferrer">Amazon Web Services (AWS)</a>.
+                We use established practices and technologies to build scalable platforms. Our developers design solutions aligned with web standards outlined by the <a href="https://www.w3.org" target="_blank" rel="noopener noreferrer">World Wide Web Consortium (W3C)</a> and deploy infrastructure on cloud platforms like <a href="https://aws.amazon.com" target="_blank" rel="noopener noreferrer">Amazon Web Services (AWS)</a>.
               </p>
               <ul>
                 <li><strong>Web Development:</strong> Custom web apps, progressive web apps, and interactive portal solutions.</li>

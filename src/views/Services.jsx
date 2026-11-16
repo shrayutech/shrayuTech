@@ -80,7 +80,7 @@ const Services = () => {
       title: 'Cloud Infrastructure',
       icon: <Cloud className="w-8 h-8 text-sky-500" />,
       tagline: 'Auto-Scaling Clusters',
-      desc: 'Robust infrastructure deployed across multi-cloud regions with auto-scaling groups, containerization, and geo-redundant backups.',
+      desc: 'Robust infrastructure deployed across multi-cloud regions with auto-scaling groups, containerization, and backup planning.',
       techs: ['AWS', 'Azure', 'Docker', 'Kubernetes', 'Terraform'],
       features: ['Infrastructure as Code (IaC)', 'Multi-Region Orchestration', 'Cost Optimization Metrics', 'High Availability Deployments'],
       portfolioLink: '/portfolio?category=Python',
@@ -126,7 +126,7 @@ const Services = () => {
       tagline: 'Delivery Pipelines',
       desc: 'Automate software delivery pipelines, log collection metrics, container orchestration, and real-time infrastructure alerts.',
       techs: ['GitHub Actions', 'Terraform', 'Prometheus', 'Grafana', 'Docker'],
-      features: ['Zero-Downtime Releases', 'Real-Time Health Monitoring', 'Secrets Handling', 'Performance Alerting'],
+      features: ['Low-Interruption Releases', 'Real-Time Health Monitoring', 'Secrets Handling', 'Performance Alerting'],
       portfolioLink: '/portfolio?category=Python',
       portfolioAnchor: 'Explore DevOps Pipelines'
     }
@@ -275,18 +275,18 @@ const Services = () => {
           <div className="pt-16 space-y-16 border-t border-white/10">
             <RelatedProjects
               limit={3}
-              title="Verified Implementations Across These Domains"
-              subtitle="Review production-grade architectures and GitHub codebases built for these service categories"
+              title="Related Public Projects"
+              subtitle="Public software development projects showcasing our technical capabilities in these service categories"
             />
 
             <RelatedCategories
               title="Browse Case Studies by Architecture Domain"
-              subtitle="Filter through our verified software engineering systems by specialization"
+              subtitle="Filter public software development projects by specialization"
             />
 
             <FAQSection
               title="Software Engineering & Services FAQ"
-              subtitle="Clear technical answers about project delivery models, IP transfer, and legacy migrations"
+              subtitle="Clear technical answers about project delivery models, intellectual property, and legacy migrations"
             />
           </div>
 
@@ -312,7 +312,7 @@ const Services = () => {
                     href="/portfolio"
                     className="btn-secondary px-6 sm:px-8 py-3.5 sm:py-4 rounded-full flex items-center justify-center space-x-2 active:scale-95 transition-all text-xs sm:text-base font-bold !text-white !bg-white/10 hover:!bg-white/20 !border-white/20 w-full sm:w-auto"
                   >
-                    <span>Browse 25+ Completed Projects</span>
+                    <span>Browse 25 Public Projects</span>
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link

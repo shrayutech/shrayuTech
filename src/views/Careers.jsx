@@ -215,7 +215,7 @@ const Careers = () => {
               <p className={`text-xs sm:text-sm font-medium max-w-xl mx-auto ${'light:text-slate-600 dark:text-slate-300'}`}>
                 We're always looking for talented individuals who thrive in fast-paced software engineering environments. Take a look at our{' '}
                 <Link href="/portfolio" className="text-blue-500 hover:underline font-semibold">
-                  verified engineering portfolio & case studies
+                  engineering portfolio & case studies
                 </Link>{' '}
                 to see the technical challenges we solve, or send your resume directly to our recruiting team.
               </p>

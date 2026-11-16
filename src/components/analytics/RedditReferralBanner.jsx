@@ -51,7 +51,7 @@ export default function RedditReferralBanner() {
               Reddit Welcome
             </span>
             <p className="font-medium">
-              Visiting from Reddit? We share transparent technical specs, benchmarks, and production codebases.
+              Visiting from Reddit? Browse public software development projects showcasing our technical capabilities.
             </p>
           </div>
 
@@ -70,7 +70,7 @@ export default function RedditReferralBanner() {
                 'light:border-slate-300 light:text-slate-700 light:hover:bg-slate-100 light:hover:text-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
               }`}
             >
-              Verified Code
+              Public Code
             </Link>
             <button
               onClick={handleDismiss}

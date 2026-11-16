@@ -18,7 +18,7 @@ export default function ComparisonTable({
       <div className="text-center py-12 space-y-3 glass-card-3d rounded-3xl p-8">
         <p className="text-slate-500 dark:text-slate-400 font-medium">No items selected for comparison.</p>
         <Link href="/portfolio" className="btn-primary inline-flex items-center text-xs px-5 py-2.5 rounded-full">
-          Browse Verified Systems
+          Browse Public Projects
         </Link>
       </div>
     );

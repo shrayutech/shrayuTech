@@ -17,7 +17,8 @@ const PUBLIC_API_ORIGIN = (() => {
 
 // 'unsafe-inline' scripts are required by Next.js hydration and the theme bootstrap script in
 // app/layout.jsx unless the site moves to per-request nonces (which disables static rendering).
-// Fonts are self-hosted by next/font (app/layout.jsx); www.google.com is for the Maps embeds.
+// Fonts are self-hosted by next/font (app/layout.jsx); the Google hosts are for the Maps embeds and
+// reCAPTCHA v3 on the contact form (src/utils/recaptcha.js).
 // Firebase Analytics (src/utils/analytics.js) loads gtag.js from googletagmanager.com and reports
 // to the Google Analytics and Firebase endpoints in connect-src.
 const ANALYTICS_CONNECT_SRC = [
@@ -30,12 +31,12 @@ const ANALYTICS_CONNECT_SRC = [
 
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com${isDevelopment ? " 'unsafe-eval'" : ''}`,
+  `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google.com https://www.gstatic.com${isDevelopment ? " 'unsafe-eval'" : ''}`,
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self' data:",
   "img-src 'self' data: blob: https:",
-  `connect-src 'self' ${PUBLIC_API_ORIGIN} ${ANALYTICS_CONNECT_SRC}${isDevelopment ? ' ws: wss:' : ''}`,
-  'frame-src https://www.google.com',
+  `connect-src 'self' ${PUBLIC_API_ORIGIN} https://www.google.com ${ANALYTICS_CONNECT_SRC}${isDevelopment ? ' ws: wss:' : ''}`,
+  'frame-src https://www.google.com https://recaptcha.google.com',
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -74,6 +75,12 @@ const nextConfig = {
       {
         source: '/products',
         destination: '/portfolio',
+        permanent: true,
+      },
+      {
+        // Renamed: the study covers public portfolio repositories, not production systems.
+        source: '/research/tech-stack-distribution-production-systems',
+        destination: '/research/tech-stack-distribution-portfolio-repositories',
         permanent: true,
       },
     ];

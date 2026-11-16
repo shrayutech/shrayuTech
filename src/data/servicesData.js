@@ -10,7 +10,7 @@ export const servicesData = [
     name: 'Custom Software Development',
     shortName: 'Custom Software',
     tagline: 'Enterprise Core Logic & Distributed Architectures',
-    overview: 'We architect and build bespoke software backends, core logic engines, and distributed microservices tailored to organizational operational requirements. Built for strict data tenancy, sub-50ms query throughput, and zero-compromise scalability.',
+    overview: 'We architect and build bespoke software backends, core logic engines, and distributed microservices tailored to organizational operational requirements. Designed around your data tenancy and scalability requirements.',
     category: 'Engineering & Backend',
     iconName: 'Code',
     techStack: ['Node.js', 'NestJS', 'Go', 'Python', 'PostgreSQL', 'Redis', 'Docker'],
@@ -34,7 +34,7 @@ export const servicesData = [
       },
       {
         question: 'How do you ensure maintainability and low technical debt?',
-        answer: 'We enforce clean architecture boundaries, strict TypeScript/Python static typing, automated CI pipelines with >80% test coverage, and comprehensive API documentation.'
+        answer: 'We enforce clean architecture boundaries, strict TypeScript/Python static typing, and comprehensive API documentation. We follow appropriate testing practices to maintain software quality.'
       }
     ],
     portfolioCategory: 'Python',
@@ -46,13 +46,13 @@ export const servicesData = [
     name: 'Web Application Development',
     shortName: 'Web Development',
     tagline: 'High-Performance Next.js & React Web Platforms',
-    overview: 'We build responsive, SEO-optimized, and accessible web portals leveraging Next.js App Router, React 19, and Tailwind CSS. Every web application is engineered for sub-second Core Web Vitals, server-side rendering, and frictionless user flows.',
+    overview: 'We build responsive, SEO-optimized, and accessible web portals leveraging Next.js App Router, React 19, and Tailwind CSS. We optimize website performance for fast loading and a better user experience.',
     category: 'Frontend & Full-Stack',
     iconName: 'Globe',
     techStack: ['Next.js', 'React 19', 'TypeScript', 'Tailwind CSS', 'GraphQL', 'REST', 'Vercel'],
     features: [
       'Server-Side Rendering (SSR) & Static Site Generation (SSG)',
-      'Sub-Second First Contentful Paint & Core Web Vitals Optimization',
+      'Website Performance & Core Web Vitals Optimization',
       'Dynamic Metadata, Open Graph, and Structured Data Schemas',
       'Accessible UI Components Complying with WCAG 2.1 AA Standards'
     ],
@@ -60,16 +60,16 @@ export const servicesData = [
       'Production-Ready Next.js Application Codebase',
       'Fully Responsive Cross-Browser UI Design Tokens',
       'Sitemap, Robots.txt, and Dynamic Open Graph Route Handlers',
-      'Lighthouse 95+ Performance Audit Verification'
+      'Lighthouse Performance Review'
     ],
     faqs: [
       {
         question: 'Why build with Next.js App Router instead of standard React SPA?',
-        answer: 'Next.js App Router combines React Server Components (RSC) for zero-bundle-size rendering, built-in SEO metadata management, and hybrid static/dynamic generation, delivering 3x faster page loads and significantly superior search engine indexability.'
+        answer: 'Next.js App Router combines React Server Components (RSC) for zero-bundle-size rendering, built-in SEO metadata management, and hybrid static/dynamic generation, which can improve page load performance and search engine indexing.'
       },
       {
         question: 'Can you migrate existing Create React App (CRA) or Vite projects to Next.js?',
-        answer: 'Yes. We specialize in seamless React-to-Next.js migrations, preserving 100% of existing business logic, component styling, and state management while unlocking SSR, SSG, and App Router capabilities.'
+        answer: 'Yes. We can migrate React applications to Next.js, aiming to keep existing business logic, component styling, and state management while adding SSR, SSG, and App Router capabilities.'
       }
     ],
     portfolioCategory: 'Full-Stack Development',
@@ -100,7 +100,7 @@ export const servicesData = [
     faqs: [
       {
         question: 'Should we build with Flutter, React Native, or separate native apps?',
-        answer: 'For 90% of business applications, modern cross-platform frameworks (Flutter or React Native) reduce development time and cost by ~45% while delivering 60 FPS native performance and unified business logic.'
+        answer: 'For most business applications, modern cross-platform frameworks (Flutter or React Native) can reduce development time and cost through a shared codebase and unified business logic.'
       },
       {
         question: 'How do you handle offline mode when network drops?',
@@ -151,30 +151,30 @@ export const servicesData = [
     name: 'Cloud Infrastructure & Architecture',
     shortName: 'Cloud Infrastructure',
     tagline: 'High-Availability Multi-Cloud & Auto-Scaling Clusters',
-    overview: 'We architect and provision resilient cloud topologies across AWS, Azure, and Google Cloud Platform. From Infrastructure-as-Code (Terraform) to Kubernetes cluster management, we ensure zero-downtime availability and multi-region disaster recovery.',
+    overview: 'We architect and provision resilient cloud topologies across AWS, Azure, and Google Cloud Platform. Our work ranges from Infrastructure-as-Code (Terraform) to Kubernetes cluster management. We use deployment practices designed to minimize service interruptions. We design backup and recovery strategies based on project requirements.',
     category: 'Cloud & Infrastructure',
     iconName: 'Cloud',
     techStack: ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform', 'Helm', 'Nginx'],
     features: [
       'Infrastructure as Code (Terraform) with GitOps Workflows',
       'Multi-Availability Zone Auto-Scaling Groups & Load Balancers',
-      'Geo-Redundant Disaster Recovery & Automated Snapshot Policies',
+      'We design backup and recovery strategies based on project requirements.',
       'Cloud Spend Audit & Resource Cost Optimization (FinOps)'
     ],
     deliverables: [
       'Modular Terraform Infrastructure Codebase',
       'Production Kubernetes Cluster Specs & Ingress Controllers',
       'Automated CloudWatch / Datadog Monitoring & Alert Thresholds',
-      'SOC2 / ISO 27001 Security Hardening Configuration'
+      'We follow security best practices and can align implementations with relevant security frameworks.'
     ],
     faqs: [
       {
         question: 'How do you minimize monthly cloud hosting bills?',
-        answer: 'We perform automated resource rightsizing, implement spot instance autoscaling, set up database serverless pausing, eliminate unattached storage volumes, and configure CloudFront edge caching, typically saving clients 30–50% on monthly spend.'
+        answer: 'We perform automated resource rightsizing, implement spot instance autoscaling, set up database serverless pausing, eliminate unattached storage volumes, and configure CloudFront edge caching to reduce monthly spend.'
       },
       {
-        question: 'What is your disaster recovery SLA?',
-        answer: 'We engineer multi-region database replication with Recovery Point Objective (RPO) < 5 minutes and automated failover Recovery Time Objective (RTO) < 15 minutes.'
+        question: 'How do you approach backup and disaster recovery?',
+        answer: 'We design backup and recovery strategies based on project requirements. Recovery objectives are defined according to infrastructure and business requirements.'
       }
     ],
     portfolioCategory: 'Python',
@@ -290,14 +290,14 @@ export const servicesData = [
     slug: 'devops-ci-cd',
     name: 'DevOps & Continuous Delivery',
     shortName: 'DevOps & CI/CD',
-    tagline: 'Automated Build Pipelines, Monitoring & Zero-Downtime Releases',
-    overview: 'We establish modern continuous integration and delivery (CI/CD) pipelines, real-time observability stacks, and container registries that allow engineering teams to ship verified code to production multiple times a day with zero downtime.',
+    tagline: 'Automated Build Pipelines, Monitoring & Release Management',
+    overview: 'We establish modern continuous integration and delivery (CI/CD) pipelines, real-time observability stacks, and container registries that help engineering teams ship tested code to production more often. We use deployment practices designed to minimize service interruptions.',
     category: 'Cloud & Infrastructure',
     iconName: 'Settings',
     techStack: ['GitHub Actions', 'Docker', 'Kubernetes', 'Prometheus', 'Grafana', 'ArgoCD', 'Sentry'],
     features: [
       'Automated GitHub Actions Testing, Linting & Build Verification',
-      'Blue/Green & Canary Zero-Downtime Production Deployment Strategies',
+      'Blue/Green & Canary Deployment Strategies to Minimize Service Interruptions',
       'Centralized Log Aggregation (ELK / Loki) & Performance Metrics (Grafana)',
       'Automated Vulnerability Scanning (Trivy / Snyk) in CI Pipelines'
     ],
@@ -314,7 +314,7 @@ export const servicesData = [
       },
       {
         question: 'What is Blue/Green deployment and how does it prevent downtime?',
-        answer: 'Blue/Green deployment runs two identical production environments. The new version is deployed to idle environment "Green", verified via health checks, and traffic is switched instantaneously via load balancer, ensuring 0 seconds of user downtime.'
+        answer: 'Blue/Green deployment runs two identical production environments. The new version is deployed to idle environment "Green", verified via health checks, and traffic is switched via load balancer, an approach designed to minimize service interruptions.'
       }
     ],
     portfolioCategory: 'Python',
@@ -352,7 +352,7 @@ export const defaultServiceFAQs = [
   },
   {
     q: 'How is code ownership and intellectual property (IP) handled?',
-    a: 'You retain 100% intellectual property ownership from day one. Upon deliverable completion and milestone sign-off, all codebases, Docker recipes, database schemas, CI/CD scripts, and production keys are transferred directly into your company’s private repositories.'
+    a: 'Intellectual property ownership is defined in the project agreement.'
   },
   {
     q: 'Can you refactor, audit, or scale an existing legacy application?',
@@ -364,7 +364,7 @@ export const defaultServiceFAQs = [
   },
   {
     q: 'What post-launch support and infrastructure monitoring do you provide?',
-    a: 'We provide SLA-backed maintenance packages including 24/7 cloud uptime monitoring, proactive security patches, PostgreSQL automated backup verification, and edge latency optimization across AWS and modern cloud providers.'
+    a: 'We provide technical support based on agreed support arrangements. These can include cloud monitoring, security patches, backup checks, and performance tuning.'
   }
 ];
 

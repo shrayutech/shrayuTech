@@ -36,7 +36,7 @@ const serviceCatalog = [
     title: 'Cloud Infrastructure & DevOps',
     category: 'Cloud',
     icon: Cloud,
-    desc: 'Auto-scaling AWS clusters, Docker containerization, and zero-downtime CI/CD delivery.',
+    desc: 'Auto-scaling AWS clusters, Docker containerization, and CI/CD delivery designed to minimize service interruptions.',
     href: '/services'
   },
   {

@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Github, Twitter, Linkedin, Mail, Phone, MapPin, ArrowUp, ArrowRight } from 'lucide-react';
+import { Github, Youtube, Linkedin, Mail, Phone, MapPin, ArrowUp, ArrowRight } from 'lucide-react';
 import { scrollToTop } from './SmoothScroll';
 
 const SOCIAL_LINKS = [
   { label: 'GitHub', href: 'https://github.com/shrayutech', icon: Github },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ayushkhobragade', icon: Linkedin },
-  { label: 'X (Twitter)', href: 'https://x.com/ayushkhobragade', icon: Twitter }
+  { label: 'YouTube', href: 'https://youtube.com/@shrayutechnologies', icon: Youtube }
 ];
 
 const LINK_COLUMNS = [
@@ -99,7 +99,7 @@ const Footer = () => {
               Have a project in mind?
             </h2>
             <p className={`mt-1.5 text-sm font-medium ${'light:text-slate-600 dark:text-slate-400'}`}>
-              Tell us what you&apos;re building — we usually reply within one business day.
+              Tell us what you&apos;re building. Our team will get back to you as soon as possible.
             </p>
           </div>
           <Link
@@ -202,8 +202,8 @@ const Footer = () => {
               </li>
               <li className="flex items-start gap-3">
                 <Mail className={iconAccent} />
-                <a href="mailto:shrayutech@gmail.com" className={`${contactLinkClass} whitespace-nowrap`}>
-                  shrayutech@gmail.com
+                <a href="mailto:contact@shrayutech.com" className={`${contactLinkClass} whitespace-nowrap`}>
+                  contact@shrayutech.com
                 </a>
               </li>
               <li className="flex items-start gap-3">

@@ -133,7 +133,7 @@ export default async function LocationCategoryPage({ params }) {
               </h2>
 
               <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                Our engineering sprints for {category.name.toLowerCase()} adhere to strict software quality benchmarks, comprehensive unit test coverage, and automated CI/CD pipelines.
+                We follow appropriate testing practices to maintain software quality.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
@@ -222,13 +222,13 @@ export default async function LocationCategoryPage({ params }) {
           <div className="space-y-8 pt-4">
             <div className="space-y-2">
               <span className="text-blue-500 font-bold text-xs uppercase tracking-[0.2em]">
-                Verified Systems
+                Public Projects
               </span>
               <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
                 Relevant Engineering Systems in {category.shortName}
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
-                Explore open source production repositories demonstrating our core competencies in this domain.
+                Explore public software development projects showcasing our technical capabilities in this domain.
               </p>
             </div>
 

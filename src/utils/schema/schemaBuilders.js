@@ -6,7 +6,9 @@
  * using real application data without fabricated claims or duplicate entities.
  */
 
-export const SCHEMA_BASE_URL = 'https://shrayutech.vercel.app';
+import { SITE_URL } from '../../config/site.config.js';
+
+export const SCHEMA_BASE_URL = SITE_URL;
 export const ORG_ID = `${SCHEMA_BASE_URL}/#organization`;
 export const WEBSITE_ID = `${SCHEMA_BASE_URL}/#website`;
 
@@ -43,8 +45,8 @@ export function buildOrganizationSchema(baseUrl = SCHEMA_BASE_URL) {
     legalName: 'Shrayu Technologies Private Limited',
     url: baseUrl,
     logo: `${baseUrl}/logo.png`,
-    description: 'Premier software engineering company specializing in bespoke backend microservices, Next.js web applications, artificial intelligence, and cloud architectures.',
-    email: 'shrayutech@gmail.com',
+    description: 'Shrayu Technologies builds web applications, full-stack software solutions, and AI-powered systems tailored to business needs.',
+    email: 'contact@shrayutech.com',
     telephone: '+91-70200-41614',
     address: {
       '@type': 'PostalAddress',
@@ -62,7 +64,7 @@ export function buildOrganizationSchema(baseUrl = SCHEMA_BASE_URL) {
         '@type': 'ContactPoint',
         telephone: '+91-70200-41614',
         contactType: 'technical support & enterprise inquiries',
-        email: 'shrayutech@gmail.com',
+        email: 'contact@shrayutech.com',
         areaServed: 'IN',
         availableLanguage: ['English', 'Hindi', 'Marathi']
       }
@@ -168,9 +170,6 @@ export function buildSoftwareApplicationSchema(project, baseUrl = SCHEMA_BASE_UR
       url: canonicalUrl
     },
     softwareRequirements: Array.isArray(project.techStack) ? project.techStack.join(', ') : undefined,
-    author: {
-      '@id': `${baseUrl}/#organization`
-    },
     codeRepository: project.githubUrl,
     keywords: [project.category, ...(project.techStack || [])].join(', ')
   };

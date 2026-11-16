@@ -13,7 +13,7 @@ export const COMPARISON_CONFIG = {
       key: 'systems',
       label: 'Software Systems & Products',
       singularLabel: 'System',
-      description: 'Compare verified production architectures, algorithmic pipelines, and open source systems from our engineering laboratory.',
+      description: 'Compare public software development projects showcasing our technical capabilities.',
       baseRoute: '/portfolio'
     },
     services: {
