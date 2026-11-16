@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {
@@ -29,27 +29,48 @@ import {
   normalizeComparisonSlug
 } from '../../src/utils/comparisonUtils.js';
 
-export default function CompareHubView() {
+// Reads ?type= and ?items= in its own Suspense boundary. Calling useSearchParams() in CompareHubView
+// itself would make Next.js skip server-rendering the whole hub, so crawlers would see only the
+// loading fallback and no links to the curated /compare/[type]/[slug] pages.
+const CompareParamSync = ({ onChange }) => {
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    onChange({ type: searchParams.get('type'), items: searchParams.get('items') });
+  }, [searchParams, onChange]);
+
+  return null;
+};
+
+export default function CompareHubView() {
   const router = useRouter();
   const { selected, addItem, removeItem, clearItems, isHydrated } = useComparison();
 
+  // URL query (?type=systems&items=1,3), filled in by CompareParamSync after hydration
+  const [query, setQuery] = useState({ type: null, items: null });
+
   // Active tab: 'systems' | 'services' | 'locations'
-  const initialType = searchParams.get('type') || COMPARISON_CONFIG.DEFAULT_TYPE;
-  const [activeType, setActiveType] = useState(initialType);
+  const [activeType, setActiveType] = useState(COMPARISON_CONFIG.DEFAULT_TYPE);
+
+  useEffect(() => {
+    if (query.type) setActiveType(query.type);
+  }, [query.type]);
 
   // Available entities for active type
   const availableEntities = getAllEntitiesForType(activeType);
   const typeConfig = COMPARISON_CONFIG.SUPPORTED_TYPES[activeType] || COMPARISON_CONFIG.SUPPORTED_TYPES.systems;
   const curated = getAllCuratedComparisons(activeType);
 
-  // Track active items to display in table
-  const [comparedItems, setComparedItems] = useState([]);
+  // Track active items to display in table. Starts with the same first-two default the effect
+  // below picks, so the server-rendered HTML already contains the comparison table.
+  const [comparedItems, setComparedItems] = useState(() =>
+    getAllEntitiesForType(COMPARISON_CONFIG.DEFAULT_TYPE).slice(0, 2).map(e => e.raw)
+  );
 
   // Check URL query parameters for items (e.g. ?type=systems&items=1,3)
   useEffect(() => {
-    const queryType = searchParams.get('type') || activeType;
-    const queryItems = searchParams.get('items');
+    const queryType = query.type || activeType;
+    const queryItems = query.items;
 
     if (queryItems) {
       const ids = queryItems.split(',').map(s => s.trim()).filter(Boolean);
@@ -69,7 +90,7 @@ export default function CompareHubView() {
       const defaults = availableEntities.slice(0, 2).map(e => e.raw);
       setComparedItems(defaults);
     }
-  }, [searchParams, activeType, isHydrated]);
+  }, [query, activeType, isHydrated]);
 
   const handleTypeChange = (newType) => {
     setActiveType(newType);
@@ -111,6 +132,9 @@ export default function CompareHubView() {
 
   return (
     <div className="relative min-h-screen pt-36 pb-32 px-6 sm:px-8 overflow-hidden transition-colors duration-300">
+      <Suspense fallback={null}>
+        <CompareParamSync onChange={setQuery} />
+      </Suspense>
       <ComparisonSchema
         title={`Comparison: ${comparedItems.map(i => i.name || i.title).join(' vs ')}`}
         items={comparedItems}

@@ -1,7 +1,5 @@
 import { getPageDates } from '../../src/data/contentRegistry';
-import { Suspense } from 'react';
 import Products from '../../src/views/Products';
-import PortfolioSkeleton from '../../src/components/skeleton/PortfolioSkeleton';
 import SchemaMarkup from '../../src/components/seo/schema/SchemaMarkup';
 import {
   buildWebPageSchema,
@@ -58,9 +56,9 @@ export default function PortfolioPage() {
   return (
     <>
       <SchemaMarkup schema={graph} />
-      <Suspense fallback={<PortfolioSkeleton />}>
-        <Products />
-      </Suspense>
+      {/* No Suspense wrapper: Products reads ?category= inside its own boundary, and an outer
+          fallback here would put the server HTML behind a hidden, script-swapped block */}
+      <Products />
     </>
   );
 }

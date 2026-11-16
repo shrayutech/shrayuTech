@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -89,23 +89,30 @@ const categoryConfig = {
   }
 };
 
-const Products = () => {
+// Reads ?category= in its own Suspense boundary. Calling useSearchParams() in Products itself would
+// make Next.js skip server-rendering the whole project grid, so crawlers would see only the skeleton
+// and no links to the /portfolio/[slug] case studies.
+const CategoryParamSync = ({ onCategory }) => {
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam && portfolioCategories.includes(categoryParam)) {
+      onCategory(categoryParam);
+    } else if (!categoryParam) {
+      onCategory('All');
+    }
+  }, [searchParams, onCategory]);
+
+  return null;
+};
+
+const Products = () => {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedId, setExpandedId] = useState(null);
   const { isLoading } = useSkeleton();
-
-  // Synchronize category state from URL query parameter
-  useEffect(() => {
-    const categoryParam = searchParams.get('category');
-    if (categoryParam && portfolioCategories.includes(categoryParam)) {
-      setSelectedCategory(categoryParam);
-    } else if (!categoryParam) {
-      setSelectedCategory('All');
-    }
-  }, [searchParams]);
 
   const handleSelectCategory = (cat) => {
     setSelectedCategory(cat);
@@ -161,6 +168,9 @@ const Products = () => {
 
   return (
     <SkeletonWrapper loading={isLoading} skeleton={<PortfolioSkeleton />}>
+      <Suspense fallback={null}>
+        <CategoryParamSync onCategory={setSelectedCategory} />
+      </Suspense>
       <div className="relative min-h-screen bg-portfolio-atmosphere pt-36 pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden transition-colors duration-300">
         <SEO
           title="Portfolio & Engineering Projects — Shrayu Technologies"
@@ -415,7 +425,12 @@ const Products = () => {
                               'light:text-slate-900 light:group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-300'
                             }`}
                           >
-                            {project.title}
+                            <Link
+                              href={`/portfolio/${normalizeProjectSlug(project.repo)}`}
+                              className="hover:underline underline-offset-4"
+                            >
+                              {project.title}
+                            </Link>
                           </h2>
                         </div>
 

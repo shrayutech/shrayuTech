@@ -1,5 +1,4 @@
 import { getPageDates } from '../../src/data/contentRegistry';
-import { Suspense } from 'react';
 import CompareHubView from './CompareHubView';
 import SchemaMarkup from '../../src/components/seo/schema/SchemaMarkup';
 import {
@@ -56,9 +55,9 @@ export default function ComparePage() {
   return (
     <>
       <SchemaMarkup schema={graph} />
-      <Suspense fallback={<div className="min-h-screen pt-36 text-center text-slate-400">Loading comparison engine...</div>}>
-        <CompareHubView />
-      </Suspense>
+      {/* No Suspense wrapper: CompareHubView reads the URL query inside its own boundary, and an
+          outer fallback here would put the server HTML behind a hidden, script-swapped block */}
+      <CompareHubView />
     </>
   );
 }
