@@ -44,8 +44,9 @@ const SkeletonContactForm = ({ className = '' }) => {
             ))}
           </div>
 
-          {/* Social icons row: GitHub + LinkedIn */}
+          {/* Social icons row: GitHub + LinkedIn + Instagram */}
           <div className={`pt-5 border-t flex space-x-3 ${'light:border-slate-200 dark:border-white/10'}`}>
+            <SkeletonBase variant="icon" width="2.5rem" height="2.5rem" radius="0.75rem" />
             <SkeletonBase variant="icon" width="2.5rem" height="2.5rem" radius="0.75rem" />
             <SkeletonBase variant="icon" width="2.5rem" height="2.5rem" radius="0.75rem" />
           </div>
