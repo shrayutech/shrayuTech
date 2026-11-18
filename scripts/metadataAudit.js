@@ -6,7 +6,7 @@
  * 1. Global site configuration & metadataBase
  * 2. Static route metadata completeness, character length constraints & robots directives
  * 3. Dynamic pSEO route generation across products, services, locations, comparisons, and research
- * 4. Robots.txt configuration (app/robots.js) & sitemap integration
+ * 4. Robots.txt route (app/robots.txt/route.js), Content-Signal & sitemap integration
  * 5. Canonical URL formatting, no localhost, no trailing slashes, clean protocols
  * 6. hreflang alternates (en, x-default)
  * 7. OpenGraph and Twitter card fidelity
@@ -36,7 +36,7 @@ import {
   buildNotFoundMetadata
 } from '../src/utils/seo/metadataBuilders.js';
 
-import robotsConfig from '../app/robots.js';
+import { GET as getRobotsTxt } from '../app/robots.txt/route.js';
 import { servicesData } from '../src/data/servicesData.js';
 import { portfolioProjects } from '../src/data/portfolioProjects.js';
 import { statesData, locationCategories } from '../src/data/locationsData.js';
@@ -101,16 +101,16 @@ assert(alternates.languages['x-default'] === `${SITE_URL}/portfolio`, 'x-default
 // -----------------------------------------------------------------------------
 // 2. ROBOTS.TXT DYNAMIC ARCHITECTURE
 // -----------------------------------------------------------------------------
-console.log('\n2. Auditing Robots Architecture (app/robots.js)...');
-const generatedRobots = robotsConfig();
-assert(Array.isArray(generatedRobots.rules), 'Robots config contains rules array');
-assert(generatedRobots.rules[0].userAgent === '*', 'Robots rule targets all user agents');
-assert(generatedRobots.rules[0].allow === '/', 'Robots allows public indexing on root');
-assert(Array.isArray(generatedRobots.rules[0].disallow) && generatedRobots.rules[0].disallow.includes('/admin'), 'Robots strictly disallows /admin');
-assert(generatedRobots.sitemap === `${SITE_URL}/sitemap.xml`, 'Robots points to canonical sitemap.xml');
+console.log('\n2. Auditing Robots Architecture (app/robots.txt/route.js)...');
+const robotsLines = (await getRobotsTxt().text()).split('\n');
+assert(robotsLines[0] === 'User-Agent: *', 'Robots rule targets all user agents');
+assert(robotsLines.includes('Content-Signal: search=yes, ai-input=yes, ai-train=no'), 'Robots declares Content-Signal (search and ai-input allowed, ai-train opted out)');
+assert(robotsLines.includes('Allow: /'), 'Robots allows public indexing on root');
+assert(robotsLines.includes('Disallow: /admin'), 'Robots strictly disallows /admin');
+assert(robotsLines.includes(`Sitemap: ${SITE_URL}/sitemap.xml`), 'Robots points to canonical sitemap.xml');
 
 const staticRobotsPath = path.join(ROOT_DIR, 'public', 'robots.txt');
-assert(!fs.existsSync(staticRobotsPath), 'Redundant static public/robots.txt was removed in favor of native app/robots.js');
+assert(!fs.existsSync(staticRobotsPath), 'Redundant static public/robots.txt was removed in favor of app/robots.txt/route.js');
 
 // -----------------------------------------------------------------------------
 // 3. STATIC ROUTES METADATA AUDIT

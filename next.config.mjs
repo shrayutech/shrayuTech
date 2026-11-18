@@ -63,6 +63,15 @@ const nextConfig = {
         source: '/:path*',
         headers: securityHeaders,
       },
+      {
+        // RFC 8288 discovery links for agents: the markdown site summary and the sitemap
+        source: '/',
+        headers: [
+          {
+            key: 'Link',
+            value: '</llms.txt>; rel="describedby"; type="text/markdown", </sitemap.xml>; rel="sitemap"; type="application/xml"',
+          },        ],
+      },
     ];
   },
   async redirects() {

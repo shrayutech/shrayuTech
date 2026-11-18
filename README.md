@@ -53,7 +53,8 @@
 │   ├── careers/                      # Engineering careers & roles
 │   ├── privacy/                      # Privacy policy & data handling
 │   ├── terms/                        # Terms of service & IP agreements
-│   ├── robots.js                     # Dynamic robots.txt builder
+│   ├── robots.txt/route.js           # robots.txt with Content-Signal (AI usage policy)
+│   ├── llms.txt/route.js             # llms.txt; also the homepage's text/markdown variant
 │   ├── sitemap.js                    # Dynamic sitemap.xml generator (100+ URLs)
 │   └── not-found.jsx                 # Custom 404 page
 ├── src/
