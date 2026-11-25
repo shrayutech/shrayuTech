@@ -3,13 +3,26 @@
  * Without a site key, development sends a placeholder that the backend accepts only when it also
  * has no secret in development. Production refuses to send, rather than submit without a check.
  */
+import { validateRecaptchaSiteKey } from '../config/recaptcha.config.mjs';
+
+// Must stay a literal process.env.NEXT_PUBLIC_* read: Next inlines it at build time, so the key has
+// to be set before `next build` (a Vercel redeploy), not only at runtime.
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+const CONFIG_ERROR = validateRecaptchaSiteKey(SITE_KEY);
 const DEVELOPMENT_TOKEN = 'development-no-recaptcha';
+
+/** Thrown when the site key is missing or malformed: a deployment problem, not a visitor problem. */
+export class RecaptchaConfigError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'RecaptchaConfigError';
+  }
+}
 
 let scriptPromise = null;
 
 export function loadRecaptcha() {
-  if (!SITE_KEY) return Promise.resolve();
+  if (CONFIG_ERROR) return Promise.resolve();
   if (!scriptPromise) {
     scriptPromise = new Promise((resolve, reject) => {
       const script = document.createElement('script');
@@ -27,9 +40,11 @@ export function loadRecaptcha() {
 }
 
 export async function getRecaptchaToken(action) {
-  if (!SITE_KEY) {
-    if (process.env.NODE_ENV === 'development') return DEVELOPMENT_TOKEN;
-    throw new Error('NEXT_PUBLIC_RECAPTCHA_SITE_KEY is not set');
+  if (CONFIG_ERROR) {
+    // Unchanged: the placeholder is only for local development with no key, and the backend
+    // accepts it only when it is also in development with no secret
+    if (!SITE_KEY && process.env.NODE_ENV === 'development') return DEVELOPMENT_TOKEN;
+    throw new RecaptchaConfigError(CONFIG_ERROR);
   }
   await loadRecaptcha();
   return window.grecaptcha.execute(SITE_KEY, { action });

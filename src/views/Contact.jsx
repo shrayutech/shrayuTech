@@ -19,7 +19,7 @@ import {
   Instagram
 } from 'lucide-react';
 import SEO from '../components/SEO';
-import { getRecaptchaToken, loadRecaptcha, setRecaptchaBadgeVisible } from '../utils/recaptcha';
+import { getRecaptchaToken, loadRecaptcha, setRecaptchaBadgeVisible, RecaptchaConfigError } from '../utils/recaptcha';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { API_BASE_URL } from '../config/api.config';
 import { useSkeleton } from '../context/SkeletonContext';
@@ -146,7 +146,13 @@ const ContactForm = () => {
           captchaToken = await getRecaptchaToken('contact_form');
         } catch (err) {
           console.error('reCAPTCHA Error:', err);
-          toast.error('The security check could not load. Please disable any blocker and try again, or email us directly.');
+          // A missing or malformed site key is our deployment error; asking the visitor to disable a
+          // blocker would not help them
+          toast.error(
+            err instanceof RecaptchaConfigError
+              ? 'Online submissions are temporarily unavailable. Please email us directly and we will get back to you.'
+              : 'The security check could not load. Please disable any blocker and try again, or email us directly.'
+          );
           return;
         }
 

@@ -1,4 +1,33 @@
+import { PHASE_PRODUCTION_BUILD } from 'next/constants.js';
+import { validateRecaptchaSiteKey } from './src/config/recaptcha.config.mjs';
+
 const isDevelopment = process.env.NODE_ENV === 'development';
+
+/**
+ * Build-time configuration checks. NEXT_PUBLIC_* values are inlined into the client bundle when
+ * `next build` runs, so a missing value cannot be fixed later at runtime, only by rebuilding.
+ */
+function checkBuildEnvironment() {
+  // Anything named NEXT_PUBLIC_ is shipped to every browser; secrets must never be named that way
+  const exposedSecrets = Object.keys(process.env).filter(
+    (name) => name.startsWith('NEXT_PUBLIC_') && /SECRET|PASSWORD|PRIVATE/i.test(name)
+  );
+  if (exposedSecrets.length) {
+    throw new Error(
+      `Refusing to build: ${exposedSecrets.join(', ')} would be published to browsers. ` +
+        'Secret keys belong on the backend only (RECAPTCHA_SECRET_KEY on Render).'
+    );
+  }
+
+  const recaptchaError = validateRecaptchaSiteKey(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
+  if (!recaptchaError) return;
+  const help =
+    `${recaptchaError}. The contact form cannot send enquiries without it. Set it in Vercel ` +
+    '(Settings > Environment Variables, Production) to the reCAPTCHA v3 site key, then redeploy.';
+  // Vercel Production must not ship a contact form that cannot submit; other builds only warn
+  if (process.env.VERCEL_ENV === 'production') throw new Error(help);
+  console.warn(`\n[config] Warning: ${help}\n`);
+}
 
 // Backend that /api/* is proxied to. Defaults to the local Express server in dev.
 const BACKEND_URL = (
@@ -106,4 +135,7 @@ const nextConfig = {
   // /_next/image into an open proxy for any HTTPS URL.
 };
 
-export default nextConfig;
+export default function config(phase) {
+  if (phase === PHASE_PRODUCTION_BUILD) checkBuildEnvironment();
+  return nextConfig;
+}
